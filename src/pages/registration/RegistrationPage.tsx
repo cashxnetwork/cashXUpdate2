@@ -23,7 +23,7 @@ export default function RegistrationPage() {
 
   return (
     <ReactSlickRegistration>
-      {planCountArray().length > 0 ? (
+      {planCountArray().length > 0 && (
         planCountArray()?.map((planId, index) => (
           <RegistrationUI
             planId={planId}
@@ -32,8 +32,6 @@ export default function RegistrationPage() {
             key={index}
           ></RegistrationUI>
         ))
-      ) : (
-        <Spinner />
       )}
     </ReactSlickRegistration>
   );
