@@ -1,4 +1,3 @@
-'use client';
 import { useColorModeValue } from '@chakra-ui/react';
 import {
   EthereumClient,
@@ -10,7 +9,7 @@ import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { polygon } from 'wagmi/chains';
 
 const chains = [polygon];
-const projectId = '21bc3cf01fade70639b3ec6a14e6277c';
+const projectId = 'e9244bd7e1f589cfa321acc66468598a';
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);
 const wagmiConfig = createConfig({
