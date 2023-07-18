@@ -55,6 +55,8 @@ export const useGetPlansCount = () => {
     functionName: 'getPlansCount',
   });
 
+  console.log(value)
+
   const valueObject = value ? (Number(value) as number) : 0;
   return valueObject;
 };
