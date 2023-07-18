@@ -24,10 +24,6 @@ export const useContractCall = ({
     return undefined;
   }
 
-  if(isLoading) {
-    return "isLoading";
-  }
-
   return data;
 };
 

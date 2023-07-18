@@ -8,6 +8,8 @@ export default function RegistrationPage() {
   const { referrerAddress } = useParams();
   const plansCount = useGetPlansCount();
 
+  console.log(plansCount)
+
   return (
     <ReactSlickRegistration>
       {plansCount.length > 0 ? (
