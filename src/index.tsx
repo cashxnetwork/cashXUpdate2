@@ -7,6 +7,7 @@ import ProviderChakra from './providers/ProviderChakra';
 import { ProviderDapp } from './providers/ProviderDApp';
 import { ProviderWeb3Modal } from './providers/ProviderWeb3Modal';
 import * as serviceWorker from './serviceWorker';
+import ("./Pollyfills")
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Failed to find the root element');
