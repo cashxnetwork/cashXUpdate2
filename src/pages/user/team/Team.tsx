@@ -29,13 +29,11 @@ import { useParams } from 'react-router-dom';
 
 function Team() {
   const { address } = useAccount();
-  const { userAddress } = useParams();
-  const userBusiness = useGetUserBusiness(
-    userAddress ? `0x${userAddress}` : address
-  );
-  const userTeamObject = useGetUserTeam(
-    userAddress ? `0x${userAddress}` : address
-  );
+  const { userAddress } = useParams<{
+    userAddress: `0x${string}`;
+  }>();
+  const userBusiness = useGetUserBusiness(userAddress ?? address);
+  const userTeamObject = useGetUserTeam(userAddress ?? address);
   const isUserActive = Number(userBusiness.selfBusiness) > 0 ? true : false;
   const userReferralLink = `https://marsnext.io/#/registration/${address}`;
   const { hasCopied, onCopy } = useClipboard(userReferralLink);
@@ -84,7 +82,7 @@ function Team() {
 
         <VStack>
           <UserTeamDisplayCard
-            address={userAddress ? `0x${userAddress}` : address}
+            address={userAddress ?? address}
             icon={FcAssistant}
             userType="You"
           />
@@ -120,9 +118,7 @@ function Team() {
             </Heading>
             <Divider />
           </VStack>
-          <UserTeamTable
-            userAddress={userAddress ? `0x${userAddress}` : address!}
-          />
+          <UserTeamTable userAddress={userAddress ?? address!} />
         </VStack>
       )}
     </VStack>
