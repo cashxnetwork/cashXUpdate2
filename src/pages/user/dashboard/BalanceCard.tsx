@@ -28,6 +28,9 @@ export default function BalanceCard({
     token: currentNetwork.BUSD.contractAddress,
   });
 
+  console.log("User Native Balance",userNativeBalance)
+  console.log("User USDT Balance",userUSDTBalance)
+
   const useValueObject = [
     {
       name: `${userNativeBalance?.symbol} Balance`,
