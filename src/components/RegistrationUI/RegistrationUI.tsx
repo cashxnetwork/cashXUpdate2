@@ -199,7 +199,7 @@ function RegistrationUI({
                   2
                 )}
               </Heading>
-              <Image src={USDTLogoSVG} alt="USDT Logo" width={20}></Image>
+              <Image src={USDTLogoSVG} alt="USDT Logo" boxSize={10}></Image>
             </HStack>
           </VStack>
           {errors.isUserAlreadyHaveReferrer ? (

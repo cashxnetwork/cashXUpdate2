@@ -39,7 +39,7 @@ export default function ReactSlickRegistration({
         <Divider />
       </VStack>
       <Stack w={1000} overflow="hidden" px={7} py={10}>
-        <link
+        {/* <link
           rel="stylesheet"
           type="text/css"
           charSet="UTF-8"
@@ -49,7 +49,7 @@ export default function ReactSlickRegistration({
           rel="stylesheet"
           type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
+        /> */}
         <Slider
           dots={true}
           slidesToShow={3}
@@ -65,6 +65,7 @@ export default function ReactSlickRegistration({
         </Slider>
       </Stack>
       <HStack w="full" maxW={600} justify="space-between" px={20} pt={10}>
+        {/* Left Button Icon */}
         <IconButton
           aria-label="left-arrow"
           bgColor="orange.500"
@@ -75,7 +76,7 @@ export default function ReactSlickRegistration({
         >
           <BiLeftArrowAlt />
         </IconButton>
-        {/* Right Icon */}
+        {/* Right Button Icon */}
         <IconButton
           aria-label="right-arrow"
           bgColor="orange.500"
