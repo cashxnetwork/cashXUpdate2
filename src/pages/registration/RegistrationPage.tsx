@@ -8,12 +8,23 @@ export default function RegistrationPage() {
   const { referrerAddress } = useParams();
   const plansCount = useGetPlansCount();
 
+  function planCountArray() {
+    let count = [];
+
+    for (let i = 0; i < plansCount; i++) {
+      count.push(i);
+    }
+
+    return count;
+  }
+
   console.log(plansCount)
+  console.log(planCountArray())
 
   return (
     <ReactSlickRegistration>
-      {plansCount.length > 0 ? (
-        plansCount?.map((planId, index) => (
+      {planCountArray().length > 0 ? (
+        planCountArray()?.map((planId, index) => (
           <RegistrationUI
             planId={planId}
             referrerAddress={referrerAddress}

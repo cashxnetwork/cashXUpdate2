@@ -56,18 +56,7 @@ export const useGetPlansCount = () => {
   });
 
   const valueObject = value ? (Number(value) as number) : 0;
-
-  function planCountArray() {
-    let count = [];
-
-    for (let i = 0; i < valueObject; i++) {
-      count.push(i);
-    }
-
-    return count;
-  }
-
-  return planCountArray();
+  return valueObject;
 };
 
 export const useGetAdminAddress = () => {
