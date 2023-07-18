@@ -1,4 +1,4 @@
-import { ColorModeScript, Spinner } from '@chakra-ui/react';
+import { ColorModeScript } from '@chakra-ui/react';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
@@ -13,16 +13,14 @@ if (!container) throw new Error('Failed to find the root element');
 const root = ReactDOM.createRoot(container);
 
 root.render(
-  <React.StrictMode>
+  <React.Suspense>
     <ColorModeScript />
     <ProviderChakra>
-      <React.Suspense fallback={<Spinner />}>
-        <ProviderWeb3Modal>
-          <RouterProvider router={RoutesConfig}></RouterProvider>
-        </ProviderWeb3Modal>
-      </React.Suspense>
+      <ProviderWeb3Modal>
+        <RouterProvider router={RoutesConfig}></RouterProvider>
+      </ProviderWeb3Modal>
     </ProviderChakra>
-  </React.StrictMode>
+  </React.Suspense>
 );
 
 // If you want your app to work offline and load faster, you can change
