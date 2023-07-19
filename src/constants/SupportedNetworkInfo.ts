@@ -1,13 +1,6 @@
 import { Chain, polygon } from 'wagmi/chains';
 import { MyVeeMainnet } from '../lib/chains';
-import {
-  BUSD,
-  CoreMembersV1ContractObject,
-  ReferralV1ContractObject,
-  StakingContractObject,
-  USDT,
-  VariablesV1ContractObject
-} from './ContractAddress';
+import { ReferralV1ContractObject } from './ContractAddress';
 
 export const projectName = 'MarsNext';
 export const tagLine =
@@ -32,17 +25,8 @@ export interface SupportedTokenInterface {
 }
 
 export interface CurrentNetworkInfo {
-  variablesContractAddress?: `0x${string}`;
-  variablesContractInterface?: any;
   referralContractAddress?: `0x${string}`;
   referralContractInterface: any;
-  stakingContractAddress: `0x${string}`;
-  stakingContractInterface: any;
-  coreMembersContractAddress?: `0x${string}`;
-  coreMembersContractInterface?: any;
-
-  USDT: SupportedTokenInterface;
-  BUSD: SupportedTokenInterface;
   native: Chain; // Replace `any` with the type representing the `polygon` object
   logo: string;
 }
@@ -53,58 +37,14 @@ export interface SupportedNetworkInfo {
 
 export const supportedNetworkInfo: SupportedNetworkInfo = {
   [polygon.id]: {
-    variablesContractAddress: VariablesV1ContractObject.polygonAddress,
-    variablesContractInterface: VariablesV1ContractObject.abi,
     referralContractAddress: ReferralV1ContractObject.polygonAddress,
     referralContractInterface: ReferralV1ContractObject.abi,
-    stakingContractAddress: StakingContractObject.polygonAddress,
-    stakingContractInterface: StakingContractObject?.abi,
-    coreMembersContractAddress: CoreMembersV1ContractObject.polygonAddress,
-    coreMembersContractInterface: CoreMembersV1ContractObject.abi,
-    ['USDT']: {
-      contractAddress: USDT.polygonAddress,
-      contractABI: USDT.abi,
-      name: 'USDT',
-      symbol: 'USDT',
-      decimals: 6,
-      logo: '/token-icons/usdt.svg',
-    },
-    ['BUSD']: {
-      contractAddress: BUSD.polygonAddress,
-      contractABI: BUSD.abi,
-      name: 'BUSD',
-      symbol: 'BUSD',
-      decimals: 18,
-      logo: '/token-icons/busd.svg',
-    },
     native: polygon,
     logo: '/chainIcons/polygonChainLogo.svg',
   },
   [MyVeeMainnet.id]: {
-    variablesContractAddress: VariablesV1ContractObject?.myveeAddress,
-    variablesContractInterface: VariablesV1ContractObject?.abi,
     referralContractAddress: ReferralV1ContractObject?.myveeAddress,
     referralContractInterface: ReferralV1ContractObject.abi,
-    stakingContractAddress: StakingContractObject.myveeAddress,
-    stakingContractInterface: StakingContractObject?.abi,
-    coreMembersContractAddress: CoreMembersV1ContractObject?.myveeAddress,
-    coreMembersContractInterface: CoreMembersV1ContractObject.abi,
-    ['USDT']: {
-      contractAddress: USDT.myveeAddress,
-      contractABI: USDT.abi,
-      name: 'Tether',
-      symbol: 'USDT',
-      decimals: 18,
-      logo: '/token-icons/usdt.svg',
-    },
-    ['BUSD']: {
-      contractAddress: BUSD.myveeAddress,
-      contractABI: BUSD.abi,
-      name: 'BUSD',
-      symbol: 'BUSD',
-      decimals: 18,
-      logo: '/token-icons/busd.svg',
-    },
     native: MyVeeMainnet,
     logo: '/chainIcons/MyVeemainnet.svg',
   },

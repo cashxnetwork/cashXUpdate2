@@ -14,7 +14,7 @@ module.exports = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200,
+        runs: 1000,
       },
     },
   },
@@ -26,7 +26,6 @@ module.exports = {
       polygon: POLYGON_API_KEY,
       myvee: "abc",
       mainnet: "fb394902-fd60-4a94-aa35-729ac1148662",
-      bsc: BSC_MAINNET_KEY
     },
     customChains: [
       {

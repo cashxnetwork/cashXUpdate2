@@ -43,11 +43,11 @@ function NavUserMenu({
       name: 'Team',
       link: `/user/team`,
     },
-    {
-      icon: FcPositiveDynamic,
-      name: 'Staking',
-      link: `/user/staking`,
-    },
+    // {
+    //   icon: FcPositiveDynamic,
+    //   name: 'Staking',
+    //   link: `/user/staking`,
+    // },
     {
       icon: FcGoodDecision,
       name: 'Register',

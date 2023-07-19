@@ -27,8 +27,11 @@ function ModalConfirmTransactions({
   onClose: () => void;
   onConfirm: () => void;
   transactionName: string;
-  outCurrencyObject: SupportedTokenInterface;
-  outCurrencyValue: number;
+  outCurrencyObject?: {
+    logo: any,
+    symbol: string
+  };
+  outCurrencyValue?: number;
   buttonProps?: ButtonProps
 }) {
   return (

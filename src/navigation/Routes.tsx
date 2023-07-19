@@ -6,7 +6,7 @@ import RegistrationPage from '../pages/registration/RegistrationPage';
 import User from '../pages/user/User';
 import Dashboard from '../pages/user/dashboard/Dashboard';
 import Team from '../pages/user/team/Team';
-import Staking from '../pages/user/staking/Staking';
+import {Staking} from '../pages/user/staking/Staking';
 
 export const RoutesConfig = createHashRouter([
   {

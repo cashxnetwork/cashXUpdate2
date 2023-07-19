@@ -1,12 +1,10 @@
 import {
   Button,
-  HStack,
-  Image,
-  Link,
   Text,
   VStack,
   Wrap,
-  useColorModeValue
+  useBreakpointValue,
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { BsFilePdfFill } from 'react-icons/bs';
 import { LogoFull } from './LogoFull';
@@ -18,8 +16,13 @@ export default function Footer() {
       w="full"
       bg={useColorModeValue('white', 'gray.900')}
       color={useColorModeValue('gray.700', 'gray.200')}
-      justify="flex-start"
-      align="flex-start"
+      // justify="flex-start"
+      align={useBreakpointValue({
+        sm: 'center',
+        md: 'center',
+        lg: 'flex-end',
+        fallback: 'lg',
+      })}
       p={5}
     >
       <Wrap
@@ -30,7 +33,7 @@ export default function Footer() {
       >
         <VStack spacing={5}>
           <LogoFull />
-          <Text>© 2023 MarsNext. All rights reserved</Text>
+          <Text>© 2023 CashXProtocol. All rights reserved</Text>
         </VStack>
         <VStack spacing={5}>
           <Text textAlign="center">Follow us on Social Media</Text>
@@ -70,7 +73,7 @@ export default function Footer() {
             Download PDF
           </Button>
         </VStack>
-        <VStack spacing={5}>
+        {/* <VStack spacing={5}>
           <Text textAlign="center">Audit Reports</Text>
           <HStack>
             <Link href="/auditReports/coinToolAuditReport.pdf" target="_blank">
@@ -81,8 +84,9 @@ export default function Footer() {
               ></Image>
             </Link>
           </HStack>
-        </VStack>
+        </VStack> */}
       </Wrap>
+      <Text size="sm">DApp Build by MARTIANS</Text>
     </VStack>
   );
 }

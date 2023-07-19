@@ -7,28 +7,34 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import React, { JSXElementConstructor, ReactElement, ReactNode } from 'react';
-import { FaDiscord, FaGithub, FaTelegram, FaTwitter } from 'react-icons/fa';
+import {
+  FaBlog,
+  FaDiscord,
+  FaGithub,
+  FaTelegram,
+  FaTwitter,
+} from 'react-icons/fa';
 
 const iconsObject = [
   {
     label: 'Twitter',
     icon: FaTwitter,
-    href: 'https://twitter.com/letstothemars',
+    href: 'https://twitter.com/CashXnetwork',
   },
   {
     label: 'Telegram',
     icon: FaTelegram,
-    href: "https://t.me/letstothemars",
+    href: 'https://t.me/CashXnetwork',
   },
-//   {
-//     label: 'Discord',
-//     icon: FaDiscord,
-//     href: '',
-//   },
+  {
+    label: 'Blog',
+    icon: FaBlog,
+    href: 'https://blog.cashx.network',
+  },
   {
     label: 'Github',
     icon: FaGithub,
-    href: 'https://github.com/martianacademy',
+    href: 'https://docs.cashx.network',
   },
 ];
 

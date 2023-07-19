@@ -7,14 +7,15 @@ import {
 import { Web3Modal } from '@web3modal/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { polygon } from 'wagmi/chains';
+import { MyVeeMainnet } from '../lib/chains';
 
 require('dotenv').config();
 
-const chains = [polygon];
-const projectId = "21bc3cf01fade70639b3ec6a14e6277c";
+const chains = [polygon, MyVeeMainnet];
+const projectId = '21bc3cf01fade70639b3ec6a14e6277c';
 
-if(!projectId) {
-  throw new Error("WalletConnect project id is not defined");
+if (!projectId) {
+  throw new Error('WalletConnect project id is not defined');
 }
 
 const { publicClient } = configureChains(chains, [w3mProvider({ projectId })]);

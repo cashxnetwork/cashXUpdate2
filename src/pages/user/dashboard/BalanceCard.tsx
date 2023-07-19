@@ -18,18 +18,18 @@ export default function BalanceCard({
     address: userAddress ?? AddressZero,
   });
 
-  const { data: userUSDTBalance } = useBalance({
-    address: userAddress ?? AddressZero,
-    token: currentNetwork.USDT.contractAddress,
-  });
+  // const { data: userUSDTBalance } = useBalance({
+  //   address: userAddress ?? AddressZero,
+  //   token: currentNetwork.USDT.contractAddress,
+  // });
 
-  const { data: userBUSDBalance } = useBalance({
-    address: userAddress ?? AddressZero,
-    token: currentNetwork.BUSD.contractAddress,
-  });
+  // const { data: userBUSDBalance } = useBalance({
+  //   address: userAddress ?? AddressZero,
+  //   token: currentNetwork.BUSD.contractAddress,
+  // });
 
-  console.log("User Native Balance",userNativeBalance)
-  console.log("User USDT Balance",userUSDTBalance)
+  // console.log("User Native Balance",userNativeBalance)
+  // console.log("User USDT Balance",userUSDTBalance)
 
   const useValueObject = [
     {
@@ -39,20 +39,20 @@ export default function BalanceCard({
       showIcon: false,
       icons: [currentNetwork?.logo],
     },
-    {
-      name: 'USDT Balance',
-      value: Number(Number(userUSDTBalance?.formatted).toFixed(3)),
-      symbol: userUSDTBalance?.symbol,
-      showIcon: false,
-      icons: ['/token-icons/usdt.svg'],
-    },
-    {
-      name: 'BUSD Balance',
-      value: Number(Number(userBUSDBalance?.formatted).toFixed(3)),
-      symbol: userBUSDBalance?.symbol,
-      showIcon: false,
-      icons: ['/token-icons/busd.svg'],
-    },
+    // {
+    //   name: 'USDT Balance',
+    //   value: Number(Number(userUSDTBalance?.formatted).toFixed(3)),
+    //   symbol: userUSDTBalance?.symbol,
+    //   showIcon: false,
+    //   icons: ['/token-icons/usdt.svg'],
+    // },
+    // {
+    //   name: 'BUSD Balance',
+    //   value: Number(Number(userBUSDBalance?.formatted).toFixed(3)),
+    //   symbol: userBUSDBalance?.symbol,
+    //   showIcon: false,
+    //   icons: ['/token-icons/busd.svg'],
+    // },
   ];
   return (
     <CardContainer heading="Balances" icon={IoIosWallet}>

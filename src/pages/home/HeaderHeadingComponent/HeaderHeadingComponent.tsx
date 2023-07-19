@@ -1,11 +1,6 @@
-"use client"
+'use client';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import {
-  Button,
-  Text,
-  VStack,
-  useColorModeValue
-} from '@chakra-ui/react';
+import { Button, Text, VStack, useColorModeValue } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 
 export const HeaderHeadingComponent = () => {
@@ -29,7 +24,8 @@ export const HeaderHeadingComponent = () => {
         lineHeight={1.2}
         opacity={0.75}
       >
-        MarsNext is a community centric & fully #decentralized reward distribution protocol.
+        CashX is a community centric & fully #decentralized reward distribution
+        protocol.
       </Text>
       <Link to="/registration">
         <button></button>

@@ -1,77 +1,79 @@
-import { useContractRead, useNetwork } from 'wagmi';
-import {
-  StakingContractObject
-} from '../constants/ContractAddress';
-import { supportedNetworkInfo } from '../constants/SupportedNetworkInfo';
+// import { useContractRead, useNetwork } from 'wagmi';
+// import {
+//   StakingContractObject
+// } from '../constants/ContractAddress';
+// import { supportedNetworkInfo } from '../constants/SupportedNetworkInfo';
 
-export const useContractCall = ({
-  functionName,
-  args,
-}: {
-  functionName: string;
-  args?: any[];
-}) => {
-  const { chain } = useNetwork();
-  const currentNetwork = supportedNetworkInfo[chain?.id ?? 137];
+// export const useContractCall = ({
+//   functionName,
+//   args,
+// }: {
+//   functionName: string;
+//   args?: any[];
+// }) => {
+//   const { chain } = useNetwork();
+//   const currentNetwork = supportedNetworkInfo[chain?.id ?? 137];
 
-  return useContractRead({
-    address: currentNetwork?.stakingContractAddress,
-    abi: StakingContractObject?.abi,
-    functionName: functionName,
-    args: args ?? [],
-  });
-};
+//   return useContractRead({
+//     address: currentNetwork?.stakingContractAddress,
+//     abi: StakingContractObject?.abi,
+//     functionName: functionName,
+//     args: args ?? [],
+//   });
+// };
 
-export const useGetUserStakingIDs = (address: string) => {
-  const value = useContractCall({
-    functionName: 'getUserStakingIDs',
-    args: [address],
-  });
+// export const useGetUserStakingIDs = (address: string) => {
+//   const value = useContractCall({
+//     functionName: 'getUserStakingIDs',
+//     args: [address],
+//   });
 
-  const valueObject = {
-    data: value ? (value?.data as BigInt[]) : [],
-    object: value,
-  };
+//   const valueObject = {
+//     data: value ? (value?.data as BigInt[]) : [],
+//     object: value,
+//   };
 
-  return valueObject;
-};
+//   return valueObject;
+// };
 
-export type StakeInfoMapType = {
-  owner: `0x${string}`;
-  isActive: boolean;
-  duration: BigInt;
-  rewardClaimed: BigInt;
-  rewardRate: BigInt;
-  startTime: BigInt;
-  value: BigInt;
-};
+// export type StakeInfoMapType = {
+//   owner: `0x${string}`;
+//   isActive: boolean;
+//   duration: BigInt;
+//   rewardClaimed: BigInt;
+//   rewardRate: BigInt;
+//   startTime: BigInt;
+//   value: BigInt;
+// };
 
-export const useStakeInfoMap = (stakingId: number) => {
-  const value = useContractCall({
-    functionName: 'stakeInfoMap',
-    args: [stakingId],
-  });
+// export const useStakeInfoMap = (stakingId: number) => {
+//   const value = useContractCall({
+//     functionName: 'stakeInfoMap',
+//     args: [stakingId],
+//   });
 
-  const data = value ? value?.data : {};
+//   const data = value ? value?.data : {};
 
-  const valueObject = {
-    data: data as StakeInfoMapType,
-    object: value,
-  };
+//   const valueObject = {
+//     data: data as StakeInfoMapType,
+//     object: value,
+//   };
 
-  return valueObject;
-};
+//   return valueObject;
+// };
 
-export const useGetStakingRewardByID = (stakingId: number) => {
-  const value = useContractCall({
-    functionName: 'getStakingReward',
-    args: [stakingId],
-  });
+// export const useGetStakingRewardByID = (stakingId: number) => {
+//   const value = useContractCall({
+//     functionName: 'getStakingReward',
+//     args: [stakingId],
+//   });
 
-  const valueObject = {
-    data: value ? value?.data : 0,
-    object: value,
-  };
+//   const valueObject = {
+//     data: value ? value?.data : 0,
+//     object: value,
+//   };
 
-  return valueObject;
-};
+//   return valueObject;
+// };
+
+export const  none = {}

@@ -23,53 +23,33 @@ import { shortenAddress } from '@usedapp/core';
 import { useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
 import { useAccount, useBalance, useContractWrite, useNetwork } from 'wagmi';
-import { USDTLogoSVG } from "../../assets";
+import { BNBLogoSVG, USDTLogoSVG } from '../../assets';
 import { AddressZero } from '../../constants/ContractAddress';
 import { supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
-import { useGetAllowance } from '../../hooks/ERC20Token';
 import { useGetUserTeam } from '../../hooks/ReferralHooks';
-import { useGetAdminAddress, useGetPlanById } from '../../hooks/VariablesHooks';
 import { CenterComponent } from '../../util/Ui';
-import { formatNumberWithMaxDecimals, isAddressValid } from '../../util/UtilHooks';
-import { ModalAllowance } from '../Modals/ModalAllowance';
+import { isAddressValid } from '../../util/UtilHooks';
 import ModalConfirmTransactions from '../Modals/ModalConfirmTransactions';
 import ModalTransactionSuccess from '../Modals/ModalTransactionSuccess';
+import { parseEther } from 'viem';
 
 function RegistrationUI({
   referrerAddress,
-  isLarge,
-  planId,
 }: {
   referrerAddress: string | undefined;
-  isLarge?: boolean;
-  planId: number;
 }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const planObject = useGetPlanById(planId);
   const { address } = useAccount();
   const { chain } = useNetwork();
+  const minBuyingValue = 0.1;
   const userTeamObject = useGetUserTeam(address);
   const currentNetwork = supportedNetworkInfo[chain?.id!];
-  const defaultReferrer = useGetAdminAddress();
   const currentReferrer = referrerAddress ? referrerAddress : AddressZero;
-  const userUSDTBalance = useBalance({
-    address: address,
-    token: currentNetwork?.USDT.contractAddress,
-  });
 
   const userNativeBalance = useBalance({
     address: address,
   });
-
-  const userAllowanceValue = useGetAllowance(
-    currentNetwork?.USDT.contractAddress,
-    address!,
-    currentNetwork?.referralContractAddress!
-  );
-
-  const isUserAllowanceSufficient =
-    userAllowanceValue >= planObject?.value ? true : false;
 
   const cardBackgroundColor = useColorModeValue('green.50', 'gray.900');
 
@@ -87,9 +67,10 @@ function RegistrationUI({
   } = useContractWrite({
     address: currentNetwork?.referralContractAddress,
     abi: currentNetwork?.referralContractInterface,
-    functionName: 'registrationWithToken',
-    args: [currentReferrer, planId, currentNetwork?.USDT?.contractAddress],
+    functionName: 'registrationNative',
+    args: [currentReferrer],
     chainId: chain?.id,
+    value: parseEther(`${minBuyingValue}`),
   });
 
   const errors = {
@@ -100,10 +81,9 @@ function RegistrationUI({
     isUserAlreadyHaveReferrer:
       userTeamObject?.referrer !== AddressZero ? true : false,
     isUserHaveSufficientTokenBalance:
-      Number(userUSDTBalance?.data?.formatted ?? 0) >= planObject?.value
+      Number(userNativeBalance?.data?.formatted ?? 0) >= minBuyingValue
         ? true
         : false,
-    isUserHaveSufficientAllowance: isUserAllowanceSufficient,
   };
 
   const proceedTransaction = () => {
@@ -155,18 +135,17 @@ function RegistrationUI({
         style={{
           py: 10,
           w: [300],
-         
         }}
       >
         <VStack minW={250} maxW={300} w="full" spacing={5}>
-          <Heading>#{planId + 1}</Heading>
+          <Heading>Register</Heading>
           <VStack>
-            <Heading size="md">{planObject?.name}</Heading>
+            {/* <Heading size="md">{planObject?.name}</Heading> */}
             <Divider></Divider>
           </VStack>
-          <Heading size="3xl" color="orange.500">
+          {/* <Heading size="3xl" color="orange.500">
             ${planObject.value}
-          </Heading>
+          </Heading> */}
           <VStack
             w="full"
             spacing={5}
@@ -174,11 +153,11 @@ function RegistrationUI({
             bgColor={cardBackgroundColor}
             borderRadius="3xl"
           >
-            <HStack w="full">
+            {/* <HStack w="full">
               <Tag colorScheme="green">Selected Coin</Tag>
               <Spacer />
               <HStack spacing={0} cursor="pointer">
-                <Image src={USDTLogoSVG} alt="USDT Logo" width={30}></Image>
+                <Image src={BNBLogoSVG} alt="USDT Logo" width={30}></Image>
                 <ChevronDownIcon />
               </HStack>
             </HStack>
@@ -188,18 +167,16 @@ function RegistrationUI({
               <Heading size="sm">
                 ${planObject.value * planObject.maxLimitMultiplier}
               </Heading>
-            </HStack>
+            </HStack> */}
+            <Heading>0.1 BNB</Heading>
           </VStack>
           <VStack>
             <Heading size="md">You have</Heading>
             <HStack>
               <Heading size="sm">
-                {formatNumberWithMaxDecimals(
-                  userUSDTBalance.data?.formatted,
-                  2
-                )}
+                {Number(userNativeBalance?.data?.formatted)?.toFixed(2)} BNB
               </Heading>
-              <Image src={USDTLogoSVG} alt="USDT Logo" boxSize={10}></Image>
+              <Image src={BNBLogoSVG} alt="BNB Logo" boxSize={7}></Image>
             </HStack>
           </VStack>
           {errors.isUserAlreadyHaveReferrer ? (
@@ -234,7 +211,7 @@ function RegistrationUI({
                 <Text fontSize="sm">Default Referrer will be used</Text>
                 <HStack>
                   <Heading size="sm">
-                    {defaultReferrer && shortenAddress(defaultReferrer)}
+                    {currentReferrer && shortenAddress(currentReferrer)}
                   </Heading>
                   <Icon as={FaUser}></Icon>
                 </HStack>
@@ -273,29 +250,21 @@ function RegistrationUI({
         >
           <ModalCloseButton />
           {!isSuccess ? (
-            !errors.isUserHaveSufficientAllowance ? (
-              <ModalAllowance
-                onClose={onClose}
-                spenderAddress={currentNetwork?.referralContractAddress!}
-                valueToApprove={BigInt(
-                  planObject?.value * 10 ** currentNetwork?.USDT.decimals
-                )}
-                tokenObject={currentNetwork?.USDT}
-              />
-            ) : (
-              <ModalConfirmTransactions
-                onClose={onClose}
-                onConfirm={handleTransaction}
-                transactionName="Register"
-                outCurrencyObject={currentNetwork?.USDT}
-                outCurrencyValue={planObject?.value}
-                buttonProps={{
-                  isLoading: isLoading,
-                  isDisabled: isLoading,
-                  loadingText: 'Confirming',
-                }}
-              ></ModalConfirmTransactions>
-            )
+            <ModalConfirmTransactions
+              onClose={onClose}
+              onConfirm={handleTransaction}
+              transactionName="Register"
+              outCurrencyObject={{
+                logo: BNBLogoSVG,
+                symbol: 'BNB',
+              }}
+              outCurrencyValue={minBuyingValue}
+              buttonProps={{
+                isLoading: isLoading,
+                isDisabled: isLoading,
+                loadingText: 'Confirming',
+              }}
+            ></ModalConfirmTransactions>
           ) : (
             <ModalTransactionSuccess
               onClose={() => {
