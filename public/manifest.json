@@ -1,11 +1,11 @@
 {
-  "short_name": "cashX",
+  "short_name": "CashX",
   "name": "A community centric fully decentralised reward distribution protocol.",
   "icons": [
     {
-      "src": "favicon.svg",
+      "src": "favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/svg"
+      "type": "image/x-icon"
     },
     {
       "src": "logo192.png",
