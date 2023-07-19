@@ -11,8 +11,8 @@ import { MyVeeMainnet } from '../lib/chains';
 
 require('dotenv').config();
 
-const chains = [polygon, MyVeeMainnet];
-const projectId = '21bc3cf01fade70639b3ec6a14e6277c';
+const chains = [MyVeeMainnet];
+const projectId = '45d704544c109267d7939641749cca7d';
 
 if (!projectId) {
   throw new Error('WalletConnect project id is not defined');
