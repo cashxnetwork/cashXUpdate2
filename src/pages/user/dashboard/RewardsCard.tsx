@@ -16,20 +16,15 @@ export default function RewardsCard({
       value: userRewardsObject?.referralRewardInUSD,
     },
     {
-      name: 'Global Rewards',
+      name: 'Weekly Rewards',
       value: userRewardsObject?.weeklyRewardInUSD,
     },
     {
-      name: 'Weekly Rewards',
+      name: 'Upgrade Rewards',
       value: userRewardsObject?.upgradeRewardsInUSD,
     },
-    // {
-    //   name: 'IBP Rewards',
-    //   value: userRewardsObject?.ibpReward,
-    // },
   ];
 
-  console.log(userRewardsObject);
   return (
     <CardContainer heading="Rewards" icon={FcScatterPlot}>
       {userValueObject?.map((valueObject, key) => {

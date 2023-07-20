@@ -10,7 +10,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import UserTeamTableComponent from './UserTeamTableComponent';
-import { TypeTeamStruct } from '../../../hooks/ReferralHooks';
 
 function UserTeamTable({ userAddress }: { userAddress: `0x${string}` }) {
   const userTeamObject = useGetUserTeam(userAddress);

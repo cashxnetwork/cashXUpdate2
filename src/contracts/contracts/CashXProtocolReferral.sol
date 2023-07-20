@@ -677,13 +677,18 @@ contract CashXProtocolReferral is
         returns (
             uint256 referralRewardInUSD,
             uint256 weeklyRewardInUSD,
-            uint256 upgradeRewardsInUSD
+            uint256 upgradeRewardsInUSD,
+            uint256 totalRewards
         )
     {
         AccountStruct memory userAccount = mappingAccounts[_userAddress];
         referralRewardInUSD = userAccount.referralRewardsInUSD;
         weeklyRewardInUSD = userAccount.weeklyRewardsInUSD;
         upgradeRewardsInUSD = userAccount.upgradeRewardsInUSD;
+        totalRewards =
+            referralRewardInUSD +
+            weeklyRewardInUSD +
+            upgradeRewardsInUSD;
     }
 
     function getNativePriceInUSD() external view returns (uint256) {
