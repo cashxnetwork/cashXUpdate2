@@ -24,7 +24,7 @@ export const ReferralV1ContractObject: ContractObject = {
   abi: ReferralV1ContractInterface?.abi,
   polygonAddress: '0xDd0B6A7E5c27AAf44CaEb3602DeB4929E050cC58',
   bscAddress: AddressZero,
-  myveeAddress: '0xb5423abD1fdBAfAd20eF80524Fc76d8beb49b84A',
+  myveeAddress: '0x6C7E31D18cF456FeAb0d27C681F376324eaD9D7e',
 };
 
 export const USDT: TokenContractObject = {

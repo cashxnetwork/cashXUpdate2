@@ -14,7 +14,7 @@ async function main() {
 
   const ContractFactory = await ethers.getContractFactory("CashXProtocolReferral");
   const mc = await upgrades.upgradeProxy(
-    "0xC88F39aE7b4a9B636DD2Ceb08c9aE3ca322A6CaB",
+    "0x6C7E31D18cF456FeAb0d27C681F376324eaD9D7e",
     ContractFactory,
     { gasPrice: gas }
   );

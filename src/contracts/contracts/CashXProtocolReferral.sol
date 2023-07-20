@@ -22,7 +22,7 @@ interface IUniswapRouter {
 
 struct UpgradeStruct {
     uint8 id;
-    uint256 valueToUpgrade;
+    uint256 valueToUpgradeInUSD;
 }
 
 struct RefereeStruct {
@@ -42,14 +42,14 @@ struct AccountStruct {
     address[] referee;
     RefereeStruct[] refereeAssigned;
     TeamStruct[] team;
-    uint256 selfBusiness;
-    uint256 upgradedValue;
+    uint256 selfBusinessInUSD;
+    uint256 upgradedValueInUSD;
     uint8 upgradeId;
-    uint256 directBusiness;
-    uint256 teamBusiness;
-    uint256 referralRewards;
-    uint256 weeklyRewards;
-    uint256 upgradeRewards;
+    uint256 directBusinessInUSD;
+    uint256 teamBusinessInUSD;
+    uint256 referralRewardsInUSD;
+    uint256 weeklyRewardsInUSD;
+    uint256 upgradeRewardsInUSD;
     uint256 userRandomIndex;
 }
 
@@ -61,28 +61,28 @@ contract CashXProtocolReferral is
     address[] private _users;
     address[] private _randomUserList;
 
-    uint256 private _registrationValueTotal;
-    uint256 private _referralPaid;
-    uint256 private _randomRewardsPaid;
-    uint256 private _weeklyRewardsPaid;
-    uint256 private _valueLiquidityCreated;
+    uint256 private _totalRegistrationValueInUSD;
+    uint256 private _referralPaidInUSD;
+    uint256 private _randomRewardsPaidInUSD;
+    uint256 private _weeklyRewardsPaidInUSD;
 
     address private _teamWallet;
     uint8 private _teamWalletRate;
 
-    uint256 private _valueToCreateLiquidity;
+    uint256 private _valueToCreateLiquidityInWei;
     uint8 private _liquidityCreateRate;
 
-    uint256 private _weeklyRewardValue;
+    uint256 private _weeklyRewardValueInWei;
     uint8 private _weeklyRewardRate;
     uint256 private _weeklyRewardTimestamp;
 
-    uint8[] private _levelRates;
+    // uint8[] private _levelRates;
+    uint8 private _levelRatesFixed;
     uint8 private _levelsToCount;
     uint256 private _refereeLimit;
 
     address private _defaultReferrer;
-    uint256 private _registrationValue;
+    uint256 private _registrationValueInUSD;
 
     address private _liquidityWallet;
 
@@ -124,15 +124,14 @@ contract CashXProtocolReferral is
 
     receive() external payable {}
 
+    uint256 private _nativePriceInUSD;
+
     function initialize() public initializer {
         _defaultReferrer = 0xeb1100091Ce830ba58A04834c35D29B75b53eb74; //Need to change
-        // mappingAccounts[_defaultReferrer].self = _defaultReferrer;
-        // mappingAccounts[_defaultReferrer].parent = _defaultReferrer;
-        // _randomUserList[0] = _defaultReferrer;
-        _registrationValue = 100000000000000000;
+        _registrationValueInUSD = 25 * 10 ** 18;
 
-        _levelRates = [60];
-        _levelsToCount = 10;
+        _levelRatesFixed = 60;
+        _levelsToCount = 8;
         _refereeLimit = 2;
 
         _teamWallet = 0x76b7c991C3Ef93B6771fAC97a984a2Cb37962fbc; // need to change
@@ -144,6 +143,8 @@ contract CashXProtocolReferral is
 
         _liquidityWallet = 0xefA6077f510B10a6C1B2f8dA24a89Fc561aC9445; // yet to decide
 
+        _nativePriceInUSD = 250 * 10 ** 18; //Replace chainlink in production
+
         __Ownable_init();
         __UUPSUpgradeable_init();
     }
@@ -151,7 +152,43 @@ contract CashXProtocolReferral is
     function setDefaults() external onlyOwner {
         mappingAccounts[_defaultReferrer].self = _defaultReferrer;
         mappingAccounts[_defaultReferrer].parent = _defaultReferrer;
-        _randomUserList[0] = _defaultReferrer;
+        _randomUserList.push(_defaultReferrer);
+    }
+
+    function updateUpgradePlans(
+        uint8[] calldata _id,
+        uint256[] calldata _valueToUpgrade
+    ) external onlyOwner {
+        for (uint8 i; i < _id.length; ++i) {
+            _mappingUpgrade[i] = UpgradeStruct(i, _valueToUpgrade[i]);
+        }
+    }
+
+    function _getUpgradePlansCount() private view returns (uint8 count) {
+        for (uint8 i; i < 50; i++) {
+            if (_mappingUpgrade[i].id == 0) {
+                break;
+            }
+
+            count++;
+        }
+    }
+
+    function getUpgradePlans()
+        external
+        view
+        returns (UpgradeStruct[] memory upgradePlans, uint8 upgradePlansCount)
+    {
+        upgradePlansCount = _getUpgradePlansCount();
+        UpgradeStruct[] memory plansAccount = new UpgradeStruct[](
+            upgradePlansCount
+        );
+
+        for (uint8 i; i < upgradePlansCount; ++i) {
+            plansAccount[i] = _mappingUpgrade[i];
+        }
+
+        upgradePlans = plansAccount;
     }
 
     function _hasReferrer(
@@ -164,9 +201,12 @@ contract CashXProtocolReferral is
 
     function _isRefereeLimitReached(
         AccountStruct memory _userAccount
-    ) private view returns (bool _reached) {
-        if (_userAccount.referee.length >= _refereeLimit) {
-            _reached = true;
+    ) private view returns (bool reached) {
+        if (
+            _userAccount.referee.length > _refereeLimit ||
+            _userAccount.referee.length == _refereeLimit
+        ) {
+            reached = true;
         }
     }
 
@@ -191,7 +231,7 @@ contract CashXProtocolReferral is
         emit AddedToRandomList(_userAccount.self);
     }
 
-    function _removeFromRandomList(AccountStruct memory _userAccount) private {
+    function _removeFromRandomList(AccountStruct storage _userAccount) private {
         _randomUserList[_userAccount.userRandomIndex] = _randomUserList[
             _randomUserList.length - 1
         ];
@@ -204,10 +244,6 @@ contract CashXProtocolReferral is
         AccountStruct storage _referrerAccount,
         AccountStruct storage _userAccount
     ) private {
-        if (_userAccount.parent == address(0)) {
-            _userAccount.parent = _referrerAccount.parent;
-        }
-
         _userAccount.referrer = _referrerAccount.self;
         emit ReferrerAdded(_referrerAccount.self, _userAccount.self);
     }
@@ -216,153 +252,149 @@ contract CashXProtocolReferral is
         AccountStruct storage userAccount = mappingAccounts[_referee];
         require(_referrer != _referee, "You cannot refer yourself.");
 
-        if (!_hasReferrer(userAccount)) {
-            AccountStruct storage referrerAccount;
+        AccountStruct storage referrerAccount;
 
-            if (_referrer == address(0)) {
-                referrerAccount = mappingAccounts[_defaultReferrer];
-            } else {
-                referrerAccount = mappingAccounts[_referrer];
+        if (_referrer == address(0)) {
+            referrerAccount = mappingAccounts[_defaultReferrer];
+        } else {
+            referrerAccount = mappingAccounts[_referrer];
+        }
+
+        if (!_isRefereeLimitReached(referrerAccount)) {
+            _addUpline(referrerAccount, userAccount);
+
+            referrerAccount.referee.push(_referee);
+
+            if (_isRefereeLimitReached(referrerAccount)) {
+                _removeFromRandomList(referrerAccount);
+            }
+        } else {
+            AccountStruct storage randomAccount = mappingAccounts[
+                _getRandomReferrer()
+            ];
+            _addUpline(randomAccount, userAccount);
+            if (_isRefereeLimitReached(randomAccount)) {
+                _removeFromRandomList(randomAccount);
             }
 
-            if (!_isRefereeLimitReached(referrerAccount)) {
-                _addUpline(referrerAccount, userAccount);
+            emit RegistrationAssigned(
+                referrerAccount.self,
+                randomAccount.self,
+                _referee
+            );
 
-                referrerAccount.referee.push(_referee);
+            referrerAccount.refereeAssigned.push(
+                RefereeStruct({
+                    referee: _referee,
+                    assignedTo: randomAccount.self
+                })
+            );
 
-                if (_isRefereeLimitReached(referrerAccount)) {
-                    _removeFromRandomList(referrerAccount);
-                }
-            } else {
-                AccountStruct storage randomAccount = mappingAccounts[
-                    _getRandomReferrer()
-                ];
-                _addUpline(randomAccount, userAccount);
-                if (_isRefereeLimitReached(randomAccount)) {
-                    _removeFromRandomList(randomAccount);
-                }
-
-                emit RegistrationAssigned(
-                    referrerAccount.self,
-                    randomAccount.self,
-                    _referee
-                );
-
-                referrerAccount.refereeAssigned.push(
-                    RefereeStruct({
-                        referee: _referee,
-                        assignedTo: randomAccount.self
-                    })
-                );
-
-                randomAccount.referee.push(_referee);
-            }
-
-            if (userAccount.userRandomIndex == 0) {
+            if (userAccount.selfBusinessInUSD == 0) {
                 _addToRandomList(userAccount);
             }
 
-            if (userAccount.parent == address(0)) {
-                userAccount.parent = referrerAccount.self;
-                emit ParentAdded(
-                    userAccount.parent,
-                    userAccount.referrer,
-                    _referee
-                );
+            randomAccount.referee.push(_referee);
+        }
+
+        if (userAccount.parent == address(0)) {
+            userAccount.parent = referrerAccount.self;
+            emit ParentAdded(
+                userAccount.parent,
+                userAccount.referrer,
+                _referee
+            );
+        }
+
+        uint8 levelsToCount = _levelsToCount;
+
+        for (uint8 i; i < levelsToCount; i++) {
+            if (userAccount.referrer == address(0)) {
+                break;
             }
 
-            uint8 levelsToCount = _levelsToCount;
+            referrerAccount = mappingAccounts[userAccount.referrer];
+            referrerAccount.team.push(
+                TeamStruct({teamMember: _referee, level: i + 1})
+            );
 
-            for (uint8 i; i < levelsToCount; i++) {
-                if (userAccount.referrer == address(0)) {
-                    break;
-                }
+            emit TeamAddressAdded(referrerAccount.self, _referee, i + 1);
 
-                referrerAccount = mappingAccounts[userAccount.referrer];
-                referrerAccount.team.push(
-                    TeamStruct({teamMember: _referee, level: i + 1})
-                );
-
-                emit TeamAddressAdded(referrerAccount.self, _referee, i + 1);
-
-                userAccount = referrerAccount;
-            }
-        } else {
-            emit ReferrerNoAdded("User Already have referrer set.");
+            userAccount = referrerAccount;
         }
     }
 
     function _registrationNative(
         address _referrer,
         address _referee,
-        uint256 _msgValue
+        uint256 _msgValueInUSD, // uint256 _msgValue
+        uint256 _msgValue,
+        uint256 _price
     ) private {
-        uint256 registrationValue = _registrationValue;
+        uint256 registrationValueInUSD = _registrationValueInUSD;
+
         require(
-            _msgValue >= registrationValue,
+            _msgValueInUSD >= (registrationValueInUSD * 95) / 100,
             "Value is less then registration value."
         );
 
-        uint8[] memory levelRates = _levelRates;
+        uint8 levelRates = _levelRatesFixed;
         uint8 levelsToCount = _levelsToCount;
-        uint256 totalReferralPaid;
+        uint256 totalReferralPaidInUSD;
 
         AccountStruct storage userAccount = mappingAccounts[_referee];
         AccountStruct storage referrerAccount = mappingAccounts[_referrer];
 
-        if (referrerAccount.self == address(0)) {
-            referrerAccount.self = _referrer;
-        }
+        require(userAccount.selfBusinessInUSD == 0, "User already registered");
 
         if (userAccount.self == address(0)) {
             userAccount.self = _referee;
         }
 
-        if (userAccount.selfBusiness == 0) {
-            _users.push(userAccount.self);
+        if (referrerAccount.self == address(0)) {
+            referrerAccount.self = _referrer;
         }
 
-        uint256 userSelfBusiness = userAccount.selfBusiness;
+        if (userAccount.selfBusinessInUSD == 0) {
+            _users.push(_referee);
+        }
 
-        userAccount.selfBusiness += _msgValue;
+        userAccount.selfBusinessInUSD += _msgValueInUSD;
 
-        _addReferrer(_referrer, _referee);
+        if (!_hasReferrer(userAccount)) {
+            _addReferrer(_referrer, _referee);
+        } else {
+            emit ReferrerNoAdded("User Already have referrer set.");
+        }
 
         emit Registration(
             userAccount.parent,
             userAccount.referrer,
             userAccount.self,
-            _msgValue
+            _msgValueInUSD
         );
 
-        uint256 referralValue = (_msgValue * levelRates[0]) / 100;
-        if (userSelfBusiness == 0) {
-            AccountStruct storage parentAccount = mappingAccounts[
-                userAccount.parent
-            ];
-            if (parentAccount.self != address(0)) {
-                payable(parentAccount.self).transfer(referralValue);
-                emit ReferralRewardsPaid(
-                    parentAccount.self,
-                    _referee,
-                    referralValue,
-                    1
-                );
-                parentAccount.referralRewards += referralValue;
-            }
-        } else {
-            payable(referrerAccount.self).transfer(referralValue);
+        uint256 referralValueInWei = (_msgValue * levelRates) / 100;
+        uint256 referrealValueInUSD = _valueToUSD(referralValueInWei, _price);
+        AccountStruct storage parentAccount = mappingAccounts[
+            userAccount.parent
+        ];
+
+        if (parentAccount.self != address(0)) {
+            payable(parentAccount.self).transfer(referralValueInWei);
             emit ReferralRewardsPaid(
-                userAccount.referrer,
+                parentAccount.self,
                 _referee,
-                referralValue,
+                referralValueInWei,
                 1
             );
 
-            referrerAccount.referralRewards += referralValue;
+            parentAccount.referralRewardsInUSD += referrealValueInUSD;
+            parentAccount.directBusinessInUSD += _msgValueInUSD;
         }
 
-        totalReferralPaid += referralValue;
+        totalReferralPaidInUSD += referrealValueInUSD;
+
         for (uint8 i; i < levelsToCount; i++) {
             if (!_hasReferrer(userAccount)) {
                 break;
@@ -370,11 +402,7 @@ contract CashXProtocolReferral is
 
             referrerAccount = mappingAccounts[userAccount.referrer];
 
-            if (i == 0) {
-                referrerAccount.directBusiness += _msgValue;
-            }
-
-            referrerAccount.teamBusiness += _msgValue;
+            referrerAccount.teamBusinessInUSD += _msgValueInUSD;
 
             userAccount = referrerAccount;
         }
@@ -383,45 +411,52 @@ contract CashXProtocolReferral is
         payable(_teamWallet).transfer(teamValue);
         emit TeamWalletRewardPaid(_teamWallet, teamValue);
 
-        _referralPaid += totalReferralPaid;
-        _registrationValueTotal += _msgValue;
+        _referralPaidInUSD += totalReferralPaidInUSD;
+        _totalRegistrationValueInUSD += _msgValueInUSD;
 
         uint256 liquidityValue = (_msgValue * _liquidityCreateRate) / 100;
         payable(_liquidityWallet).transfer(liquidityValue);
-        _valueToCreateLiquidity += liquidityValue;
+        _valueToCreateLiquidityInWei += liquidityValue;
 
-        _weeklyRewardValue += (_msgValue * _weeklyRewardRate) / 100;
+        _weeklyRewardValueInWei += (_msgValue * _weeklyRewardRate) / 100;
     }
 
     function registrationNative(address _referrer) external payable {
-        _registrationNative(_referrer, msg.sender, msg.value);
+        uint256 msgValue = msg.value;
+        uint256 priceInUSD = _priceInUSD();
+        uint256 _msgValueInUSD = _valueToUSD(msgValue, priceInUSD);
+        _registrationNative(
+            _referrer,
+            msg.sender,
+            _msgValueInUSD,
+            msgValue,
+            priceInUSD
+        );
     }
 
-    function _upgradeId(
-        uint8 _id,
+    function _upgradeIdNative(
         uint256 _msgValue,
+        uint256 _msgValueInUSD,
         address _userAddress
     ) private {
-        UpgradeStruct memory ugradeIdAccount = _mappingUpgrade[_id];
+        AccountStruct storage userAccount = mappingAccounts[_userAddress];
+        uint8 userUpgradeId = userAccount.upgradeId;
+        UpgradeStruct memory ugradeIdAccount = _mappingUpgrade[userUpgradeId];
+        uint8 upgradePlansCount = _getUpgradePlansCount();
+
         require(
-            ugradeIdAccount.valueToUpgrade > 0,
-            "Upgrade value cannot be 0."
-        );
-        require(
-            _msgValue >= ugradeIdAccount.valueToUpgrade,
+            _msgValueInUSD >= ugradeIdAccount.valueToUpgradeInUSD,
             "Value should be equal to upgrade value"
         );
 
-        AccountStruct storage userAccount = mappingAccounts[_userAddress];
         require(
-            _id == userAccount.upgradeId,
-            "You cannot degrade of jump to another upgrade level."
+            userUpgradeId < upgradePlansCount,
+            "User consumed all upgrade plans"
         );
 
-        userAccount.upgradedValue += _msgValue;
-        userAccount.upgradeId++;
+        userAccount.upgradedValueInUSD += _msgValueInUSD;
 
-        for (uint i; i < _id + 1; ++i) {
+        for (uint i; i <= userUpgradeId; ++i) {
             if (userAccount.referrer == address(0)) {
                 break;
             }
@@ -430,9 +465,12 @@ contract CashXProtocolReferral is
                 userAccount.referrer
             ];
 
-            if (i == _id) {
-                if (referrerAccount.upgradeId >= _id) {
-                    referrerAccount.upgradeRewards += _msgValue;
+            if (i == userUpgradeId) {
+                if (
+                    referrerAccount.upgradeId > userUpgradeId &&
+                    referrerAccount.self != address(0)
+                ) {
+                    referrerAccount.upgradeRewardsInUSD += _msgValueInUSD;
                     payable(referrerAccount.self).transfer(_msgValue);
                     emit UpgradeRewardPaid(
                         referrerAccount.self,
@@ -441,8 +479,9 @@ contract CashXProtocolReferral is
                     );
                 } else {
                     emit UpgradeRewardNotPaid(
-                        "User has not upgraded. Amount transfered to liquidity wallet."
+                        "Upline has not upgraded. Amount transfered to liquidity wallet."
                     );
+
                     address liquidityWallet = _liquidityWallet;
                     payable(liquidityWallet).transfer(_msgValue);
                     emit UpgradeRewardPaid(
@@ -451,10 +490,31 @@ contract CashXProtocolReferral is
                         _msgValue
                     );
                 }
+
+                break;
             }
 
             userAccount = referrerAccount;
         }
+
+        userAccount.upgradeId++;
+    }
+
+    function upgradeAccountNative() external payable {
+        uint256 msgValue = msg.value;
+        uint256 msgValueInUSD = _valueToUSD(msgValue, _priceInUSD());
+        _upgradeIdNative(msgValue, msgValueInUSD, msg.sender);
+    }
+
+    function getUserCurrentUpgradeLevel(
+        address _userAddress
+    ) external view returns (uint8 level, uint256 totalUpgradeValueInUSD) {
+        AccountStruct memory userAccount = mappingAccounts[_userAddress];
+        if (userAccount.upgradeId > 0) {
+            level = userAccount.upgradeId;
+        }
+
+        totalUpgradeValueInUSD = userAccount.upgradedValueInUSD;
     }
 
     function getRegistrationsStats()
@@ -462,15 +522,15 @@ contract CashXProtocolReferral is
         view
         returns (
             uint32 totalUser,
-            uint256 totalRegistrationValue,
-            uint256 totalReferralPaid,
-            uint256 totalWeeklyRewardsPaid
+            uint256 totalRegistrationValueInUSD,
+            uint256 totalReferralPaidInUSD,
+            uint256 totalWeeklyRewardsPaidInUSD
         )
     {
         totalUser = uint32(_users.length);
-        totalRegistrationValue = _registrationValueTotal;
-        totalReferralPaid = _referralPaid;
-        totalWeeklyRewardsPaid = _weeklyRewardsPaid;
+        totalRegistrationValueInUSD = _totalRegistrationValueInUSD;
+        totalReferralPaidInUSD = _referralPaidInUSD;
+        totalWeeklyRewardsPaidInUSD = _weeklyRewardsPaidInUSD;
     }
 
     //Weekly Rewards Function
@@ -479,7 +539,7 @@ contract CashXProtocolReferral is
         view
         returns (uint256 _rewardValue, uint256 _remianingTime, uint256 _endTime)
     {
-        _rewardValue = _weeklyRewardValue;
+        _rewardValue = _weeklyRewardValueInWei;
         _endTime = _weeklyRewardTimestamp + 7 days;
         uint256 _currentTime = block.timestamp;
         if (_endTime > _currentTime) {
@@ -488,7 +548,11 @@ contract CashXProtocolReferral is
     }
 
     function distributeWeeklyReward() external {
-        uint256 weeklyRewardValue = _weeklyRewardValue;
+        uint256 weeklyRewardValueInWei = _weeklyRewardValueInWei;
+        uint256 weeklyRewardValueInUSD = _valueToUSD(
+            weeklyRewardValueInWei,
+            _priceInUSD()
+        );
         uint256 weeklyCounterEndTime = _weeklyRewardTimestamp + 7 days;
         uint256 _currentTime = block.timestamp;
         require(
@@ -496,7 +560,7 @@ contract CashXProtocolReferral is
             "Weekly time is not over yet."
         );
 
-        require(weeklyRewardValue > 0, "No rewards to distribute");
+        require(_weeklyRewardValueInWei > 0, "No rewards to distribute");
 
         address[] memory allUsers = _users;
         uint256 randomHash = uint256(
@@ -515,16 +579,14 @@ contract CashXProtocolReferral is
             globalAddress
         ];
 
-        if (weeklyRewardValue > 0) {
-            globalAddressAccount.weeklyRewards += weeklyRewardValue;
+        globalAddressAccount.weeklyRewardsInUSD += weeklyRewardValueInUSD;
 
-            payable(globalAddress).transfer(weeklyRewardValue);
+        payable(globalAddress).transfer(weeklyRewardValueInWei);
 
-            _weeklyRewardValue = 0;
-            _weeklyRewardTimestamp = block.timestamp;
-            _weeklyRewardsPaid += weeklyRewardValue;
-            emit WeeklyRewardsPaid(globalAddress, weeklyRewardValue);
-        }
+        delete _weeklyRewardValueInWei;
+        _weeklyRewardTimestamp = block.timestamp;
+        _weeklyRewardsPaidInUSD += weeklyRewardValueInUSD;
+        emit WeeklyRewardsPaid(globalAddress, weeklyRewardValueInUSD);
     }
 
     function getUserAccount(
@@ -564,17 +626,19 @@ contract CashXProtocolReferral is
         external
         view
         returns (
-            uint256 selfBusiness,
-            uint256 directBusiness,
-            uint256 teamBusiness,
-            uint256 totalBusiness
+            uint256 selfBusinessInUSD,
+            uint256 directBusinessInUSD,
+            uint256 teamBusinessInUSD,
+            uint256 totalBusinessInUSD
         )
     {
         AccountStruct memory userAccount = mappingAccounts[_userAddress];
-        selfBusiness = userAccount.selfBusiness;
-        directBusiness = userAccount.directBusiness;
-        teamBusiness = userAccount.teamBusiness;
-        totalBusiness = userAccount.teamBusiness + userAccount.selfBusiness;
+        selfBusinessInUSD = userAccount.selfBusinessInUSD;
+        directBusinessInUSD = userAccount.directBusinessInUSD;
+        teamBusinessInUSD = userAccount.teamBusinessInUSD;
+        totalBusinessInUSD =
+            userAccount.teamBusinessInUSD +
+            userAccount.selfBusinessInUSD;
     }
 
     function getUserRewards(
@@ -583,23 +647,34 @@ contract CashXProtocolReferral is
         external
         view
         returns (
-            uint256 referralReward,
-            uint256 weeklyReward,
-            uint256 upgradeRewards
+            uint256 referralRewardInUSD,
+            uint256 weeklyRewardInUSD,
+            uint256 upgradeRewardsInUSD
         )
     {
         AccountStruct memory userAccount = mappingAccounts[_userAddress];
-        referralReward = userAccount.referralRewards;
-        weeklyReward = userAccount.weeklyRewards;
-        upgradeRewards = userAccount.upgradeRewards;
+        referralRewardInUSD = userAccount.referralRewardsInUSD;
+        weeklyRewardInUSD = userAccount.weeklyRewardsInUSD;
+        upgradeRewardsInUSD = userAccount.upgradeRewardsInUSD;
     }
 
-    function getUserCurrentUpgradeLevel(
-        address _userAddress
-    ) external view returns (uint8 currentUpgradeId, uint256 upgradedValue) {
-        AccountStruct memory userAccount = mappingAccounts[_userAddress];
-        currentUpgradeId = userAccount.upgradeId;
-        upgradedValue = userAccount.upgradedValue;
+    function getNativePriceInUSD() external view returns (uint256) {
+        return _nativePriceInUSD;
+    }
+
+    function needNativeToRegister() external view returns (uint256) {
+        return _registrationValueInUSD / _priceInUSD();
+    }
+
+    function _priceInUSD() private view returns (uint256) {
+        return _nativePriceInUSD;
+    }
+
+    function _valueToUSD(
+        uint256 _valueInWei,
+        uint256 _priceInWei
+    ) private pure returns (uint256) {
+        return (_valueInWei * _priceInWei) / 10 ** 18;
     }
 
     function _toTokenDecimals(
