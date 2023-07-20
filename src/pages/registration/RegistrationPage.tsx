@@ -1,25 +1,28 @@
+import { Divider, HStack, Heading, Icon, VStack } from '@chakra-ui/react';
+import { FcGoodDecision } from 'react-icons/fc';
 import { useParams } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 import RegistrationUI from '../../components/RegistrationUI/RegistrationUI';
-import ReactSlickRegistration from './ReactSlickRegistration';
+import UpgradeUI from '../../components/UpgradeUi/UpgradeUi';
 import {
+  useGetUpgradePlanById,
   useGetUserBusiness,
   useGetUserLevelToUpgrade,
   useNativePrice,
   useUpgradePlans,
 } from '../../hooks/ReferralHooks';
-import { useAccount } from 'wagmi';
-import { Divider, HStack, Heading, Icon, VStack } from '@chakra-ui/react';
-import { FcGoodDecision } from 'react-icons/fc';
-import UpgradeUI from '../../components/UpgradeUi/UpgradeUi';
 
 export default function RegistrationPage() {
   const { address } = useAccount();
   const { referrerAddress } = useParams();
-  const upgradePlans = useUpgradePlans();
   const userBusiness = useGetUserBusiness(address);
   const userLevelToUpgrade = useGetUserLevelToUpgrade(address);
   const nativePrice = useNativePrice();
-
+  const planById = useGetUpgradePlanById(userLevelToUpgrade);
+  
+  console.log(nativePrice);
+  
+  const upgradePlans = useUpgradePlans();
   return (
     <VStack spacing={10} py={100} minH={'100vh'}>
       <VStack>

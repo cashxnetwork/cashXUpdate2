@@ -46,8 +46,19 @@ export const useUpgradePlans = () => {
     upgradePlansCount: value ? (value?.[1] as number) : 0,
   };
 
+  console.log(value)
+
   return valueObject;
 };
+
+export const useGetUpgradePlanById = (id: number) => {
+  const value = useContractCall({
+    functionName: "getUpgradePlansById",
+    args: [id]
+  })
+
+  return value
+}
 
 export const useGetUserLimits = (userAddress: `0x${string}` | undefined) => {
   const value = useContractCall({
