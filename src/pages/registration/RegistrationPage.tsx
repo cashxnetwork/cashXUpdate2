@@ -20,35 +20,31 @@ export default function RegistrationPage() {
   const userLevelToUpgrade = useGetUserLevelToUpgrade(address);
   const nativePrice = useNativePrice();
 
-  return userBusiness.selfBusiness === 0 ? (
-    <VStack spacing={10}>
+  return (
+    <VStack spacing={10} py={100} minH={'100vh'}>
       <VStack>
         <HStack>
           <Icon as={FcGoodDecision} boxSize={10}></Icon>
-          <Heading color="orange.500">Register</Heading>
+          <Heading color="orange.500">
+            {userBusiness.selfBusiness === 0 ? 'Register' : 'Upgrade'}
+          </Heading>
         </HStack>
         <Divider />
       </VStack>
-      <RegistrationUI referrerAddress={referrerAddress}></RegistrationUI>
-    </VStack>
-  ) : (
-    <VStack spacing={10}>
-      <VStack>
-        <HStack>
-          <Icon as={FcGoodDecision} boxSize={10}></Icon>
-          <Heading color="orange.500">Upgrade</Heading>
-        </HStack>
-        <Divider />
-      </VStack>
-      <UpgradeUI
-        upgradePlan={upgradePlans?.upgradePlans[userLevelToUpgrade]}
-        valueInDecimals={
-          Number(
-            upgradePlans?.upgradePlans[userLevelToUpgrade]
-              .valueToUpgradeInUSD ?? 0
-          ) / Number(nativePrice)
-        }
-      ></UpgradeUI>
+      {userBusiness.selfBusiness === 0 ? (
+        <RegistrationUI referrerAddress={referrerAddress}></RegistrationUI>
+      ) : (
+        <UpgradeUI
+          upgradePlan={upgradePlans?.upgradePlans[userLevelToUpgrade]}
+          valueInDecimals={
+            Number(
+              upgradePlans?.upgradePlans[userLevelToUpgrade]
+                .valueToUpgradeInUSD ?? 0
+            ) / Number(nativePrice)
+          }
+        ></UpgradeUI>
+      )}
+      ;
     </VStack>
   );
 }
