@@ -94,7 +94,7 @@ function RegistrationUI({
     if (!errors.isUserHaveSufficientTokenBalance) {
       toast({
         title: 'Insufficient Balance.',
-        description: 'You dont have enough USDT to register.',
+        description: 'You dont have enough BNB to register.',
         status: 'error',
         duration: 5000,
         isClosable: true,
