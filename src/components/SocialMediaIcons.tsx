@@ -2,6 +2,7 @@ import {
   Button,
   Icon,
   IconButton,
+  IconButtonProps,
   VisuallyHidden,
   Wrap,
   useColorModeValue,
@@ -42,13 +43,16 @@ const SocialMediaIconsButton = ({
   icon,
   label,
   href,
+  style
 }: {
   icon: ReactElement<any, string | JSXElementConstructor<any>> | undefined;
   label: string;
   href: string;
+  style?: IconButtonProps
 }) => {
   return (
     <IconButton
+    // @ts-ignore
       aria-label="Social Media Icons Button"
       bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
       rounded={'full'}
@@ -66,13 +70,14 @@ const SocialMediaIconsButton = ({
         bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
       }}
       icon={icon}
+      {...style}
     >
       <VisuallyHidden>{label}</VisuallyHidden>
     </IconButton>
   );
 };
 
-export const SocialMediaIcons = () => {
+export const SocialMediaIcons = ({style}:{style?: IconButtonProps}) => {
   return (
     <Wrap spacing={3} align="center" justify="center">
       {iconsObject?.map((iconsObject, key) => {
@@ -82,6 +87,7 @@ export const SocialMediaIcons = () => {
             label={iconsObject?.label}
             icon={<Icon as={iconsObject?.icon}></Icon>}
             href={iconsObject?.href}
+            style={style}
           ></SocialMediaIconsButton>
         );
       })}
