@@ -18,6 +18,7 @@ export default function Footer() {
       color={useColorModeValue('gray.700', 'gray.200')}
       // justify="flex-start"
       align={useBreakpointValue({
+        base: 'center',
         sm: 'center',
         md: 'center',
         lg: 'flex-end',
@@ -33,7 +34,9 @@ export default function Footer() {
       >
         <VStack spacing={5}>
           <LogoFull />
-          <Text>© 2023 CashXProtocol. All rights reserved</Text>
+          <Text textAlign="center">
+            © 2023 CashXProtocol. All rights reserved
+          </Text>
         </VStack>
         <VStack spacing={5}>
           <Text textAlign="center">Follow us on Social Media</Text>
@@ -61,7 +64,7 @@ export default function Footer() {
             </Button>
           </Flex>
         </VStack> */}
-        <VStack spacing={5}>
+        {/* <VStack spacing={5}>
           <Text textAlign="center">Project Description</Text>
           <Button
             borderRadius="xl"
@@ -72,7 +75,7 @@ export default function Footer() {
           >
             Download PDF
           </Button>
-        </VStack>
+        </VStack> */}
         {/* <VStack spacing={5}>
           <Text textAlign="center">Audit Reports</Text>
           <HStack>
