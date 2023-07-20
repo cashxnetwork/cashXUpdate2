@@ -48,7 +48,6 @@ function UpgradeUI({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const minBuyingValue = 0.1;
   const userTeamObject = useGetUserTeam(address);
   const currentNetwork = supportedNetworkInfo[chain?.id!];
 
@@ -207,7 +206,7 @@ function UpgradeUI({
                 logo: BNBLogoSVG,
                 symbol: 'BNB',
               }}
-              outCurrencyValue={minBuyingValue}
+              outCurrencyValue={valueInDecimals}
               buttonProps={{
                 isLoading: isLoading,
                 isDisabled: isLoading,

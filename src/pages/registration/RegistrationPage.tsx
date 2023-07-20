@@ -32,7 +32,15 @@ export default function RegistrationPage() {
         <Divider />
       </VStack>
       {userBusiness.selfBusiness === 0 ? (
-        <RegistrationUI referrerAddress={referrerAddress}></RegistrationUI>
+        <RegistrationUI
+          referrerAddress={referrerAddress}
+          valueInDecimals={
+            Number(
+              upgradePlans?.upgradePlans[userLevelToUpgrade]
+                .valueToUpgradeInUSD ?? 0
+            ) / Number(nativePrice)
+          }
+        ></RegistrationUI>
       ) : (
         <UpgradeUI
           upgradePlan={upgradePlans?.upgradePlans[userLevelToUpgrade]}

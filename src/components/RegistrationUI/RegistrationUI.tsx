@@ -1,5 +1,5 @@
 'use client';
-import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Button,
   Divider,
@@ -23,8 +23,9 @@ import {
 import { shortenAddress } from '@usedapp/core';
 import { useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
+import { parseEther } from 'viem';
 import { useAccount, useBalance, useContractWrite, useNetwork } from 'wagmi';
-import { BNBLogoSVG, USDTLogoSVG } from '../../assets';
+import { BNBLogoSVG } from '../../assets';
 import { AddressZero } from '../../constants/ContractAddress';
 import { supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
 import { useGetUserTeam } from '../../hooks/ReferralHooks';
@@ -32,19 +33,18 @@ import { CenterComponent } from '../../util/Ui';
 import { isAddressValid } from '../../util/UtilHooks';
 import ModalConfirmTransactions from '../Modals/ModalConfirmTransactions';
 import ModalTransactionSuccess from '../Modals/ModalTransactionSuccess';
-import { parseEther } from 'viem';
-import { FcGoodDecision } from 'react-icons/fc';
 
 function RegistrationUI({
   referrerAddress,
+  valueInDecimals,
 }: {
   referrerAddress: string | undefined;
+  valueInDecimals: number;
 }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
   const { chain } = useNetwork();
-  const minBuyingValue = 0.1;
   const userTeamObject = useGetUserTeam(address);
   const currentNetwork = supportedNetworkInfo[chain?.id!];
   const currentReferrer = referrerAddress ? referrerAddress : AddressZero;
@@ -54,6 +54,8 @@ function RegistrationUI({
   });
 
   const cardBackgroundColor = useColorModeValue('green.50', 'gray.900');
+
+  console.log(parseEther(`${valueInDecimals}`))
 
   const {
     data,
@@ -72,7 +74,7 @@ function RegistrationUI({
     functionName: 'registrationNative',
     args: [currentReferrer],
     chainId: chain?.id,
-    value: parseEther(`${minBuyingValue}`),
+    value: parseEther(`${valueInDecimals}`),
   });
 
   const errors = {
@@ -83,7 +85,7 @@ function RegistrationUI({
     isUserAlreadyHaveReferrer:
       userTeamObject?.referrer !== AddressZero ? true : false,
     isUserHaveSufficientTokenBalance:
-      Number(userNativeBalance?.data?.formatted ?? 0) >= minBuyingValue
+      Number(userNativeBalance?.data?.formatted ?? 0) >= valueInDecimals
         ? true
         : false,
   };
@@ -133,7 +135,6 @@ function RegistrationUI({
 
   return (
     <VStack spacing={10}>
-      
       <CenterComponent
         style={{
           py: 10,
@@ -253,7 +254,7 @@ function RegistrationUI({
                 logo: BNBLogoSVG,
                 symbol: 'BNB',
               }}
-              outCurrencyValue={minBuyingValue}
+              outCurrencyValue={valueInDecimals}
               buttonProps={{
                 isLoading: isLoading,
                 isDisabled: isLoading,

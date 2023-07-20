@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/suru.martian/Documents/GitHub/cashx-marsnext-react/src/contracts/contracts/CashXProtocolReferral.sol": {
-      "lastModificationDate": 1689847353043,
-      "contentHash": "46ee8f0008b8f37ca55f5309239996c0",
+      "lastModificationDate": 1689853907238,
+      "contentHash": "638ad9192edf0e5d413fc312678c8e30",
       "sourceName": "contracts/CashXProtocolReferral.sol",
       "solcConfig": {
         "version": "0.8.18",

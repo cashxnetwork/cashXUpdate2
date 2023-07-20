@@ -277,6 +277,7 @@ contract CashXProtocolReferral is
                 _removeFromRandomList(referrerAccount);
             }
         } else {
+            _removeFromRandomList(referrerAccount);
             AccountStruct storage randomAccount = mappingAccounts[
                 _getRandomReferrer()
             ];
@@ -365,6 +366,7 @@ contract CashXProtocolReferral is
 
         if (userAccount.selfBusinessInUSD == 0) {
             _users.push(_referee);
+            _addToRandomList(userAccount);
         }
 
         userAccount.selfBusinessInUSD += _msgValueInUSD;
@@ -524,6 +526,14 @@ contract CashXProtocolReferral is
         }
 
         totalUpgradeValueInUSD = userAccount.upgradedValueInUSD;
+    }
+
+    function getAllUsers() external view returns (address[] memory) {
+        return _users;
+    }
+
+    function getRandomUserList() external view returns (address[] memory) {
+        return _randomUserList;
     }
 
     function getContractDefaults()
