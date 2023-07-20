@@ -430,6 +430,7 @@ contract CashXProtocolReferral is
     }
 
     function registrationNative(address _referrer) external payable {
+        require(_referrer != address(0), "Zero Address cannot be the referrer");
         uint256 msgValue = msg.value;
         uint256 priceInUSD = _priceInUSD();
         uint256 _msgValueInUSD = _valueToUSD(msgValue, priceInUSD);

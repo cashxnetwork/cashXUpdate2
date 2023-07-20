@@ -17,6 +17,7 @@ import {
   FcReadingEbook,
   FcVoicePresentation,
 } from 'react-icons/fc';
+import { useParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import UserTeamDisplayCard from '../../../components/UserTeamDisplayCard';
 import { AddressZero } from '../../../constants/SupportedNetworkInfo';
@@ -25,7 +26,6 @@ import {
   useGetUserTeam,
 } from '../../../hooks/ReferralHooks';
 import UserTeamTable from './UserTeamTable';
-import { useParams } from 'react-router-dom';
 
 function Team() {
   const { address } = useAccount();
@@ -35,7 +35,8 @@ function Team() {
   const userBusiness = useGetUserBusiness(userAddress ?? address);
   const userTeamObject = useGetUserTeam(userAddress ?? address);
   const isUserActive = Number(userBusiness.selfBusiness) > 0 ? true : false;
-  const userReferralLink = `https://marsnext.io/#/registration/${address}`;
+  const websiteURL = `${window.origin}`;
+  const userReferralLink = `${websiteURL}/#/registration/${address}`;
   const { hasCopied, onCopy } = useClipboard(userReferralLink);
   return (
     <VStack w="full" spacing={10}>
