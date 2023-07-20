@@ -12,6 +12,7 @@ import {
   ModalContent,
   ModalOverlay,
   Spacer,
+  Stack,
   Tag,
   Text,
   VStack,
@@ -32,6 +33,7 @@ import { isAddressValid } from '../../util/UtilHooks';
 import ModalConfirmTransactions from '../Modals/ModalConfirmTransactions';
 import ModalTransactionSuccess from '../Modals/ModalTransactionSuccess';
 import { parseEther } from 'viem';
+import { FcGoodDecision } from 'react-icons/fc';
 
 function RegistrationUI({
   referrerAddress,
@@ -130,7 +132,11 @@ function RegistrationUI({
   useEffect(() => {}, [isSuccess, toast, onClose, reset]);
 
   return (
-    <>
+    <VStack spacing={10}>
+      <HStack>
+        <Heading>Register</Heading>
+        <Icon as={FcGoodDecision} boxSize={10}></Icon>
+      </HStack>
       <CenterComponent
         style={{
           py: 10,
@@ -138,47 +144,37 @@ function RegistrationUI({
         }}
       >
         <VStack minW={250} maxW={300} w="full" spacing={5}>
-          <Heading>Register</Heading>
-          <VStack>
-            {/* <Heading size="md">{planObject?.name}</Heading> */}
-            <Divider></Divider>
-          </VStack>
-          {/* <Heading size="3xl" color="orange.500">
-            ${planObject.value}
-          </Heading> */}
-          <VStack
-            w="full"
-            spacing={5}
-            p={3}
-            bgColor={cardBackgroundColor}
-            borderRadius="3xl"
-          >
-            {/* <HStack w="full">
-              <Tag colorScheme="green">Selected Coin</Tag>
-              <Spacer />
-              <HStack spacing={0} cursor="pointer">
-                <Image src={BNBLogoSVG} alt="USDT Logo" width={30}></Image>
-                <ChevronDownIcon />
-              </HStack>
+          <Heading textAlign="center" color="twitter.500">
+            Registration Value
+          </Heading>
+          <HStack>
+            <Heading textAlign="center" color="twitter.500" fontSize="7xl">
+              $25
+            </Heading>
+          </HStack>
+          <Heading size="sm">You have to pay</Heading>
+          <Tag py={5} px={10} borderRadius="3xl" colorScheme="yellow">
+            <HStack fontStyle="italic">
+              <Heading size="md">0.1</Heading>
+              <Heading fontWeight={500} size="md">
+                BNB
+              </Heading>
             </HStack>
+          </Tag>
+          <Divider></Divider>
+          <Tag p={3} borderRadius="3xl" w="full">
             <HStack w="full">
-              <Tag colorScheme="orange">Max Limit</Tag>
+              <Stack>
+                <Text>Your Balance</Text>
+                <Heading size="md" fontStyle="italic">
+                  {Number(userNativeBalance?.data?.formatted)?.toFixed(2)} BNB
+                </Heading>
+              </Stack>
               <Spacer />
-              <Heading size="sm">
-                ${planObject.value * planObject.maxLimitMultiplier}
-              </Heading>
-            </HStack> */}
-            <Heading>0.1 BNB</Heading>
-          </VStack>
-          <VStack>
-            <Heading size="md">You have</Heading>
-            <HStack>
-              <Heading size="sm">
-                {Number(userNativeBalance?.data?.formatted)?.toFixed(2)} BNB
-              </Heading>
-              <Image src={BNBLogoSVG} alt="BNB Logo" boxSize={7}></Image>
+              <Image src={BNBLogoSVG} alt="BNB Logo" boxSize={14}></Image>
             </HStack>
-          </VStack>
+          </Tag>
+
           {errors.isUserAlreadyHaveReferrer ? (
             <VStack>
               <Heading size="md" color="red">
@@ -220,15 +216,17 @@ function RegistrationUI({
           )}
 
           <Button
-            borderRadius="xl"
+            borderRadius="3xl"
             rightIcon={<ChevronRightIcon />}
-            colorScheme="orange"
-            bgColor="orange.500"
+            colorScheme="twitter"
+            bgColor="twitter.500"
             _hover={{
-              bgColor: 'orange.400',
+              bgColor: 'twitter.400',
             }}
             onClick={proceedTransaction}
             isDisabled={isLoading}
+            w="full"
+            h={20}
           >
             Register Now
           </Button>
@@ -277,7 +275,7 @@ function RegistrationUI({
           )}
         </ModalContent>
       </Modal>
-    </>
+    </VStack>
   );
 }
 

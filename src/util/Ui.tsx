@@ -55,7 +55,7 @@ export const CenterComponent = ({
       backdropFilter="blur(20px)"
       bgColor={useColorModeValue('whiteAlpha.900', 'whiteAlpha.300')}
       _hover={{
-        borderColor: "pink"
+        borderColor: "skyblue"
       }}
       transition="border-color 0.5s"
      
