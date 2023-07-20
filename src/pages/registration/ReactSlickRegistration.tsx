@@ -34,7 +34,7 @@ export default function ReactSlickRegistration({
       <VStack>
         <HStack>
           <Icon as={FcGoodDecision} boxSize={10}></Icon>
-          <Heading color="orange.500">Register</Heading>
+          <Heading color="orange.500">Upgrade</Heading>
         </HStack>
         <Divider />
       </VStack>

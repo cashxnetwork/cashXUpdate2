@@ -31,13 +31,22 @@ export const useContractCall = ({
   return data;
 };
 
-export type PlanInfoType = {
-  name: string;
-  value: number;
-  maxLimitMutiplier: number;
+export type UpgradePlanInfoValueType = {
+  id: number;
+  valueToUpgradeInUSD: bigint;
 };
-export const useReferralPlanInfo = (planId: number): PlanInfoType => {
-  return { name: 'Beginner', value: 10, maxLimitMutiplier: 3 };
+
+export const useUpgradePlans = () => {
+  const value = useContractCall({
+    functionName: 'getUpgradePlans',
+  });
+
+  const valueObject = {
+    upgradePlans: value ? (value?.[0] as UpgradePlanInfoValueType[]) : [],
+    upgradePlansCount: value ? (value?.[1] as number) : 0,
+  };
+
+  return valueObject;
 };
 
 export const useGetUserLimits = (userAddress: `0x${string}` | undefined) => {
@@ -61,6 +70,17 @@ export const useGetUserLimits = (userAddress: `0x${string}` | undefined) => {
   return valueObject;
 };
 
+export const useGetUserLevelToUpgrade = (
+  userAddress: `0x${string}` | undefined
+) => {
+  const value = useContractCall({
+    functionName: 'getUserCurrentUpgradeLevel',
+    args: [userAddress],
+  });
+
+  return value ? (value?.[0] as number) : 0;
+};
+
 export const useGetUserBusiness = (userAddress: `0x${string}` | undefined) => {
   const value = useContractCall({
     functionName: 'getUserBusiness',
@@ -69,16 +89,16 @@ export const useGetUserBusiness = (userAddress: `0x${string}` | undefined) => {
 
   const valueObject = {
     selfBusiness: value
-      ? formatNumberWithMaxDecimals(Number(value[0]) / 10 ** 18, 3)
+      ? Number(formatNumberWithMaxDecimals(Number(value[0]) / 10 ** 18, 3))
       : 0,
     directBusiness: value
-      ? formatNumberWithMaxDecimals(Number(value[1]) / 10 ** 18, 3)
+      ? Number(formatNumberWithMaxDecimals(Number(value[1]) / 10 ** 18, 3))
       : 0,
     teamBusiness: value
-      ? formatNumberWithMaxDecimals(Number(value[2]) / 10 ** 18, 3)
+      ? Number(formatNumberWithMaxDecimals(Number(value[2]) / 10 ** 18, 3))
       : 0,
     totalBusiness: value
-      ? formatNumberWithMaxDecimals(Number(value[3]) / 10 ** 18, 3)
+      ? Number(formatNumberWithMaxDecimals(Number(value[3]) / 10 ** 18, 3))
       : 0,
   };
 

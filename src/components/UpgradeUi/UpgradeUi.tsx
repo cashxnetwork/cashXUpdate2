@@ -1,5 +1,5 @@
 'use client';
-import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Button,
   Divider,
@@ -23,22 +23,26 @@ import {
 import { shortenAddress } from '@usedapp/core';
 import { useEffect } from 'react';
 import { FaUser } from 'react-icons/fa';
+import { parseEther } from 'viem';
 import { useAccount, useBalance, useContractWrite, useNetwork } from 'wagmi';
-import { BNBLogoSVG, USDTLogoSVG } from '../../assets';
+import { BNBLogoSVG } from '../../assets';
 import { AddressZero } from '../../constants/ContractAddress';
 import { supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
-import { useGetUserTeam } from '../../hooks/ReferralHooks';
+import {
+  UpgradePlanInfoValueType,
+  useGetUserTeam,
+} from '../../hooks/ReferralHooks';
 import { CenterComponent } from '../../util/Ui';
 import { isAddressValid } from '../../util/UtilHooks';
 import ModalConfirmTransactions from '../Modals/ModalConfirmTransactions';
 import ModalTransactionSuccess from '../Modals/ModalTransactionSuccess';
-import { parseEther } from 'viem';
-import { FcGoodDecision } from 'react-icons/fc';
 
-function RegistrationUI({
-  referrerAddress,
+function UpgradeUI({
+  upgradePlan,
+  valueInDecimals,
 }: {
-  referrerAddress: string | undefined;
+  upgradePlan: UpgradePlanInfoValueType;
+  valueInDecimals: number;
 }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,7 +51,6 @@ function RegistrationUI({
   const minBuyingValue = 0.1;
   const userTeamObject = useGetUserTeam(address);
   const currentNetwork = supportedNetworkInfo[chain?.id!];
-  const currentReferrer = referrerAddress ? referrerAddress : AddressZero;
 
   const userNativeBalance = useBalance({
     address: address,
@@ -69,21 +72,13 @@ function RegistrationUI({
   } = useContractWrite({
     address: currentNetwork?.referralContractAddress,
     abi: currentNetwork?.referralContractInterface,
-    functionName: 'registrationNative',
-    args: [currentReferrer],
-    chainId: chain?.id,
-    value: parseEther(`${minBuyingValue}`),
+    functionName: 'upgradeAccountNative',
+    value: parseEther(`${valueInDecimals}`),
   });
 
   const errors = {
-    isReferrerAddressEmpty: !referrerAddress ? true : false,
-    isReferrerAddressValid: referrerAddress
-      ? isAddressValid(referrerAddress)
-      : false,
-    isUserAlreadyHaveReferrer:
-      userTeamObject?.referrer !== AddressZero ? true : false,
     isUserHaveSufficientTokenBalance:
-      Number(userNativeBalance?.data?.formatted ?? 0) >= minBuyingValue
+      Number(userNativeBalance?.data?.formatted ?? 0) >= valueInDecimals
         ? true
         : false,
   };
@@ -133,7 +128,6 @@ function RegistrationUI({
 
   return (
     <VStack spacing={10}>
-      
       <CenterComponent
         style={{
           py: 10,
@@ -142,11 +136,11 @@ function RegistrationUI({
       >
         <VStack minW={250} maxW={300} w="full" spacing={5}>
           <Heading textAlign="center" color="twitter.500">
-            Registration Value
+            Level #{upgradePlan?.id}
           </Heading>
           <HStack>
             <Heading textAlign="center" color="twitter.500" fontSize="7xl">
-              $25
+              ${Number(upgradePlan?.valueToUpgradeInUSD) / 10 ** 18}
             </Heading>
           </HStack>
           <Heading size="sm">You have to pay</Heading>
@@ -172,46 +166,6 @@ function RegistrationUI({
             </HStack>
           </Tag>
 
-          {errors.isUserAlreadyHaveReferrer ? (
-            <VStack>
-              <Heading size="md" color="red">
-                Referrer Already set
-              </Heading>
-              <HStack>
-                <Heading size="sm">
-                  {shortenAddress(userTeamObject?.referrer)}
-                </Heading>
-                <Icon as={FaUser}></Icon>
-              </HStack>
-            </VStack>
-          ) : (
-            !errors.isReferrerAddressEmpty &&
-            (errors.isReferrerAddressValid ? (
-              <VStack>
-                <Heading size="md">Referrer Address</Heading>
-                <HStack>
-                  <Heading size="sm">
-                    {shortenAddress(referrerAddress!)}
-                  </Heading>
-                  <Icon as={FaUser}></Icon>
-                </HStack>
-              </VStack>
-            ) : (
-              <VStack spacing={0}>
-                <Heading size="sm" color="red">
-                  Invalid Referrer Address
-                </Heading>
-                <Text fontSize="sm">Default Referrer will be used</Text>
-                <HStack>
-                  <Heading size="sm">
-                    {currentReferrer && shortenAddress(currentReferrer)}
-                  </Heading>
-                  <Icon as={FaUser}></Icon>
-                </HStack>
-              </VStack>
-            ))
-          )}
-
           <Button
             borderRadius="3xl"
             rightIcon={<ChevronRightIcon />}
@@ -225,7 +179,7 @@ function RegistrationUI({
             w="full"
             h={20}
           >
-            Register Now
+            Upgrade Now
           </Button>
         </VStack>
       </CenterComponent>
@@ -248,7 +202,7 @@ function RegistrationUI({
             <ModalConfirmTransactions
               onClose={onClose}
               onConfirm={handleTransaction}
-              transactionName="Register"
+              transactionName="Upgrade"
               outCurrencyObject={{
                 logo: BNBLogoSVG,
                 symbol: 'BNB',
@@ -276,4 +230,4 @@ function RegistrationUI({
   );
 }
 
-export default RegistrationUI;
+export default UpgradeUI;

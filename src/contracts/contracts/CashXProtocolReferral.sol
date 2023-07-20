@@ -156,11 +156,13 @@ contract CashXProtocolReferral is
     }
 
     function updateUpgradePlans(
-        uint8[] calldata _id,
-        uint256[] calldata _valueToUpgrade
+        uint256[] calldata _valueToUpgradeInDecimals
     ) external onlyOwner {
-        for (uint8 i; i < _id.length; ++i) {
-            _mappingUpgrade[i] = UpgradeStruct(i, _valueToUpgrade[i]);
+        for (uint8 i; i < _valueToUpgradeInDecimals.length; ++i) {
+            _mappingUpgrade[i] = UpgradeStruct(
+                i + 1,
+                _valueToUpgradeInDecimals[i] * 10 ** 18
+            );
         }
     }
 
@@ -189,6 +191,12 @@ contract CashXProtocolReferral is
         }
 
         upgradePlans = plansAccount;
+    }
+
+    function getUpgradePlansById(
+        uint8 _id
+    ) external view returns (UpgradeStruct memory) {
+        return _mappingUpgrade[_id];
     }
 
     function _hasReferrer(
