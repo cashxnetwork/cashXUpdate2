@@ -671,7 +671,7 @@ contract CashXProtocolReferral is
     }
 
     function needNativeToRegister() external view returns (uint256) {
-        return _registrationValueInUSD / _priceInUSD();
+        return _registrationValueInUSD * 10 ** 18 / _priceInUSD();
     }
 
     function _priceInUSD() private view returns (uint256) {
