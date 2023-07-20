@@ -525,6 +525,26 @@ contract CashXProtocolReferral is
         totalUpgradeValueInUSD = userAccount.upgradedValueInUSD;
     }
 
+    function getContractDefaults()
+        external
+        view
+        returns (
+            address teamWallet,
+            uint256 teamWalletRate,
+            address liquidityWallet,
+            uint256 liquidityCreationrate,
+            address defaultReferrer,
+            uint256 registrationValueInUSD
+        )
+    {
+        teamWallet = _teamWallet;
+        teamWalletRate = _teamWalletRate;
+        liquidityWallet = _liquidityWallet;
+        liquidityCreationrate = _liquidityCreateRate;
+        defaultReferrer = _defaultReferrer;
+        registrationValueInUSD = _registrationValueInUSD;
+    }
+
     function getRegistrationsStats()
         external
         view
@@ -671,7 +691,7 @@ contract CashXProtocolReferral is
     }
 
     function needNativeToRegister() external view returns (uint256) {
-        return _registrationValueInUSD * 10 ** 18 / _priceInUSD();
+        return (_registrationValueInUSD * 10 ** 18) / _priceInUSD();
     }
 
     function _priceInUSD() private view returns (uint256) {

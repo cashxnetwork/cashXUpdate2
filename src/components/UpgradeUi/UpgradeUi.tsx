@@ -146,7 +146,7 @@ function UpgradeUI({
           <Heading size="sm">You have to pay</Heading>
           <Tag py={5} px={10} borderRadius="3xl" colorScheme="yellow">
             <HStack fontStyle="italic">
-              <Heading size="md">0.1</Heading>
+              <Heading size="md">{valueInDecimals?.toFixed(5)}</Heading>
               <Heading fontWeight={500} size="md">
                 BNB
               </Heading>

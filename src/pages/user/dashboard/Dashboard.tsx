@@ -22,9 +22,9 @@ function Dashboard() {
         <Divider></Divider>
       </VStack>
       <Wrap w="full" justify="center" spacing={5}>
-        <LimitCard
+        {/* <LimitCard
           userAddress={userAddress ? userAddress : address!}
-        ></LimitCard>
+        ></LimitCard> */}
         <BalanceCard
           userAddress={userAddress ? userAddress : address!}
         ></BalanceCard>

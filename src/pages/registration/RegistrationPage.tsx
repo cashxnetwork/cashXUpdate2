@@ -4,6 +4,7 @@ import ReactSlickRegistration from './ReactSlickRegistration';
 import {
   useGetUserBusiness,
   useGetUserLevelToUpgrade,
+  useNativePrice,
   useUpgradePlans,
 } from '../../hooks/ReferralHooks';
 import { useAccount } from 'wagmi';
@@ -17,8 +18,7 @@ export default function RegistrationPage() {
   const upgradePlans = useUpgradePlans();
   const userBusiness = useGetUserBusiness(address);
   const userLevelToUpgrade = useGetUserLevelToUpgrade(address);
-
-  console.log(userLevelToUpgrade);
+  const nativePrice = useNativePrice();
 
   return userBusiness.selfBusiness === 0 ? (
     <VStack spacing={10}>
@@ -42,7 +42,12 @@ export default function RegistrationPage() {
       </VStack>
       <UpgradeUI
         upgradePlan={upgradePlans?.upgradePlans[userLevelToUpgrade]}
-        valueInDecimals={0.1}
+        valueInDecimals={
+          Number(
+            upgradePlans?.upgradePlans[userLevelToUpgrade]
+              .valueToUpgradeInUSD ?? 0
+          ) / Number(nativePrice)
+        }
       ></UpgradeUI>
     </VStack>
   );

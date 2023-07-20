@@ -15,6 +15,8 @@ function TeamCard({ userAddress }: { userAddress: `0x${string}` }) {
       value: userTeamObject?.teamCount,
     },
   ];
+
+  console.log(userTeamObject)
   return (
     <CardContainer heading="Team" icon={FcConferenceCall}>
       {userValueObject.map((valueObject, key) => {

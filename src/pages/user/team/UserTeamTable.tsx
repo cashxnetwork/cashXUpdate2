@@ -10,17 +10,18 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import UserTeamTableComponent from './UserTeamTableComponent';
+import { TypeTeamStruct } from '../../../hooks/ReferralHooks';
 
 function UserTeamTable({ userAddress }: { userAddress: `0x${string}` }) {
   const userTeamObject = useGetUserTeam(userAddress);
   const userTeamCount = userTeamObject.teamCount;
   const userTeamAddress = userTeamObject.team;
-  const userTeamLevels = userTeamObject.teamLevels;
   return (
     <TableContainer
       w="full"
       bgColor={useColorModeValue('white', 'gray.900')}
       borderRadius="50px"
+      minH={150}
     >
       <Table size="lg">
         <Thead>
@@ -32,13 +33,12 @@ function UserTeamTable({ userAddress }: { userAddress: `0x${string}` }) {
         </Thead>
         <Tbody>
           {userTeamCount > 0 ? (
-            userTeamAddress.map((address: `0x${string}`, key: number) => {
+            userTeamAddress.map((TypeTeamStruct, key: number) => {
               return (
                 <UserTeamTableComponent
                   key={key}
-                  level={key}
-                  userAddress={address}
-                  userTeamLevels={userTeamLevels}
+                  level={TypeTeamStruct?.level}
+                  userAddress={TypeTeamStruct?.teamMember}
                 ></UserTeamTableComponent>
               );
             })

@@ -81,6 +81,22 @@ export const useGetUserLevelToUpgrade = (
   return value ? (value?.[0] as number) : 0;
 };
 
+export const useNeedNativeToRegister = () => {
+  const value = useContractCall({
+    functionName: 'needNativeToRegister',
+  });
+
+  return value;
+};
+
+export const useNativePrice = () => {
+  const value = useContractCall({
+    functionName: 'getNativePriceInUSD',
+  });
+
+  return value ? Number(value) : 0;
+};
+
 export const useGetUserBusiness = (userAddress: `0x${string}` | undefined) => {
   const value = useContractCall({
     functionName: 'getUserBusiness',
@@ -112,33 +128,33 @@ export const useGetUserRewards = (userAddress: `0x${string}` | undefined) => {
   });
 
   const valueObject = {
-    referralReward: value
+    referralRewardInUSD: value
       ? formatNumberWithMaxDecimals(Number(value[0]) / 10 ** 18, 3)
       : 0,
-    globalReward: value
+    weeklyRewardInUSD: value
       ? formatNumberWithMaxDecimals(Number(value[1]) / 10 ** 18, 3)
       : 0,
-    weeklyReward: value
+    upgradeRewardsInUSD: value
       ? formatNumberWithMaxDecimals(Number(value[2]) / 10 ** 18, 3)
-      : 0,
-    ibpReward: value
-      ? formatNumberWithMaxDecimals(Number(value[3]) / 10 ** 18, 3)
-      : 0,
-    totalIncome: value
-      ? formatNumberWithMaxDecimals(Number(value[4]) / 10 ** 18, 3)
       : 0,
   };
 
   return valueObject;
 };
 
-interface TeamValueObject {
+export type TypeTeamValueObject = {
   referrer: `0x${string}`;
   referees: `0x${string}`[];
   refereeCount: number;
-  team: `0x${string}`[];
-  teamLevels: number[];
+  refereeAssigned: `0x${string}`[] | [];
+  refereeAssignedCount: number;
+  team: TypeTeamStruct[];
   teamCount: number;
+}
+
+export type TypeTeamStruct = {
+  teamMember: `0x${string}`;
+  level: number;
 }
 
 export const useGetUserTeam = (userAddress: `0x${string}` | undefined) => {
@@ -147,13 +163,14 @@ export const useGetUserTeam = (userAddress: `0x${string}` | undefined) => {
     args: [userAddress],
   });
 
-  const valueObject: TeamValueObject = {
+  const valueObject: TypeTeamValueObject = {
     referrer: value ? (value[0] as `0x${string}`) : AddressZero,
     referees: value ? (value[1] as `0x${string}`[]) : [],
     refereeCount: value ? Number(value[2]) : 0,
-    team: value ? (value[3] as `0x${string}`[]) : [],
-    teamLevels: value ? (value[4] as number[]) : [],
-    teamCount: value ? Number(value[5]) : 0,
+    refereeAssigned: value ? (value[3] as `0x${string}`[]) : [],
+    refereeAssignedCount: value ? Number(value[4]) : 0,
+    team: value ? value[5] as TypeTeamStruct[] : [],
+    teamCount: value ? Number(value[6]) : 0,
   };
 
   return valueObject;

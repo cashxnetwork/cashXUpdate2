@@ -22,7 +22,13 @@ function BusinessCard({
       name: 'Team Business',
       value: userBusiness?.teamBusiness,
     },
+    {
+      name: 'Total Business',
+      value: userBusiness?.totalBusiness,
+    },
   ];
+
+ 
   return (
     <CardContainer heading="Business" icon={FcComboChart}>
       {userValueObject.map((valueObject, key) => {
