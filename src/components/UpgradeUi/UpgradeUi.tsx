@@ -75,6 +75,8 @@ function UpgradeUI({
     value: parseEther(`${valueInDecimals}`),
   });
 
+  console.log(status)
+
   const errors = {
     isUserHaveSufficientTokenBalance:
       Number(userNativeBalance?.data?.formatted ?? 0) >= valueInDecimals
@@ -113,8 +115,9 @@ function UpgradeUI({
         }, 20000);
       }
     } catch (err: any) {
+      const error = JSON.stringify(err);
       toast({
-        title: err.message,
+        title: JSON.parse(error)?.shortMessage,
         description: '',
         status: 'error',
         duration: 5000,

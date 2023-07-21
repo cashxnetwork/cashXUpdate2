@@ -55,7 +55,7 @@ function RegistrationUI({
 
   const cardBackgroundColor = useColorModeValue('green.50', 'gray.900');
 
-  console.log(parseEther(`${valueInDecimals}`))
+  console.log(parseEther(`${valueInDecimals}`));
 
   const {
     data,
@@ -121,8 +121,9 @@ function RegistrationUI({
         }, 20000);
       }
     } catch (err: any) {
+      const error = JSON.stringify(err);
       toast({
-        title: err.message,
+        title: JSON.parse(error)?.shortMessage,
         description: '',
         status: 'error',
         duration: 5000,
@@ -130,8 +131,6 @@ function RegistrationUI({
       });
     }
   };
-
-  useEffect(() => {}, [isSuccess, toast, onClose, reset]);
 
   return (
     <VStack spacing={10}>
