@@ -7,9 +7,9 @@ import User from '../pages/user/User';
 import Dashboard from '../pages/user/dashboard/Dashboard';
 import Team from '../pages/user/team/Team';
 import {Staking} from '../pages/user/staking/Staking';
-import { AboutUs } from '../pages/AboutUs/AboutUs';
-import { Tokenomics } from '../pages/Tokenomics/Tokenomics';
-import { Roadmap } from '../pages/Roadmap/Roadmap';
+import { AboutUs } from '../pages/home/AboutUs/AboutUs';
+import { Tokenomics } from '../pages/home/Tokenomics/Tokenomics';
+import { Roadmap } from '../pages/home/Roadmap/Roadmap';
 
 export const RoutesConfig = createHashRouter([
   {

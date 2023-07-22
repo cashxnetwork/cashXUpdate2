@@ -30,9 +30,9 @@ export const Nav = () => {
       py={5}
     >
       <HStack w="full">
-        <Show below="lg">
+        {/* <Show below="lg">
           <NavMenuFullDrawer />
-        </Show>
+        </Show> */}
         <Logo></Logo>
         <Spacer />
         <Hide below="lg">

@@ -32,7 +32,9 @@ export const HeaderHeadingComponent = () => {
         lineHeight={1.2}
         maxW="3xl"
         opacity={0.75}
-      >{secondaryHeading}</Heading>
+      >
+        {secondaryHeading}
+      </Heading>
       <Link to="/registration">
         <button></button>
         <Button
@@ -45,7 +47,7 @@ export const HeaderHeadingComponent = () => {
           variant="solid"
           colorScheme="twitter"
         >
-          Launch App
+          LAUNCH APP
         </Button>
       </Link>
     </VStack>
