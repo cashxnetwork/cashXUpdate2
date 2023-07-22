@@ -44,12 +44,12 @@ export const Tokenomics = () => {
     ],
   };
   return (
-    <VStack w="full" py={100} px={5} spacing={10}>
+    <VStack w="full" py={100} px={5} spacing={10} overflow="hidden">
       <HeadingComponent
         heading="Community Centric"
         gradientHeading="TOKENOMICS"
       ></HeadingComponent>
-      <VStack boxSize={[400, 500]}>
+      <VStack boxSize={[350, 400, 500]}>
         <Doughnut
           data={data}
           options={{
@@ -58,7 +58,6 @@ export const Tokenomics = () => {
                 display: true,
                 position: 'bottom',
                 fullSize: true,
-                align: 'center',
                 labels: {
                   font: {
                     size: 20,
