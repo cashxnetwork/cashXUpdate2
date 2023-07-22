@@ -24,28 +24,21 @@ export const RegistrationStats = () => {
   ];
   return (
     <VStack w="full" py={50}>
-      <Wrap w="full" p={5} justify="center" align="center" spacing={10}>
+      <Wrap w="full" p={5} justify="center" align="center" spacing={[10, 20]}>
         {registrationValues?.map((valuesObject, key) => {
           return (
-            <CenterComponent
-              key={key}
-              style={{
-                minW: [250, 300],
-              }}
-            >
-              <VStack>
-                <Icon as={valuesObject?.icon} boxSize={10}></Icon>
-                <Heading>
-                  {Number(
-                    Number(registrationStats?.[key + 1]) / 10 ** 18
-                  )?.toFixed(2)}{' '}
-                  USDT
-                </Heading>
-                <Heading size="sm" w={150} textAlign="center">
-                  {valuesObject?.name}
-                </Heading>
-              </VStack>
-            </CenterComponent>
+            <VStack key={key}>
+              <Icon as={valuesObject?.icon} boxSize={20}></Icon>
+              <Heading>
+                {Number(
+                  Number(registrationStats?.[key + 1]) / 10 ** 18
+                )?.toFixed(2)}{' '}
+                USDT
+              </Heading>
+              <Heading size="sm" w={150} textAlign="center">
+                {valuesObject?.name}
+              </Heading>
+            </VStack>
           );
         })}
       </Wrap>

@@ -31,6 +31,7 @@ const BoxComponent = ({
       style={{
         w: [225, 250],
         h: 350,
+        
       }}
     >
       <VStack w="full" spacing={5}>
