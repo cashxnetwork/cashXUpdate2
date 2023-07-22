@@ -1,4 +1,10 @@
-import { Box, Center, VStack, useColorModeValue } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  VStack,
+  useBreakpointValue,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import React from 'react';
 import { HeadingComponent } from '../../../util/Ui';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
@@ -44,9 +50,9 @@ export const Tokenomics = () => {
     ],
   };
   return (
-    <VStack w="full" py={100} px={5} spacing={10} overflow="hidden">
+    <VStack w="full" py={50} px={5} spacing={10} overflow="hidden">
       <HeadingComponent
-        heading="Community Centric"
+        heading="Community centric"
         gradientHeading="TOKENOMICS"
       ></HeadingComponent>
       <VStack boxSize={[350, 400, 500]}>
@@ -60,7 +66,15 @@ export const Tokenomics = () => {
                 fullSize: true,
                 labels: {
                   font: {
-                    size: 20,
+                    size: useBreakpointValue(
+                      {
+                        base: 17,
+                        md: 20,
+                      },
+                      {
+                        fallback: 'md',
+                      }
+                    ),
                   },
                 },
               },

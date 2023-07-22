@@ -9,11 +9,16 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
-import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
+import {
+  BiLeftArrowAlt,
+  BiRadioCircle,
+  BiRadioCircleMarked,
+  BiRightArrowAlt,
+} from 'react-icons/bi';
 import { FcGoodDecision } from 'react-icons/fc';
 import Slider from 'react-slick';
 
-export default function ReactSlickRegistration({
+export default function ReactSlickComponent({
   children,
 }: {
   children: ReactNode;
@@ -24,21 +29,20 @@ export default function ReactSlickRegistration({
     <Flex
       overflow="hidden"
       w="full"
-      minH="100vh"
       direction="column"
       align="center"
       justify="center"
-      py={100}
       backdropFilter="auto"
     >
-      <VStack>
-        <HStack>
-          <Icon as={FcGoodDecision} boxSize={10}></Icon>
-          <Heading color="orange.500">Upgrade</Heading>
+      <Stack w={1000} overflow="hidden" px={7} spacing={10}>
+        <HStack w="full" spacing={0}>
+          <Icon as={BiRadioCircle} boxSize={10}></Icon>
+          <Divider />
+          <Icon as={BiRadioCircle} boxSize={10}></Icon>
+          <Divider />
+          <Icon as={BiRadioCircle} boxSize={10}></Icon>
         </HStack>
-        <Divider />
-      </VStack>
-      <Stack w={1000} overflow="hidden" px={7} py={10}>
+
         {/* <link
           rel="stylesheet"
           type="text/css"

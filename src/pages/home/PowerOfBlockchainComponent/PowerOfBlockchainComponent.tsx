@@ -42,8 +42,8 @@ export const PowerOfBlockchainComponent = () => {
   return (
     <VStack
       w="full"
-      minH="80vh"
-      py="10vh"
+      
+      py={50}
       spacing={10}
     >
       <HeadingComponent

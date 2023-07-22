@@ -9,6 +9,7 @@ import WeeklyReward from './WeeklyReward/WeeklyReward';
 import { RegistrationStats } from './RegistrationStats/RegistrationStats';
 import { AboutUs } from './AboutUs/AboutUs';
 import { Tokenomics } from './Tokenomics/Tokenomics';
+import { Roadmap } from './Roadmap/Roadmap';
 
 export const Home = () => {
   return (
@@ -20,6 +21,7 @@ export const Home = () => {
       <PlanDiscriptionComponent />
       <AboutUs />
       <Tokenomics />
+      <Roadmap/>
       {/* <TokenDistribution /> */}
       <PowerOfBlockchainComponent />
     </VStack>

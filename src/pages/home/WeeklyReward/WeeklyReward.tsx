@@ -30,7 +30,7 @@ function WeeklyReward() {
     },
   ];
   return (
-    <VStack w="full" py={10} spacing={10}>
+    <VStack w="full" py={50} spacing={10}>
       <HeadingComponent
         heading="Weekly Rewards to be"
         gradientHeading="DISTRIBUTED"

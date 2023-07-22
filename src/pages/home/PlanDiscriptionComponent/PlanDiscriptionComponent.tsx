@@ -29,9 +29,8 @@ const BoxComponent = ({
   return (
     <CenterComponent
       style={{
-        w: [225, 250],
-        h: 350,
-        
+        w: 250,
+        h: 500,
       }}
     >
       <VStack w="full" spacing={5}>

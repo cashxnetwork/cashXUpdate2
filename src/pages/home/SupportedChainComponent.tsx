@@ -1,11 +1,17 @@
-import { HStack, Image, VStack, useBreakpointValue } from '@chakra-ui/react';
+import {
+  HStack,
+  Heading,
+  Image,
+  VStack,
+  useBreakpointValue,
+} from '@chakra-ui/react';
 import { BUSDLogoSVG, USDTLogoSVG } from '../../assets';
 import { CenterComponent, HeadingComponent } from '../../util/Ui';
 
 export const SupportedChainComponent = () => {
   const supprtedChains = [
     {
-      name: 'BSC',
+      name: 'Binance Smart Chain',
       logo: '/token-icons/bnb.svg',
     },
   ];
@@ -17,7 +23,7 @@ export const SupportedChainComponent = () => {
     },
   ];
   return (
-    <VStack py={[50, 75, 100]} spacing={5} w="full" borderTopRadius={['25%']}>
+    <VStack py={50} spacing={5} w="full">
       <HeadingComponent
         heading="Supported by the"
         gradientHeading="BEST"
@@ -31,12 +37,15 @@ export const SupportedChainComponent = () => {
                 px: 10,
               }}
             >
-              <Image
-                src={chainObject?.logo}
-                alt={chainObject?.name}
-                width={75}
-                height={75}
-              ></Image>
+              <VStack>
+                <Image
+                  src={chainObject?.logo}
+                  alt={chainObject?.name}
+                  width={50}
+                  height={50}
+                ></Image>
+                50
+              </VStack>
             </CenterComponent>
           );
         })}
@@ -57,8 +66,8 @@ export const SupportedChainComponent = () => {
               <Image
                 src={currencyObject?.logo}
                 alt={currencyObject?.name}
-                width={75}
-                height={75}
+                width={50}
+                height={50}
               ></Image>
             </CenterComponent>
           );
