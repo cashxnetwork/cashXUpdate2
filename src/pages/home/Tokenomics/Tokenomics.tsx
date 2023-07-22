@@ -61,12 +61,11 @@ export const Tokenomics = () => {
                 align: 'center',
                 labels: {
                   font: {
-                    size: 25,
+                    size: 20,
                   },
                 },
               },
             },
-            scales: {},
             maintainAspectRatio: true,
           }}
         />
