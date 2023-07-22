@@ -11,7 +11,7 @@ import { MyVeeMainnet } from '../lib/chains';
 
 require('dotenv').config();
 
-const chains = [bsc];
+const chains = [bsc, MyVeeMainnet];
 const projectId = '45d704544c109267d7939641749cca7d';
 
 if (!projectId) {

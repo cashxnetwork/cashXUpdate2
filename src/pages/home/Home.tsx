@@ -11,11 +11,11 @@ export const Home = () => {
   return (
     <VStack w="full" maxH={'100vh'} pt={20}>
       <Header />
-      {/* <SupportedChainComponent />
+      <SupportedChainComponent />
       <PlanDiscriptionComponent />
       <TokenDistribution />
       <PowerOfBlockchainComponent />
-      <WeeklyReward/> */}
+      <WeeklyReward/>
     </VStack>
   );
 };

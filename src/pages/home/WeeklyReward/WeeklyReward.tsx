@@ -15,19 +15,22 @@ function WeeklyReward() {
   const weeklyRewardsToBeDistributed = useGetWeeklyRewardToBeDistributed();
   const registrationStats = useGetRegistrationsStats();
 
-  const registrationValues = [{
-    name: "Total Registration Value",
-    icon: AiOutlineFire
-  },{
-    name: "Referral Reward Distributed",
-    icon: HiUserGroup
-  },{
-    name: "Global Reward Distributed",
-    icon: SlGlobeAlt
-  },{
-    name: "Weekly Reward Distributed",
-    icon: CiTimer
-  }]
+  console.log(registrationStats);
+
+  const registrationValues = [
+    {
+      name: 'Total Registration Value',
+      icon: AiOutlineFire,
+    },
+    {
+      name: 'Referral Reward Distributed',
+      icon: HiUserGroup,
+    },
+    {
+      name: 'Weekly Reward Distributed',
+      icon: CiTimer,
+    },
+  ];
   return (
     <VStack w="full" minH="80vh" py={10} spacing={10}>
       {/* <Heading>Weekly Reward to be distribued</Heading> */}
@@ -57,19 +60,27 @@ function WeeklyReward() {
       </VStack>
       <Wrap w="full" p={5} justify="center" align="center" spacing={10}>
         {registrationValues?.map((valuesObject, key) => {
-          return <CenterComponent key={key} style={{
-            minW: 300
-          }}>
-          <VStack>
-            <Icon as={valuesObject?.icon} boxSize={10}></Icon>
-            <Heading>
-              {Number(Number(registrationStats?.[key + 1]) / 10 ** 18)?.toFixed(2)} USDT
-            </Heading>
-            <Heading size="sm" w={150} textAlign="center">
-              {valuesObject?.name}
-            </Heading>
-          </VStack>
-        </CenterComponent>
+          return (
+            <CenterComponent
+              key={key}
+              style={{
+                minW: 300,
+              }}
+            >
+              <VStack>
+                <Icon as={valuesObject?.icon} boxSize={10}></Icon>
+                <Heading>
+                  {Number(
+                    Number(registrationStats?.[key + 1]) / 10 ** 18
+                  )?.toFixed(2)}{' '}
+                  USDT
+                </Heading>
+                <Heading size="sm" w={150} textAlign="center">
+                  {valuesObject?.name}
+                </Heading>
+              </VStack>
+            </CenterComponent>
+          );
         })}
       </Wrap>
     </VStack>

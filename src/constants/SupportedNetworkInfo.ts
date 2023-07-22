@@ -39,7 +39,7 @@ export interface SupportedNetworkInfo {
 
 export const supportedNetworkInfo: SupportedNetworkInfo = {
   [bsc.id]: {
-    referralContractAddress: ReferralV1ContractObject.polygonAddress,
+    referralContractAddress: ReferralV1ContractObject.bscAddress,
     referralContractInterface: ReferralV1ContractObject.abi,
     priceOracleAddress: PriceOracleObject.bscAddress,
     priceOracleInterface: PriceOracleObject.abi,

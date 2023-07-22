@@ -207,5 +207,10 @@ export const useGetRegistrationsStats = () => {
     args: [],
   });
 
+
+  // const valueObject = {
+  //   totalUser: value : 
+  // }
+
   return value;
 };
