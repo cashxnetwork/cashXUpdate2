@@ -7,6 +7,9 @@ import User from '../pages/user/User';
 import Dashboard from '../pages/user/dashboard/Dashboard';
 import Team from '../pages/user/team/Team';
 import {Staking} from '../pages/user/staking/Staking';
+import { AboutUs } from '../pages/AboutUs/AboutUs';
+import { Tokenomics } from '../pages/Tokenomics/Tokenomics';
+import { Roadmap } from '../pages/Roadmap/Roadmap';
 
 export const RoutesConfig = createHashRouter([
   {
@@ -16,6 +19,18 @@ export const RoutesConfig = createHashRouter([
       {
         index: true,
         element: <Home></Home>,
+      },
+      {
+        path: "about-us",
+        element: <AboutUs></AboutUs>,
+      },
+      {
+        path: "tokenomics",
+        element: <Tokenomics></Tokenomics>,
+      },
+      {
+        path: "roadmap",
+        element: <Roadmap></Roadmap>,
       },
       {
         path: 'registration',

@@ -11,6 +11,7 @@ import {
 import React, { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 import { FcDoughnutChart } from 'react-icons/fc';
+import { CenterComponent } from '../util/Ui';
 
 export const CardContainer = ({
   children,
@@ -22,26 +23,25 @@ export const CardContainer = ({
   icon: IconType;
 }) => {
   return (
-    <VStack
-      p={5}
-      borderRadius="50px"
-      spacing={5}
-      minW={200}
-      bgColor={useColorModeValue('white', 'whiteAlpha.200')}
-      flex={1}
-      borderWidth="0.5px"
-      borderBottomWidth={5}
+    <CenterComponent
+      style={{
+        alignContent: 'flex-start',
+        alignItems: 'flex-start',
+        w: 250,
+      }}
     >
-      <VStack w="full">
-        <Tag size="lg" fontWeight="bold" fontSize="xl" borderRadius="xl">
-          <HStack>
-            <Text>{heading}</Text>
-          </HStack>
-        </Tag>
-        <Icon as={icon} color="twitter.500" boxSize={100}></Icon>
-        <Divider></Divider>
+      <VStack py={5}>
+        <VStack w="full">
+          <Tag size="lg" fontWeight="bold" fontSize="xl" borderRadius="xl">
+            <HStack>
+              <Text>{heading}</Text>
+            </HStack>
+          </Tag>
+          <Icon as={icon} color="twitter.500" boxSize={100}></Icon>
+          <Divider></Divider>
+        </VStack>
+        {children}
       </VStack>
-      {children}
-    </VStack>
+    </CenterComponent>
   );
 };

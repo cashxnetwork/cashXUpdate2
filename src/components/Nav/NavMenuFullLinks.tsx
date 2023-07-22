@@ -32,17 +32,17 @@ export function NavMenuFullLinks({ style }: { style?: StackProps }) {
     {
       icon: FcApprove,
       name: 'What is CashX',
-      link: `/user/dashboard`,
+      link: `about-us`,
     },
     {
       icon: FcDoughnutChart,
       name: 'Tokenomics',
-      link: `/user/team`,
+      link: `tokenomics`,
     },
     {
       icon: FaRoad,
       name: 'Roadmap',
-      link: `/user/team`,
+      link: `roadmap`,
     },
     {
       icon: FcGoodDecision,
