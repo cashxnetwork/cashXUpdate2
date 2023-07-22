@@ -1,7 +1,7 @@
 import { createHashRouter } from 'react-router-dom';
 import { App } from '../App';
 import { Home } from '../pages/home';
-import ProtectedRoute from '../components/ProtectedRoute/ProtectedRoute';
+import ProtectedRoute from './ProtectedRoute/ProtectedRoute';
 import RegistrationPage from '../pages/registration/RegistrationPage';
 import User from '../pages/user/User';
 import Dashboard from '../pages/user/dashboard/Dashboard';

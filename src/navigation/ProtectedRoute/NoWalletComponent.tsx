@@ -1,6 +1,6 @@
 import { Heading, Image, VStack } from '@chakra-ui/react'
 import React from 'react'
-import { ConnectWalletButton } from '../ConnectWalletButton'
+import { ConnectWalletButton } from '../../components/ConnectWalletButton'
 import { motion } from 'framer-motion'
 
 const MotionImage = motion(Image)

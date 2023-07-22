@@ -3,21 +3,17 @@ import {
   Divider,
   Flex,
   HStack,
-  Heading,
   Icon,
   IconButton,
   Spacer,
-  Stack,
-  VStack,
+  Stack
 } from '@chakra-ui/react';
 import React, { ReactNode } from 'react';
 import {
   BiLeftArrowAlt,
   BiRadioCircle,
-  BiRadioCircleMarked,
-  BiRightArrowAlt,
+  BiRightArrowAlt
 } from 'react-icons/bi';
-import { FcGoodDecision } from 'react-icons/fc';
 import Slider from 'react-slick';
 
 export default function ReactSlickComponent({
@@ -83,7 +79,7 @@ export default function ReactSlickComponent({
           <BiLeftArrowAlt />
         </IconButton>
         {/* Right Button Icon */}
-        <Spacer/>
+        <Spacer />
         <IconButton
           aria-label="right-arrow"
           bgColor="orange.500"

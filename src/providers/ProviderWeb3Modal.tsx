@@ -37,7 +37,7 @@ export const ProviderWeb3Modal = ({
       <Web3Modal
         projectId={projectId}
         ethereumClient={ethereumClient}
-        defaultChain={polygon}
+        defaultChain={bsc}
         themeMode={useColorModeValue('light', 'dark')}
       />
     </>

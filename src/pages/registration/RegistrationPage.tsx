@@ -22,20 +22,42 @@ import {
 import SocialMediaIcons from '../../components/SocialMediaIcons';
 import { supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
 
+const ErrorPage = ({ errorReason }: { errorReason: string }) => {
+  return (
+    <VStack justify="center" spacing={5}>
+      <Icon as={FcBrokenLink} boxSize={40}></Icon>
+      <VStack>
+        <Heading color="red" textAlign="center">
+          {errorReason}
+        </Heading>
+        <Text>
+          You may get a valid referral address from our social links below
+        </Text>
+      </VStack>
+      <SocialMediaIcons
+        style={{
+          boxSize: 14,
+          'aria-label': 'Icon Buttons',
+          variant: 'outline',
+        }}
+      ></SocialMediaIcons>
+    </VStack>
+  );
+};
+
 export default function RegistrationPage() {
   const { chain } = useNetwork();
   const currentNetwork = supportedNetworkInfo[chain?.id!];
   const { address } = useAccount();
-  const { referrerAddress } = useParams();
+  const { referrerAddress } = useParams<{ referrerAddress: `0x${string}` }>();
   const userBusiness = useGetUserBusiness(address);
+  const referrerBusiness = useGetUserBusiness(referrerAddress);
   const userLevelToUpgrade = useGetUserLevelToUpgrade(address);
   const nativePrice = useNativePrice(currentNetwork?.priceOracleAddress!);
   const upgradePlans = useUpgradePlans();
   const valueToRegister = useNeedNativeToRegister(
     currentNetwork.priceOracleAddress!
   );
-
-  console.log(nativePrice);
 
   return (
     <VStack spacing={10} py={100} minH={'100vh'}>
@@ -50,22 +72,9 @@ export default function RegistrationPage() {
       </VStack>
       {userBusiness.selfBusiness === 0 ? (
         !referrerAddress ? (
-          <VStack justify="center" spacing={5}>
-            <Icon as={FcBrokenLink} boxSize={40}></Icon>
-            <VStack>
-              <Heading color="red" textAlign="center">
-                You need referral link to register.
-              </Heading>
-              <Text>You may get it from our social links below</Text>
-            </VStack>
-            <SocialMediaIcons
-              style={{
-                boxSize: 14,
-                'aria-label': 'Icon Buttons',
-                variant: 'outline',
-              }}
-            ></SocialMediaIcons>
-          </VStack>
+          <ErrorPage errorReason="You need referral link to register."></ErrorPage>
+        ) : referrerBusiness?.selfBusiness === 0 ? (
+          <ErrorPage errorReason="Referrer is not active."></ErrorPage>
         ) : (
           <RegistrationUI
             referrerAddress={referrerAddress}

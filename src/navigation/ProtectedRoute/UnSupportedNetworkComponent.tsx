@@ -1,7 +1,7 @@
 import React from 'react';
 import { Heading, Image, VStack } from '@chakra-ui/react';
-import { ConnectWalletButton } from '../ConnectWalletButton';
-import SwitchNetworkButton from '../SwitchNetworkButton';
+import { ConnectWalletButton } from '../../components/ConnectWalletButton';
+import SwitchNetworkButton from '../../components/SwitchNetworkButton';
 import { motion } from 'framer-motion';
 
 const MotionImage = motion(Image);
