@@ -6,7 +6,7 @@ import {
 } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { bsc, polygon } from 'wagmi/chains';
+import { bsc } from 'wagmi/chains';
 import { MyVeeMainnet } from '../lib/chains';
 
 require('dotenv').config();
