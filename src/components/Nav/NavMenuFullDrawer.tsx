@@ -30,11 +30,12 @@ export const NavMenuFullDrawer = () => {
         size="sm"
         isRound
       ></IconButton>
-      <Drawer isOpen={isOpen} onClose={onToggle} placement="left" size="xs">
+      <Drawer isOpen={isOpen} onClose={onToggle} placement="left">
         <DrawerOverlay></DrawerOverlay>
         <DrawerContent
           borderRightRadius="50px"
           bgColor={useColorModeValue('white', 'gray.900')}
+          maxW={250}
         >
           <DrawerHeader>
             <IconButton
