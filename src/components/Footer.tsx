@@ -43,6 +43,18 @@ export default function Footer() {
           </Text>
         </VStack>
         <VStack spacing={5}>
+          <Text textAlign="center">White Paper & Docs</Text>
+          <Button
+            borderRadius="xl"
+            rightIcon={<ExternalLinkIcon />}
+            as="a"
+            href="https://docs.cashx.network/welcome-to-cashx/cashx-or-introduction"
+            target="_blank"
+          >
+            Read Documentation
+          </Button>
+        </VStack>
+        <VStack spacing={5}>
           <Text textAlign="center">Follow us on Social Media</Text>
           <SocialMediaIcons />
         </VStack>
@@ -68,19 +80,8 @@ export default function Footer() {
             </Button>
           </Flex>
         </VStack> */}
-        <VStack spacing={5}>
-          <Text textAlign="center">White Paper & Docs</Text>
-          <Button
-            borderRadius="xl"
-            rightIcon={<ExternalLinkIcon />}
-            as="a"
-            href="https://docs.cashx.network/welcome-to-cashx/cashx-or-introduction"
-            target="_blank"
-          >
-            Read Documentation
-          </Button>
-        </VStack>
-        <VStack spacing={5}>
+        
+        {/* <VStack spacing={5}>
           <Text textAlign="center">Audit Reports</Text>
           <HStack>
             <Link href="/auditReports/coinToolAuditReport.pdf" target="_blank">
@@ -91,7 +92,7 @@ export default function Footer() {
               ></Image>
             </Link>
           </HStack>
-        </VStack>
+        </VStack> */}
       </Wrap>
       <Text size="sm">DApp Build by MARTIANS</Text>
     </VStack>
