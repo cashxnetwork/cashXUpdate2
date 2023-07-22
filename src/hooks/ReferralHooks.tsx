@@ -49,8 +49,6 @@ export const useUpgradePlans = () => {
     upgradePlansCount: value ? (value?.[1] as number) : 0,
   };
 
-  console.log(value);
-
   return valueObject;
 };
 
@@ -198,7 +196,7 @@ export const useGetUserTeam = (userAddress: `0x${string}` | undefined) => {
 export const useGetWeeklyRewardToBeDistributed = () => {
   const value = useContractCall({
     functionName: 'getWeeklyRewardToBeDistributed',
-    chainId: bsc.id
+    chainId: bsc.id,
   });
 
   return value;
