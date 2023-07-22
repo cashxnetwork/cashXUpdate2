@@ -9,7 +9,7 @@ export const AboutUs = () => {
         gradientHeading="NETWORK"
       ></HeadingComponent>
       <Heading
-        size={['md', 'lg']}
+        size={["sm", 'md', 'lg']}
         maxW="5xl"
         textAlign="center"
         fontWeight={300}
