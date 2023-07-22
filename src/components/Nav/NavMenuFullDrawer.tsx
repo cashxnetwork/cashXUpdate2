@@ -36,14 +36,16 @@ export const NavMenuFullDrawer = () => {
           borderRightRadius="50px"
           bgColor={useColorModeValue('white', 'gray.900')}
         >
-          <DrawerHeader />
-          <DrawerBody>
+          <DrawerHeader>
             <IconButton
               aria-label="Drawer Close Button"
               onClick={onToggle}
               icon={<ChevronLeftIcon />}
+              size="sm"
               isRound
             ></IconButton>
+          </DrawerHeader>
+          <DrawerBody>
             <VStack py={5}>
               <LogoFull />
             </VStack>

@@ -54,15 +54,7 @@ export const NavMenuDrawer = ({
           <IconButton
             aria-label="Menu Close Button"
             icon={iconButtonIcon}
-            variant="outline"
-            w="fit-content"
-            borderColor={useColorModeValue('gray.500', 'white')}
-            opacity={0.5}
             size="sm"
-            _hover={{
-              bg: 'transparent',
-              opacity: 1,
-            }}
             onClick={onClose}
             rounded="full"
           />
@@ -78,11 +70,21 @@ export const NavMenuDrawer = ({
             </Text>
             <AddressActionButtons address={address} />
           </HStack>
-        ) : <Heading size="md" textAlign="center" py={5}>Please connect wallet to continue</Heading>}
+        ) : (
+          <Heading size="md" textAlign="center" py={5}>
+            Please connect wallet to continue
+          </Heading>
+        )}
       </DrawerHeader>
       <DrawerBody>
         <Flex h="full" align="center" justify="center" w="full">
-          {address ? <NavUserMenu userAddress={address} onClick={onClose} /> : <Box onClick={onClose}><ConnectWalletButton/></Box> }
+          {address ? (
+            <NavUserMenu userAddress={address} onClick={onClose} />
+          ) : (
+            <Box onClick={onClose}>
+              <ConnectWalletButton />
+            </Box>
+          )}
         </Flex>
       </DrawerBody>
       <DrawerFooter>
