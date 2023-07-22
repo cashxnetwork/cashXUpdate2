@@ -72,10 +72,11 @@ function UpgradeUI({
     address: currentNetwork?.referralContractAddress,
     abi: currentNetwork?.referralContractInterface,
     functionName: 'upgradeAccountNative',
+    args: [currentNetwork?.priceOracleAddress],
     value: parseEther(`${valueInDecimals}`),
   });
 
-  console.log(status)
+  console.log(status);
 
   const errors = {
     isUserHaveSufficientTokenBalance:
@@ -138,7 +139,7 @@ function UpgradeUI({
       >
         <VStack minW={250} maxW={300} w="full" spacing={5}>
           <Heading textAlign="center" color="twitter.500">
-            Level #{upgradePlan?.id}
+            Level #{upgradePlan?.id + 1}
           </Heading>
           <HStack>
             <Heading textAlign="center" color="twitter.500" fontSize="7xl">

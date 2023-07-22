@@ -12,9 +12,9 @@ async function main() {
 
   console.log("Account balance:", formatedBalance.toString(), "ETH");
 
-  const ContractFactory = await ethers.getContractFactory("CashXProtocolReferral");
+  const ContractFactory = await ethers.getContractFactory("PriceOracle");
   const mc = await upgrades.upgradeProxy(
-    "0xE9cCc40396dee37429D9f79C7599A230618e249E",
+    "0x9c85f470f9ba23dFC4fE9531933C2ce2c1739c39",
     ContractFactory,
     { gasPrice: gas }
   );

@@ -30,7 +30,7 @@ function UserTeamDisplayCard({
         borderRadius="xl"
         rightIcon={<ExternalLinkIcon />}
         as="a"
-        href={`/user/${address}/team`}
+        href={`#/user/team/${address}`}
         target="_blank"
       >
         View Account Stats

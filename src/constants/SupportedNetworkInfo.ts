@@ -1,6 +1,6 @@
-import { Chain, polygon } from 'wagmi/chains';
+import { Chain, bsc, polygon } from 'wagmi/chains';
 import { MyVeeMainnet } from '../lib/chains';
-import { ReferralV1ContractObject } from './ContractAddress';
+import { PriceOracleObject, ReferralV1ContractObject } from './ContractAddress';
 
 export const projectName = 'MarsNext';
 export const tagLine =
@@ -27,7 +27,9 @@ export interface SupportedTokenInterface {
 export interface CurrentNetworkInfo {
   referralContractAddress?: `0x${string}`;
   referralContractInterface: any;
-  native: Chain; // Replace `any` with the type representing the `polygon` object
+  priceOracleAddress?: `0x${string}`;
+  priceOracleInterface?: any;
+  native: Chain;
   logo: string;
 }
 
@@ -36,15 +38,19 @@ export interface SupportedNetworkInfo {
 }
 
 export const supportedNetworkInfo: SupportedNetworkInfo = {
-  [polygon.id]: {
+  [bsc.id]: {
     referralContractAddress: ReferralV1ContractObject.polygonAddress,
     referralContractInterface: ReferralV1ContractObject.abi,
+    priceOracleAddress: PriceOracleObject?.bscAddress,
+    priceOracleInterface: PriceOracleObject?.abi,
     native: polygon,
     logo: '/chainIcons/polygonChainLogo.svg',
   },
   [MyVeeMainnet.id]: {
     referralContractAddress: ReferralV1ContractObject?.myveeAddress,
     referralContractInterface: ReferralV1ContractObject.abi,
+    priceOracleAddress: PriceOracleObject?.myveeAddress,
+    priceOracleInterface: PriceOracleObject?.abi,
     native: MyVeeMainnet,
     logo: '/chainIcons/MyVeemainnet.svg',
   },

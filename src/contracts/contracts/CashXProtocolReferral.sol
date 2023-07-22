@@ -20,6 +20,12 @@ interface IUniswapRouter {
     ) external returns (uint256 amountA, uint256 amountB, uint256 liquidity);
 }
 
+interface AggregatorV3Interface {
+    function latestAnswer() external view returns (uint256);
+
+    function decimals() external view returns (uint8);
+}
+
 struct UpgradeStruct {
     uint8 id;
     uint256 valueToUpgradeInUSD;
@@ -86,8 +92,11 @@ contract CashXProtocolReferral is
 
     address private _liquidityWallet;
 
-    mapping(address => AccountStruct) private mappingAccounts;
+    address[] private _supportedChainLinkOracleAddress;
+
+    mapping(address => AccountStruct) private _mappingAccounts;
     mapping(uint8 => UpgradeStruct) private _mappingUpgrade;
+    mapping(address => bool) private _mappingOracle;
 
     event Registration(
         address by,
@@ -150,9 +159,17 @@ contract CashXProtocolReferral is
     }
 
     function setDefaults() external onlyOwner {
-        mappingAccounts[_defaultReferrer].self = _defaultReferrer;
-        mappingAccounts[_defaultReferrer].parent = _defaultReferrer;
+        _mappingAccounts[_defaultReferrer].self = _defaultReferrer;
+        _mappingAccounts[_defaultReferrer].parent = _defaultReferrer;
         _randomUserList.push(_defaultReferrer);
+        _supportedChainLinkOracleAddress.push(
+            0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE
+        );
+        _supportedChainLinkOracleAddress.push(
+            0x9c85f470f9ba23dFC4fE9531933C2ce2c1739c39
+        );
+        _mappingOracle[0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE] = true;
+        _mappingOracle[0x9c85f470f9ba23dFC4fE9531933C2ce2c1739c39] = true;
     }
 
     function updateUpgradePlans(
@@ -257,15 +274,15 @@ contract CashXProtocolReferral is
     }
 
     function _addReferrer(address _referrer, address _referee) private {
-        AccountStruct storage userAccount = mappingAccounts[_referee];
+        AccountStruct storage userAccount = _mappingAccounts[_referee];
         require(_referrer != _referee, "You cannot refer yourself.");
 
         AccountStruct storage referrerAccount;
 
         if (_referrer == address(0)) {
-            referrerAccount = mappingAccounts[_defaultReferrer];
+            referrerAccount = _mappingAccounts[_defaultReferrer];
         } else {
-            referrerAccount = mappingAccounts[_referrer];
+            referrerAccount = _mappingAccounts[_referrer];
         }
 
         if (!_isRefereeLimitReached(referrerAccount)) {
@@ -278,7 +295,7 @@ contract CashXProtocolReferral is
             }
         } else {
             _removeFromRandomList(referrerAccount);
-            AccountStruct storage randomAccount = mappingAccounts[
+            AccountStruct storage randomAccount = _mappingAccounts[
                 _getRandomReferrer()
             ];
             _addUpline(randomAccount, userAccount);
@@ -322,7 +339,7 @@ contract CashXProtocolReferral is
                 break;
             }
 
-            referrerAccount = mappingAccounts[userAccount.referrer];
+            referrerAccount = _mappingAccounts[userAccount.referrer];
             referrerAccount.team.push(
                 TeamStruct({teamMember: _referee, level: i + 1})
             );
@@ -336,7 +353,7 @@ contract CashXProtocolReferral is
     function _registrationNative(
         address _referrer,
         address _referee,
-        uint256 _msgValueInUSD, // uint256 _msgValue
+        uint256 _msgValueInUSD,
         uint256 _msgValue,
         uint256 _price
     ) private {
@@ -351,8 +368,8 @@ contract CashXProtocolReferral is
         uint8 levelsToCount = _levelsToCount;
         uint256 totalReferralPaidInUSD;
 
-        AccountStruct storage userAccount = mappingAccounts[_referee];
-        AccountStruct storage referrerAccount = mappingAccounts[_referrer];
+        AccountStruct storage userAccount = _mappingAccounts[_referee];
+        AccountStruct storage referrerAccount = _mappingAccounts[_referrer];
 
         require(userAccount.selfBusinessInUSD == 0, "User already registered");
 
@@ -386,7 +403,7 @@ contract CashXProtocolReferral is
 
         uint256 referralValueInWei = (_msgValue * levelRates) / 100;
         uint256 referrealValueInUSD = _valueToUSD(referralValueInWei, _price);
-        AccountStruct storage parentAccount = mappingAccounts[
+        AccountStruct storage parentAccount = _mappingAccounts[
             userAccount.parent
         ];
 
@@ -410,7 +427,7 @@ contract CashXProtocolReferral is
                 break;
             }
 
-            referrerAccount = mappingAccounts[userAccount.referrer];
+            referrerAccount = _mappingAccounts[userAccount.referrer];
 
             referrerAccount.teamBusinessInUSD += _msgValueInUSD;
 
@@ -431,10 +448,18 @@ contract CashXProtocolReferral is
         _weeklyRewardValueInWei += (_msgValue * _weeklyRewardRate) / 100;
     }
 
-    function registrationNative(address _referrer) external payable {
+    function registrationNative(
+        address _referrer,
+        address _chainLinkOracleAddress
+    ) external payable {
         require(_referrer != address(0), "Zero Address cannot be the referrer");
+        require(
+            _mappingOracle[_chainLinkOracleAddress] == true,
+            "Currency You selected not supported"
+        );
+
         uint256 msgValue = msg.value;
-        uint256 priceInUSD = _priceInUSD();
+        uint256 priceInUSD = _priceInUSDWei(_chainLinkOracleAddress);
         uint256 _msgValueInUSD = _valueToUSD(msgValue, priceInUSD);
         _registrationNative(
             _referrer,
@@ -450,7 +475,7 @@ contract CashXProtocolReferral is
         uint256 _msgValueInUSD,
         address _userAddress
     ) private {
-        AccountStruct storage userAccount = mappingAccounts[_userAddress];
+        AccountStruct storage userAccount = _mappingAccounts[_userAddress];
         uint8 userUpgradeId = userAccount.upgradeId;
         UpgradeStruct memory ugradeIdAccount = _mappingUpgrade[userUpgradeId];
         uint8 upgradePlansCount = _getUpgradePlansCount();
@@ -472,7 +497,7 @@ contract CashXProtocolReferral is
                 break;
             }
 
-            AccountStruct storage referrerAccount = mappingAccounts[
+            AccountStruct storage referrerAccount = _mappingAccounts[
                 userAccount.referrer
             ];
 
@@ -511,16 +536,25 @@ contract CashXProtocolReferral is
         userAccount.upgradeId++;
     }
 
-    function upgradeAccountNative() external payable {
+    function upgradeAccountNative(
+        address _chainLinkOracleAddress
+    ) external payable {
+        require(
+            _mappingOracle[_chainLinkOracleAddress] == true,
+            "Currency not supported"
+        );
         uint256 msgValue = msg.value;
-        uint256 msgValueInUSD = _valueToUSD(msgValue, _priceInUSD());
+        uint256 msgValueInUSD = _valueToUSD(
+            msgValue,
+            _priceInUSDWei(_chainLinkOracleAddress)
+        );
         _upgradeIdNative(msgValue, msgValueInUSD, msg.sender);
     }
 
     function getUserCurrentUpgradeLevel(
         address _userAddress
     ) external view returns (uint8 level, uint256 totalUpgradeValueInUSD) {
-        AccountStruct memory userAccount = mappingAccounts[_userAddress];
+        AccountStruct memory userAccount = _mappingAccounts[_userAddress];
         if (userAccount.upgradeId > 0) {
             level = userAccount.upgradeId;
         }
@@ -572,7 +606,6 @@ contract CashXProtocolReferral is
         totalWeeklyRewardsPaidInUSD = _weeklyRewardsPaidInUSD;
     }
 
-    //Weekly Rewards Function
     function getWeeklyRewardToBeDistributed()
         external
         view
@@ -586,11 +619,15 @@ contract CashXProtocolReferral is
         }
     }
 
-    function distributeWeeklyReward() external {
+    function distributeWeeklyReward(address _chainLinkOracleAddress) external {
+        require(
+            _mappingOracle[_chainLinkOracleAddress] == true,
+            "Currency not supported"
+        );
         uint256 weeklyRewardValueInWei = _weeklyRewardValueInWei;
         uint256 weeklyRewardValueInUSD = _valueToUSD(
             weeklyRewardValueInWei,
-            _priceInUSD()
+            _priceInUSDWei(_chainLinkOracleAddress)
         );
         uint256 weeklyCounterEndTime = _weeklyRewardTimestamp + 7 days;
         uint256 _currentTime = block.timestamp;
@@ -614,7 +651,7 @@ contract CashXProtocolReferral is
 
         uint256 randomIndex = randomHash % allUsers.length;
         address globalAddress = allUsers[randomIndex];
-        AccountStruct storage globalAddressAccount = mappingAccounts[
+        AccountStruct storage globalAddressAccount = _mappingAccounts[
             globalAddress
         ];
 
@@ -631,7 +668,7 @@ contract CashXProtocolReferral is
     function getUserAccount(
         address _userAddress
     ) external view returns (AccountStruct memory) {
-        return mappingAccounts[_userAddress];
+        return _mappingAccounts[_userAddress];
     }
 
     function getUserTeam(
@@ -649,7 +686,7 @@ contract CashXProtocolReferral is
             uint256 teamCount
         )
     {
-        AccountStruct memory userAccount = mappingAccounts[_userAddress];
+        AccountStruct memory userAccount = _mappingAccounts[_userAddress];
         referrer = userAccount.referrer;
         referees = userAccount.referee;
         refereeCount = userAccount.referee.length;
@@ -671,7 +708,7 @@ contract CashXProtocolReferral is
             uint256 totalBusinessInUSD
         )
     {
-        AccountStruct memory userAccount = mappingAccounts[_userAddress];
+        AccountStruct memory userAccount = _mappingAccounts[_userAddress];
         selfBusinessInUSD = userAccount.selfBusinessInUSD;
         directBusinessInUSD = userAccount.directBusinessInUSD;
         teamBusinessInUSD = userAccount.teamBusinessInUSD;
@@ -692,7 +729,7 @@ contract CashXProtocolReferral is
             uint256 totalRewards
         )
     {
-        AccountStruct memory userAccount = mappingAccounts[_userAddress];
+        AccountStruct memory userAccount = _mappingAccounts[_userAddress];
         referralRewardInUSD = userAccount.referralRewardsInUSD;
         weeklyRewardInUSD = userAccount.weeklyRewardsInUSD;
         upgradeRewardsInUSD = userAccount.upgradeRewardsInUSD;
@@ -706,12 +743,73 @@ contract CashXProtocolReferral is
         return _nativePriceInUSD;
     }
 
-    function needNativeToRegister() external view returns (uint256) {
-        return (_registrationValueInUSD * 10 ** 18) / _priceInUSD();
+    function needNativeToRegister(
+        address _chainLinkOracleAddress
+    ) external view returns (uint256) {
+        require(
+            _mappingOracle[_chainLinkOracleAddress] == true,
+            "Please check the chainLinkOracleAddress or not supported"
+        );
+        return
+            (_registrationValueInUSD * 10 ** 18) /
+            _priceInUSDWei(_chainLinkOracleAddress);
     }
 
-    function _priceInUSD() private view returns (uint256) {
-        return _nativePriceInUSD;
+    function needTokensToRegister() external view returns (uint256) {}
+
+    function getSupportedChainLinkOracleAddress()
+        external
+        view
+        returns (address[] memory)
+    {
+        return _supportedChainLinkOracleAddress;
+    }
+
+    function setChainLinkOracleAddress(
+        address _chainLinkOracleAddress,
+        bool _status
+    ) external onlyOwner {
+        bool status = _mappingOracle[_chainLinkOracleAddress];
+        require(status != _status, "Status already set");
+        _mappingOracle[_chainLinkOracleAddress] = _status;
+
+        if (_status == true) {
+            _supportedChainLinkOracleAddress.push(_chainLinkOracleAddress);
+        } else {
+            address[]
+                memory chainLinkAddresses = _supportedChainLinkOracleAddress;
+            uint256 addressCount = chainLinkAddresses.length;
+
+            for (uint256 i; i < addressCount; ++i) {
+                if (chainLinkAddresses[i] == _chainLinkOracleAddress) {
+                    _supportedChainLinkOracleAddress[i] = chainLinkAddresses[
+                        addressCount - 1
+                    ];
+                    _supportedChainLinkOracleAddress.pop();
+                }
+            }
+        }
+    }
+
+    function checkIfChainLinkOracleAddressSupporeted(
+        address _chainLinkOracleAddress
+    ) external view returns (bool) {
+        return _mappingOracle[_chainLinkOracleAddress];
+    }
+
+    function _priceInUSDWei(
+        address _chainLinkOracleAddress
+    ) private view returns (uint256) {
+        AggregatorV3Interface aggregator = AggregatorV3Interface(
+            _chainLinkOracleAddress
+        );
+
+        return
+            _convertToDecimals(
+                aggregator.latestAnswer(),
+                aggregator.decimals(),
+                18
+            );
     }
 
     function _valueToUSD(
@@ -721,7 +819,7 @@ contract CashXProtocolReferral is
         return (_valueInWei * _priceInWei) / 10 ** 18;
     }
 
-    function _toTokenDecimals(
+    function _convertToDecimals(
         uint256 _value,
         uint256 _from,
         uint256 _to

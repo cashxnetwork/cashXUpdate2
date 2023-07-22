@@ -8,6 +8,7 @@ import BalanceCard from './BalanceCard';
 import BusinessCard from './BusinessCard';
 import RewardsCard from './RewardsCard';
 import TeamCard from './TeamCard';
+import { UserCard } from './UserCard';
 
 function Dashboard() {
   const { userAddress } = useParams<{ userAddress: `0x${string}` }>();
@@ -22,6 +23,7 @@ function Dashboard() {
         <Divider></Divider>
       </VStack>
       <Wrap w="full" justify="center" spacing={5}>
+        <UserCard userAddress={userAddress ? userAddress : address!}></UserCard>
         {/* <LimitCard
           userAddress={userAddress ? userAddress : address!}
         ></LimitCard> */}

@@ -46,19 +46,19 @@ export const useUpgradePlans = () => {
     upgradePlansCount: value ? (value?.[1] as number) : 0,
   };
 
-  console.log(value)
+  console.log(value);
 
   return valueObject;
 };
 
 export const useGetUpgradePlanById = (id: number) => {
   const value = useContractCall({
-    functionName: "getUpgradePlansById",
-    args: [id]
-  })
+    functionName: 'getUpgradePlansById',
+    args: [id],
+  });
 
-  return value
-}
+  return value;
+};
 
 export const useGetUserLimits = (userAddress: `0x${string}` | undefined) => {
   const value = useContractCall({
@@ -92,9 +92,10 @@ export const useGetUserLevelToUpgrade = (
   return value ? (value?.[0] as number) : 0;
 };
 
-export const useNeedNativeToRegister = () => {
+export const useNeedNativeToRegister = (priceOracleAddress: `0x${string}`) => {
   const value = useContractCall({
     functionName: 'needNativeToRegister',
+    args:[priceOracleAddress]
   });
 
   return value;
@@ -148,6 +149,9 @@ export const useGetUserRewards = (userAddress: `0x${string}` | undefined) => {
     upgradeRewardsInUSD: value
       ? formatNumberWithMaxDecimals(Number(value[2]) / 10 ** 18, 3)
       : 0,
+    allRewards: value
+      ? formatNumberWithMaxDecimals(Number(value[3]) / 10 ** 18, 3)
+      : 0,
   };
 
   return valueObject;
@@ -161,12 +165,12 @@ export type TypeTeamValueObject = {
   refereeAssignedCount: number;
   team: TypeTeamStruct[];
   teamCount: number;
-}
+};
 
 export type TypeTeamStruct = {
   teamMember: `0x${string}`;
   level: number;
-}
+};
 
 export const useGetUserTeam = (userAddress: `0x${string}` | undefined) => {
   const value = useContractCall({
@@ -180,7 +184,7 @@ export const useGetUserTeam = (userAddress: `0x${string}` | undefined) => {
     refereeCount: value ? Number(value[2]) : 0,
     refereeAssigned: value ? (value[3] as `0x${string}`[]) : [],
     refereeAssignedCount: value ? Number(value[4]) : 0,
-    team: value ? value[5] as TypeTeamStruct[] : [],
+    team: value ? (value[5] as TypeTeamStruct[]) : [],
     teamCount: value ? Number(value[6]) : 0,
   };
 

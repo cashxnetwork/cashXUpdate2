@@ -1,4 +1,5 @@
 import ReferralV1ContractInterface from '../contracts/artifacts/contracts/CashXProtocolReferral.sol/CashXProtocolReferral.json';
+import PriceOracleInterface from '../contracts/artifacts/contracts/PriceOracle.sol/PriceOracle.json';
 import { erc20ABI } from 'wagmi';
 
 export const AddressZero: `0x${string}` =
@@ -24,7 +25,15 @@ export const ReferralV1ContractObject: ContractObject = {
   abi: ReferralV1ContractInterface?.abi,
   polygonAddress: '0xDd0B6A7E5c27AAf44CaEb3602DeB4929E050cC58',
   bscAddress: AddressZero,
-  myveeAddress: '0x6C7E31D18cF456FeAb0d27C681F376324eaD9D7e',
+  // myveeAddress: '0x6C7E31D18cF456FeAb0d27C681F376324eaD9D7e',
+  myveeAddress: '0xE9cCc40396dee37429D9f79C7599A230618e249E',
+};
+
+export const PriceOracleObject: ContractObject = {
+  abi: PriceOracleInterface?.abi,
+  polygonAddress: AddressZero,
+  bscAddress: AddressZero,
+  myveeAddress: '0x9c85f470f9ba23dFC4fE9531933C2ce2c1739c39',
 };
 
 export const USDT: TokenContractObject = {

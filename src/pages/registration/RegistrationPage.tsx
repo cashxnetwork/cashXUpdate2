@@ -9,24 +9,33 @@ import {
 } from '@chakra-ui/react';
 import { FcBrokenLink, FcGoodDecision } from 'react-icons/fc';
 import { useParams } from 'react-router-dom';
-import { useAccount } from 'wagmi';
+import { useAccount, useNetwork } from 'wagmi';
 import RegistrationUI from '../../components/RegistrationUI/RegistrationUI';
 import UpgradeUI from '../../components/UpgradeUi/UpgradeUi';
 import {
   useGetUserBusiness,
   useGetUserLevelToUpgrade,
   useNativePrice,
+  useNeedNativeToRegister,
   useUpgradePlans,
 } from '../../hooks/ReferralHooks';
 import SocialMediaIcons from '../../components/SocialMediaIcons';
+import { supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
 
 export default function RegistrationPage() {
+  const { chain } = useNetwork();
+  const currentNetwork = supportedNetworkInfo[chain?.id!];
   const { address } = useAccount();
   const { referrerAddress } = useParams();
   const userBusiness = useGetUserBusiness(address);
   const userLevelToUpgrade = useGetUserLevelToUpgrade(address);
   const nativePrice = useNativePrice();
   const upgradePlans = useUpgradePlans();
+  const valueToRegister = useNeedNativeToRegister(
+    currentNetwork?.priceOracleAddress!
+  );
+
+  console.log(nativePrice);
 
   return (
     <VStack spacing={10} py={100} minH={'100vh'}>
@@ -60,12 +69,8 @@ export default function RegistrationPage() {
         ) : (
           <RegistrationUI
             referrerAddress={referrerAddress}
-            valueInDecimals={
-              Number(
-                upgradePlans?.upgradePlans[userLevelToUpgrade]
-                  .valueToUpgradeInUSD ?? 0
-              ) / Number(nativePrice)
-            }
+            valueInDecimals={Number(valueToRegister ?? 0) / 10 ** 18}
+            currentNetwork={currentNetwork}
           ></RegistrationUI>
         )
       ) : (

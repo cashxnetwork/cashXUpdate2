@@ -27,7 +27,11 @@ import { parseEther } from 'viem';
 import { useAccount, useBalance, useContractWrite, useNetwork } from 'wagmi';
 import { BNBLogoSVG } from '../../assets';
 import { AddressZero } from '../../constants/ContractAddress';
-import { supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
+import {
+  CurrentNetworkInfo,
+  SupportedNetworkInfo,
+  supportedNetworkInfo,
+} from '../../constants/SupportedNetworkInfo';
 import { useGetUserTeam } from '../../hooks/ReferralHooks';
 import { CenterComponent } from '../../util/Ui';
 import { isAddressValid } from '../../util/UtilHooks';
@@ -37,25 +41,23 @@ import ModalTransactionSuccess from '../Modals/ModalTransactionSuccess';
 function RegistrationUI({
   referrerAddress,
   valueInDecimals,
+  currentNetwork,
 }: {
   referrerAddress: string | undefined;
   valueInDecimals: number;
+  currentNetwork: CurrentNetworkInfo;
 }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
   const { chain } = useNetwork();
+  // const currentNetwork = supportedNetworkInfo[chain?.id!];
   const userTeamObject = useGetUserTeam(address);
-  const currentNetwork = supportedNetworkInfo[chain?.id!];
   const currentReferrer = referrerAddress ? referrerAddress : AddressZero;
 
   const userNativeBalance = useBalance({
     address: address,
   });
-
-  const cardBackgroundColor = useColorModeValue('green.50', 'gray.900');
-
-  console.log(parseEther(`${valueInDecimals}`));
 
   const {
     data,
@@ -72,7 +74,7 @@ function RegistrationUI({
     address: currentNetwork?.referralContractAddress,
     abi: currentNetwork?.referralContractInterface,
     functionName: 'registrationNative',
-    args: [currentReferrer],
+    args: [currentReferrer, currentNetwork?.priceOracleAddress],
     chainId: chain?.id,
     value: parseEther(`${valueInDecimals}`),
   });
