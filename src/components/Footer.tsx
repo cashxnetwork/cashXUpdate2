@@ -12,6 +12,7 @@ import {
 import { BsFilePdfFill } from 'react-icons/bs';
 import { LogoFull } from './LogoFull';
 import SocialMediaIcons from './SocialMediaIcons';
+import { ExternalLinkIcon } from '@chakra-ui/icons';
 
 export default function Footer() {
   return (
@@ -19,7 +20,6 @@ export default function Footer() {
       w="full"
       bg={useColorModeValue('white', 'gray.900')}
       color={useColorModeValue('gray.700', 'gray.200')}
-      // justify="flex-start"
       align={useBreakpointValue({
         base: 'center',
         sm: 'center',
@@ -28,6 +28,7 @@ export default function Footer() {
         fallback: 'lg',
       })}
       p={5}
+      borderTopRadius="3xl"
     >
       <Wrap
         w="full"
@@ -68,15 +69,15 @@ export default function Footer() {
           </Flex>
         </VStack> */}
         <VStack spacing={5}>
-          <Text textAlign="center">Project Description</Text>
+          <Text textAlign="center">White Paper & Docs</Text>
           <Button
             borderRadius="xl"
-            rightIcon={<BsFilePdfFill />}
+            rightIcon={<ExternalLinkIcon />}
             as="a"
-            href="/MarsNextProjectDiscription.pdf"
+            href="https://docs.cashx.network/welcome-to-cashx/cashx-or-introduction"
             target="_blank"
           >
-            Download PDF
+            Read Documentation
           </Button>
         </VStack>
         <VStack spacing={5}>

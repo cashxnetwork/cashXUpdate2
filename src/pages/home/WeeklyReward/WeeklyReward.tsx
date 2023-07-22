@@ -15,8 +15,6 @@ function WeeklyReward() {
   const weeklyRewardsToBeDistributed = useGetWeeklyRewardToBeDistributed();
   const registrationStats = useGetRegistrationsStats();
 
-  console.log(registrationStats);
-
   const registrationValues = [
     {
       name: 'Total Registration Value',

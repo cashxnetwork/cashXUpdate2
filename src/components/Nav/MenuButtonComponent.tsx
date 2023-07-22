@@ -1,12 +1,17 @@
-import { ChevronDownIcon, ChevronLeftIcon } from '@chakra-ui/icons';
 import {
-    Drawer,
-    DrawerContent,
-    DrawerOverlay,
-    IconButton,
-    useBreakpointValue,
-    useColorModeValue,
-    useDisclosure
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChevronUpIcon,
+} from '@chakra-ui/icons';
+import {
+  Drawer,
+  DrawerContent,
+  DrawerOverlay,
+  IconButton,
+  useBreakpointValue,
+  useColorModeValue,
+  useDisclosure,
 } from '@chakra-ui/react';
 import { useAccount } from 'wagmi';
 import { NavMenuDrawer } from './Modals/NavMenuDrawer';
@@ -23,16 +28,8 @@ export default function MenuButtonComponent() {
     <>
       <IconButton
         aria-label="Menu Button"
-        icon={iconButtonIcon}
-        variant="outline"
-        w="fit-content"
-        borderColor={useColorModeValue('gray.500', 'white')}
-        opacity={0.5}
+        icon={isOpen ? <ChevronUpIcon /> : <ChevronDownIcon />}
         size="sm"
-        _hover={{
-          bg: 'transparent',
-          opacity: 1,
-        }}
         onClick={onOpen}
         rounded="full"
       />

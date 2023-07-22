@@ -5,16 +5,19 @@ import {
 } from '../constants/ContractAddress';
 import { supportedNetworkInfo } from '../constants/SupportedNetworkInfo';
 import { formatNumberWithMaxDecimals } from '../util/UtilHooks';
+import { bsc } from 'wagmi/chains';
 
 export const useContractCall = ({
   functionName,
   args,
+  chainId,
 }: {
   functionName: string;
   args?: any[];
+  chainId?: number;
 }) => {
   const { chain } = useNetwork();
-  const currentNetwork = supportedNetworkInfo[chain?.id ?? 137];
+  const currentNetwork = supportedNetworkInfo[chainId ?? chain?.id ?? bsc.id];
 
   const { data, isError, isLoading, error } = useContractRead({
     address: currentNetwork?.referralContractAddress,
@@ -95,7 +98,7 @@ export const useGetUserLevelToUpgrade = (
 export const useNeedNativeToRegister = (priceOracleAddress: `0x${string}`) => {
   const value = useContractCall({
     functionName: 'needNativeToRegister',
-    args:[priceOracleAddress]
+    args: [priceOracleAddress],
   });
 
   return value;
@@ -104,7 +107,7 @@ export const useNeedNativeToRegister = (priceOracleAddress: `0x${string}`) => {
 export const useNativePrice = (priceOracleAddress: `0x${string}`) => {
   const value = useContractCall({
     functionName: 'getNativePriceInUSD',
-    args: [priceOracleAddress]
+    args: [priceOracleAddress],
   });
 
   return value ? Number(value) : 0;
@@ -195,7 +198,7 @@ export const useGetUserTeam = (userAddress: `0x${string}` | undefined) => {
 export const useGetWeeklyRewardToBeDistributed = () => {
   const value = useContractCall({
     functionName: 'getWeeklyRewardToBeDistributed',
-    args: [],
+    chainId: bsc.id
   });
 
   return value;
@@ -205,12 +208,8 @@ export const useGetRegistrationsStats = () => {
   const value = useContractCall({
     functionName: 'getRegistrationsStats',
     args: [],
+    chainId: bsc.id,
   });
-
-
-  // const valueObject = {
-  //   totalUser: value : 
-  // }
 
   return value;
 };

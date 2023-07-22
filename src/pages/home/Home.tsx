@@ -9,13 +9,13 @@ import WeeklyReward from './WeeklyReward/WeeklyReward';
 
 export const Home = () => {
   return (
-    <VStack w="full" maxH={'100vh'} pt={20}>
+    <VStack w="full" minH={'100vh'} pt={20}>
       <Header />
       <SupportedChainComponent />
       <PlanDiscriptionComponent />
-      <TokenDistribution />
+      {/* <TokenDistribution /> */}
       <PowerOfBlockchainComponent />
-      <WeeklyReward/>
+      <WeeklyReward />
     </VStack>
   );
 };
