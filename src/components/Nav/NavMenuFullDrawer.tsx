@@ -1,4 +1,4 @@
-import { ChevronRightIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import {
   Divider,
   Drawer,
@@ -16,6 +16,8 @@ import {
 import React from 'react';
 import { NavMenuFullLinks } from './NavMenuFullLinks';
 import SocialMediaIcons from '../SocialMediaIcons';
+import { Logo } from '../Logo';
+import { LogoFull } from '../LogoFull';
 
 export const NavMenuFullDrawer = () => {
   const { isOpen, onOpen, onToggle } = useDisclosure();
@@ -35,12 +37,21 @@ export const NavMenuFullDrawer = () => {
           bgColor={useColorModeValue('white', 'gray.900')}
         >
           <DrawerHeader />
-          <DrawerCloseButton />
           <DrawerBody>
-            <VStack py={20}>
+            <IconButton
+              aria-label="Drawer Close Button"
+              onClick={onToggle}
+              icon={<ChevronLeftIcon />}
+              isRound
+            ></IconButton>
+            <VStack py={5}>
+              <LogoFull />
+            </VStack>
+            <VStack py={5}>
               <NavMenuFullLinks
                 style={{
                   direction: 'column',
+                  onClick: onToggle,
                 }}
               />
             </VStack>
