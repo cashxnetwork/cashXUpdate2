@@ -62,7 +62,7 @@ function WeeklyReward() {
             <CenterComponent
               key={key}
               style={{
-                minW: 300,
+                minW: [250, 300],
               }}
             >
               <VStack>

@@ -29,7 +29,7 @@ const BoxComponent = ({
   return (
     <CenterComponent
       style={{
-        w: 250,
+        w: [225, 250],
         h: 350,
       }}
     >
@@ -42,7 +42,7 @@ const BoxComponent = ({
           color="orange.500"
           size="3xl"
           fontWeight={900}
-          fontFamily="unset"
+          fontFamily="heading"
         >
           {value}%
         </Heading>
