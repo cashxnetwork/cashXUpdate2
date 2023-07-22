@@ -1,10 +1,12 @@
 import {
+  Center,
   Divider,
   Flex,
   HStack,
   Heading,
   Icon,
   IconButton,
+  Spacer,
   Stack,
   VStack,
 } from '@chakra-ui/react';
@@ -68,7 +70,7 @@ export default function ReactSlickComponent({
           {children}
         </Slider>
       </Stack>
-      <HStack w="full" maxW={600} justify="space-between" px={20} pt={10}>
+      <Center w="full" pt={10} maxW="5xl">
         {/* Left Button Icon */}
         <IconButton
           aria-label="left-arrow"
@@ -81,6 +83,7 @@ export default function ReactSlickComponent({
           <BiLeftArrowAlt />
         </IconButton>
         {/* Right Button Icon */}
+        <Spacer/>
         <IconButton
           aria-label="right-arrow"
           bgColor="orange.500"
@@ -91,7 +94,7 @@ export default function ReactSlickComponent({
         >
           <BiRightArrowAlt />
         </IconButton>
-      </HStack>
+      </Center>
     </Flex>
   );
 }
