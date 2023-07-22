@@ -101,9 +101,10 @@ export const useNeedNativeToRegister = (priceOracleAddress: `0x${string}`) => {
   return value;
 };
 
-export const useNativePrice = () => {
+export const useNativePrice = (priceOracleAddress: `0x${string}`) => {
   const value = useContractCall({
     functionName: 'getNativePriceInUSD',
+    args: [priceOracleAddress]
   });
 
   return value ? Number(value) : 0;

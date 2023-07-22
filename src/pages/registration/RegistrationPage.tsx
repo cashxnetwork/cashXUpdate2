@@ -29,10 +29,10 @@ export default function RegistrationPage() {
   const { referrerAddress } = useParams();
   const userBusiness = useGetUserBusiness(address);
   const userLevelToUpgrade = useGetUserLevelToUpgrade(address);
-  const nativePrice = useNativePrice();
+  const nativePrice = useNativePrice(currentNetwork?.priceOracleAddress!);
   const upgradePlans = useUpgradePlans();
   const valueToRegister = useNeedNativeToRegister(
-    currentNetwork?.priceOracleAddress!
+    currentNetwork.priceOracleAddress!
   );
 
   console.log(nativePrice);
@@ -82,6 +82,7 @@ export default function RegistrationPage() {
                 .valueToUpgradeInUSD ?? 0
             ) / Number(nativePrice)
           }
+          currentNetwork={currentNetwork}
         ></UpgradeUI>
       )}
       ;

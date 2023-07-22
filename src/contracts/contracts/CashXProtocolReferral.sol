@@ -124,7 +124,8 @@ contract CashXProtocolReferral is
     event UpgradeRewardPaid(address to, address by, uint256 valueInWei);
     event UpgradeRewardNotPaid(string reason);
 
-    event WeeklyRewardsPaid(address to, uint256 valueInWei);
+    event WeeklyRewardPaid(address to, uint256 valueInWei);
+    event WeeklyRewardNotPaid(string reason);
 
     event TeamWalletRewardPaid(address to, uint256 valueInWei);
 
@@ -132,8 +133,6 @@ contract CashXProtocolReferral is
     event RemovedFromRandomList(address user);
 
     receive() external payable {}
-
-    uint256 private _nativePriceInUSD;
 
     function initialize() public initializer {
         _defaultReferrer = 0xeb1100091Ce830ba58A04834c35D29B75b53eb74; //Need to change
@@ -151,8 +150,6 @@ contract CashXProtocolReferral is
         _weeklyRewardTimestamp = block.timestamp;
 
         _liquidityWallet = 0xefA6077f510B10a6C1B2f8dA24a89Fc561aC9445; // yet to decide
-
-        _nativePriceInUSD = 250 * 10 ** 18; //Replace chainlink in production
 
         __Ownable_init();
         __UUPSUpgradeable_init();
@@ -651,18 +648,23 @@ contract CashXProtocolReferral is
 
         uint256 randomIndex = randomHash % allUsers.length;
         address globalAddress = allUsers[randomIndex];
-        AccountStruct storage globalAddressAccount = _mappingAccounts[
-            globalAddress
-        ];
 
-        globalAddressAccount.weeklyRewardsInUSD += weeklyRewardValueInUSD;
+        if (globalAddress != address(0)) {
+            AccountStruct storage globalAddressAccount = _mappingAccounts[
+                globalAddress
+            ];
+            globalAddressAccount.weeklyRewardsInUSD += weeklyRewardValueInUSD;
+            payable(globalAddress).transfer(weeklyRewardValueInWei);
 
-        payable(globalAddress).transfer(weeklyRewardValueInWei);
-
-        delete _weeklyRewardValueInWei;
-        _weeklyRewardTimestamp = block.timestamp;
-        _weeklyRewardsPaidInUSD += weeklyRewardValueInUSD;
-        emit WeeklyRewardsPaid(globalAddress, weeklyRewardValueInUSD);
+            delete _weeklyRewardValueInWei;
+            _weeklyRewardTimestamp = block.timestamp;
+            _weeklyRewardsPaidInUSD += weeklyRewardValueInUSD;
+            emit WeeklyRewardPaid(globalAddress, weeklyRewardValueInUSD);
+        } else {
+            emit WeeklyRewardNotPaid(
+                "Random address was zero address. Please try again"
+            );
+        }
     }
 
     function getUserAccount(
@@ -739,8 +741,8 @@ contract CashXProtocolReferral is
             upgradeRewardsInUSD;
     }
 
-    function getNativePriceInUSD() external view returns (uint256) {
-        return _nativePriceInUSD;
+    function getNativePriceInUSD(address _chainLinkOracleAddress) external view returns (uint256) {
+        return _priceInUSDWei(_chainLinkOracleAddress);
     }
 
     function needNativeToRegister(
@@ -754,8 +756,6 @@ contract CashXProtocolReferral is
             (_registrationValueInUSD * 10 ** 18) /
             _priceInUSDWei(_chainLinkOracleAddress);
     }
-
-    function needTokensToRegister() external view returns (uint256) {}
 
     function getSupportedChainLinkOracleAddress()
         external

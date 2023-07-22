@@ -27,7 +27,7 @@ import { parseEther } from 'viem';
 import { useAccount, useBalance, useContractWrite, useNetwork } from 'wagmi';
 import { BNBLogoSVG } from '../../assets';
 import { AddressZero } from '../../constants/ContractAddress';
-import { supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
+import { CurrentNetworkInfo, supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
 import {
   UpgradePlanInfoValueType,
   useGetUserTeam,
@@ -40,22 +40,22 @@ import ModalTransactionSuccess from '../Modals/ModalTransactionSuccess';
 function UpgradeUI({
   upgradePlan,
   valueInDecimals,
+  currentNetwork
 }: {
   upgradePlan: UpgradePlanInfoValueType;
   valueInDecimals: number;
+  currentNetwork: CurrentNetworkInfo
 }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { address } = useAccount();
-  const { chain } = useNetwork();
-  const userTeamObject = useGetUserTeam(address);
-  const currentNetwork = supportedNetworkInfo[chain?.id!];
+  // const { chain } = useNetwork();
+  // const userTeamObject = useGetUserTeam(address);
+  // const currentNetwork = supportedNetworkInfo[chain?.id!];
 
   const userNativeBalance = useBalance({
     address: address,
   });
-
-  const cardBackgroundColor = useColorModeValue('green.50', 'gray.900');
 
   const {
     data,

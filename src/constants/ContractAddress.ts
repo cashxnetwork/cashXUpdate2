@@ -23,16 +23,15 @@ export type TokenContractObject = {
 
 export const ReferralV1ContractObject: ContractObject = {
   abi: ReferralV1ContractInterface?.abi,
-  polygonAddress: '0xDd0B6A7E5c27AAf44CaEb3602DeB4929E050cC58',
-  bscAddress: AddressZero,
-  // myveeAddress: '0x6C7E31D18cF456FeAb0d27C681F376324eaD9D7e',
-  myveeAddress: '0xE9cCc40396dee37429D9f79C7599A230618e249E',
+  polygonAddress: AddressZero,
+  bscAddress: '0xcb31dB819d9ad85A46463bbA161D85532b8Ad6e7',
+  myveeAddress: '0xcb31dB819d9ad85A46463bbA161D85532b8Ad6e7',
 };
 
 export const PriceOracleObject: ContractObject = {
   abi: PriceOracleInterface?.abi,
   polygonAddress: AddressZero,
-  bscAddress: AddressZero,
+  bscAddress: '0x0567f2323251f0aab15c8dfb1967e4e8a7d42aee',
   myveeAddress: '0x9c85f470f9ba23dFC4fE9531933C2ce2c1739c39',
 };
 

@@ -6,12 +6,12 @@ import {
 } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
-import { polygon } from 'wagmi/chains';
+import { bsc, polygon } from 'wagmi/chains';
 import { MyVeeMainnet } from '../lib/chains';
 
 require('dotenv').config();
 
-const chains = [MyVeeMainnet];
+const chains = [bsc];
 const projectId = '45d704544c109267d7939641749cca7d';
 
 if (!projectId) {
