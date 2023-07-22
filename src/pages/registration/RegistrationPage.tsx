@@ -28,7 +28,7 @@ export default function RegistrationPage() {
   );
 
   return (
-    <CheckReferrerActive>
+    <CheckReferrerActive check={userBusiness?.selfBusiness > 0 ? false : true}>
       <VStack spacing={10} py={100} minH={'100vh'}>
         <VStack>
           <HStack>

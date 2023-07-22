@@ -6,16 +6,26 @@ import { VStack } from '@chakra-ui/react';
 import { CheckIfReferrerAddressValid } from './CheckIfReferrerAddressValid';
 import { useGetUserBusiness } from '../../hooks/ReferralHooks';
 
-export const CheckReferrerActive = ({ children }: { children: ReactNode }) => {
+export const CheckReferrerActive = ({
+  children,
+  check,
+}: {
+  children: ReactNode;
+  check: boolean;
+}) => {
   const { referrerAddress } = useParams<{ referrerAddress: `0x${string}` }>();
   const referrerBusiness = useGetUserBusiness(referrerAddress);
 
   return (
-    <CheckIfReferrerAddressValid>
-      {referrerBusiness?.selfBusiness > 0 ? (
-        children
+    <CheckIfReferrerAddressValid check={check}>
+      {check ? (
+        referrerBusiness?.selfBusiness > 0 ? (
+          children
+        ) : (
+          <RegistrationErrorPage errorReason="Referrer is not active."></RegistrationErrorPage>
+        )
       ) : (
-        <RegistrationErrorPage errorReason="Referrer is not active."></RegistrationErrorPage>
+        children
       )}
     </CheckIfReferrerAddressValid>
   );
