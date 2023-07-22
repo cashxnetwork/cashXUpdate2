@@ -55,14 +55,12 @@ export const Roadmap = () => {
     {
       name: 'PHASE 4',
       discription: [
-        'Listing on top CeX.',
-        'Staking & farming live for community.',
-        'Web3 based collaborations.',
-        'CashX based twitter bot.',
-        '10000+ holders.',
-        'Go viral.',
-        'Give aways.',
-        '10x value of the fairlaunch.',
+        '100,000+ holders.',
+        'Marketting & events worldwide.',
+        'Celebrities & influencers on board.',
+        '20x higher value.',
+        'Innovative Web3 features & products addon.',
+        'More TBA in future.',
       ],
     },
   ];
