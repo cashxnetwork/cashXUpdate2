@@ -30,7 +30,7 @@ export const NavMenuFullDrawer = () => {
         size="sm"
         isRound
       ></IconButton>
-      <Drawer isOpen={isOpen} onClose={onToggle} placement="left">
+      <Drawer isOpen={isOpen} onClose={onToggle} placement="left" size="xs">
         <DrawerOverlay></DrawerOverlay>
         <DrawerContent
           borderRightRadius="50px"
