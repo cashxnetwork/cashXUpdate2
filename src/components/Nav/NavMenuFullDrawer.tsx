@@ -8,6 +8,7 @@ import {
   DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
+  HStack,
   IconButton,
   VStack,
   useColorModeValue,
@@ -38,18 +39,18 @@ export const NavMenuFullDrawer = () => {
           maxW={250}
         >
           <DrawerHeader>
-            <IconButton
-              aria-label="Drawer Close Button"
-              onClick={onToggle}
-              icon={<ChevronLeftIcon />}
-              size="sm"
-              isRound
-            ></IconButton>
+            <HStack spacing={5}>
+              <IconButton
+                aria-label="Drawer Close Button"
+                onClick={onToggle}
+                icon={<ChevronLeftIcon />}
+                size="sm"
+                isRound
+              ></IconButton>
+              <Logo />
+            </HStack>
           </DrawerHeader>
           <DrawerBody>
-            <VStack py={5}>
-              <LogoFull />
-            </VStack>
             <VStack py={5}>
               <NavMenuFullLinks
                 style={{
