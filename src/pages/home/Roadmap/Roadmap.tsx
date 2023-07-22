@@ -79,12 +79,12 @@ export const Roadmap = () => {
             <Box key={key}>
               <CenterComponent
                 style={{
-                  minH: 500,
-                  w: 300,
+                  h: 500,
+                  w: 270,
                   alignItems: 'flex-start',
                 }}
               >
-                <Stack spacing={10} p={5}>
+                <Stack spacing={10} p={2}>
                   <Heading size="lg">{roadmapObject?.name}</Heading>
                   <Stack>
                     {roadmapObject?.discription?.map((discription, keyDis) => {

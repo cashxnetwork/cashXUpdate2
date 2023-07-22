@@ -34,7 +34,7 @@ export default function ReactSlickComponent({
       justify="center"
       backdropFilter="auto"
     >
-      <Stack w={1000} overflow="hidden" px={7} spacing={10}>
+      <Stack w={920} overflow="hidden" px={7} spacing={10}>
         <HStack w="full" spacing={0}>
           <Icon as={BiRadioCircle} boxSize={10}></Icon>
           <Divider />

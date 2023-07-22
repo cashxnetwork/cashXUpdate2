@@ -42,7 +42,6 @@ export const PowerOfBlockchainComponent = () => {
   return (
     <VStack
       w="full"
-      
       py={50}
       spacing={10}
     >
