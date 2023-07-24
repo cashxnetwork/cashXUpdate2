@@ -14,6 +14,7 @@ import { FaChartLine, FaUsers } from 'react-icons/fa';
 import { MdGroups3 } from 'react-icons/md';
 import { CenterComponent, HeadingComponent } from '../../../util/Ui';
 import { Link } from 'react-router-dom';
+import { PageWrapper } from '../../../util/PageWrapper';
 
 const BoxComponent = ({
   icon,
@@ -30,7 +31,7 @@ const BoxComponent = ({
     <CenterComponent
       style={{
         w: 250,
-        h: 500,
+        h: 400,
       }}
     >
       <VStack w="full" spacing={5}>
@@ -83,13 +84,13 @@ const features = [
 
 export const PlanDiscriptionComponent = () => {
   return (
-    <VStack w="full" minH="80vh" py="10vh" spacing={10}>
+    <PageWrapper>
       <HeadingComponent
         heading="A protocol made for"
         gradientHeading="EVERYONE"
       ></HeadingComponent>
       <Wrap
-        spacing={10}
+        spacing={5}
         align="center"
         justify="center"
         p={5}
@@ -110,10 +111,10 @@ export const PlanDiscriptionComponent = () => {
             borderBottomWidth="thick"
             colorScheme="twitter"
           >
-            Enter the app
+            LAUNCH APP
           </Button>
         </Link>
       </Box>
-    </VStack>
+    </PageWrapper>
   );
 };

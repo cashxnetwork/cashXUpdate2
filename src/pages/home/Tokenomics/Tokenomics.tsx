@@ -9,6 +9,7 @@ import React from 'react';
 import { HeadingComponent } from '../../../util/Ui';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
+import { PageWrapper } from '../../../util/PageWrapper';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -50,7 +51,7 @@ export const Tokenomics = () => {
     ],
   };
   return (
-    <VStack w="full" py={50} px={5} spacing={10} overflow="hidden">
+    <PageWrapper>
       <HeadingComponent
         heading="Community centric"
         gradientHeading="TOKENOMICS"
@@ -83,6 +84,6 @@ export const Tokenomics = () => {
           }}
         />
       </VStack>
-    </VStack>
+    </PageWrapper>
   );
 };

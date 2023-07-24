@@ -10,6 +10,7 @@ import {
   useGetWeeklyRewardToBeDistributed,
 } from '../../../hooks/ReferralHooks';
 import { CenterComponent, HeadingComponent } from '../../../util/Ui';
+import { PageWrapper } from '../../../util/PageWrapper';
 
 function WeeklyReward() {
   const weeklyRewardsToBeDistributed = useGetWeeklyRewardToBeDistributed();
@@ -30,7 +31,7 @@ function WeeklyReward() {
     },
   ];
   return (
-    <VStack w="full" py={50} spacing={10}>
+    <PageWrapper>
       <HeadingComponent
         heading="Weekly Rewards to be"
         gradientHeading="DISTRIBUTED"
@@ -51,7 +52,7 @@ function WeeklyReward() {
           timeinseconds={Number(weeklyRewardsToBeDistributed?.[2])}
         ></Counter>
       </VStack>
-    </VStack>
+    </PageWrapper>
   );
 }
 

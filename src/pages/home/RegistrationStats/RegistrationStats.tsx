@@ -5,6 +5,7 @@ import { HiUserGroup } from 'react-icons/hi';
 import { CiTimer } from 'react-icons/ci';
 import { Heading, Icon, VStack, Wrap } from '@chakra-ui/react';
 import { CenterComponent } from '../../../util/Ui';
+import { PageWrapper } from '../../../util/PageWrapper';
 
 export const RegistrationStats = () => {
   const registrationStats = useGetRegistrationsStats();
@@ -23,7 +24,7 @@ export const RegistrationStats = () => {
     },
   ];
   return (
-    <VStack w="full" py={50}>
+    <PageWrapper>
       <Wrap w="full" p={5} justify="center" align="center" spacing={[10, 20]}>
         {registrationValues?.map((valuesObject, key) => {
           return (
@@ -42,6 +43,6 @@ export const RegistrationStats = () => {
           );
         })}
       </Wrap>
-    </VStack>
+    </PageWrapper>
   );
 };

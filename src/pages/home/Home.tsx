@@ -21,7 +21,7 @@ export const Home = () => {
       <PlanDiscriptionComponent />
       <AboutUs />
       <Tokenomics />
-      <Roadmap/>
+      <Roadmap />
       {/* <TokenDistribution /> */}
       <PowerOfBlockchainComponent />
     </VStack>

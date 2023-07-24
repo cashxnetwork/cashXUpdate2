@@ -39,7 +39,7 @@ export default function Footer() {
         <VStack spacing={5}>
           <LogoFull />
           <Text textAlign="center">
-            © 2023 CashXProtocol. All rights reserved
+            © 2023 CashXNetwork. All rights reserved
           </Text>
         </VStack>
         <VStack spacing={5}>
@@ -80,7 +80,7 @@ export default function Footer() {
             </Button>
           </Flex>
         </VStack> */}
-        
+
         {/* <VStack spacing={5}>
           <Text textAlign="center">Audit Reports</Text>
           <HStack>

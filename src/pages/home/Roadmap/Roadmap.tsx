@@ -12,6 +12,7 @@ import React from 'react';
 import { CenterComponent, HeadingComponent } from '../../../util/Ui';
 import ReactSlickComponent from '../../../components/ReactSlickComponent';
 import { BiRadioCircleMarked } from 'react-icons/bi';
+import { PageWrapper } from '../../../util/PageWrapper';
 
 export const Roadmap = () => {
   const roadmapObject = [
@@ -66,9 +67,9 @@ export const Roadmap = () => {
   ];
 
   return (
-    <VStack w="full" px={5} py={50} spacing={10}>
+    <PageWrapper>
       <HeadingComponent
-        heading="A commited"
+        heading="A Committed"
         gradientHeading="ROADMAP"
       ></HeadingComponent>
       <ReactSlickComponent>
@@ -100,6 +101,6 @@ export const Roadmap = () => {
           );
         })}
       </ReactSlickComponent>
-    </VStack>
+    </PageWrapper>
   );
 };

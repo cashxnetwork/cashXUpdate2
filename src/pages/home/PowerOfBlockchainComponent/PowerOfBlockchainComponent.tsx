@@ -6,14 +6,12 @@ import {
   Text,
   VStack,
   Wrap,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { IconType } from 'react-icons';
-import {
-  BsBox,
-  BsShieldCheck
-} from 'react-icons/bs';
+import { BsBox, BsShieldCheck } from 'react-icons/bs';
 import { GiCubes, GiWineGlass } from 'react-icons/gi';
+import { PageWrapper } from '../../../util/PageWrapper';
 
 const TagComponent = ({
   icon,
@@ -30,9 +28,7 @@ const TagComponent = ({
     >
       <VStack w="full">
         <Icon as={icon} boxSize={14}></Icon>
-        <Heading size="sm">
-          {heading}
-        </Heading>
+        <Heading size="sm">{heading}</Heading>
       </VStack>
     </CenterComponent>
   );
@@ -40,16 +36,16 @@ const TagComponent = ({
 
 export const PowerOfBlockchainComponent = () => {
   return (
-    <VStack
-      w="full"
-      py={50}
-      spacing={10}
-    >
+    <PageWrapper>
       <HeadingComponent
         heading="Build with the power of"
         gradientHeading="BLOCKCHAIN"
       ></HeadingComponent>
-      <Icon as={GiCubes} boxSize={[270, 300]} opacity={useColorModeValue(0.75, 1)}></Icon>
+      <Icon
+        as={GiCubes}
+        boxSize={[270, 300]}
+        opacity={useColorModeValue(0.75, 1)}
+      ></Icon>
       <Container>
         <Text textAlign="center">
           Every logic & reward distribution written on secure smart contracts.
@@ -62,6 +58,6 @@ export const PowerOfBlockchainComponent = () => {
         <TagComponent icon={BsBox} heading="Open Source"></TagComponent>
         {/* <TagComponent icon={FaLock} heading="Renounced"></TagComponent> */}
       </Wrap>
-    </VStack>
+    </PageWrapper>
   );
 };

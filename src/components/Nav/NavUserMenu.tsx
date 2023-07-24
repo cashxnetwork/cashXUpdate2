@@ -11,11 +11,14 @@ import { motion } from 'framer-motion';
 import {
   FcAreaChart,
   FcConferenceCall,
+  FcExternal,
   FcGoodDecision,
   FcPositiveDynamic,
 } from 'react-icons/fc';
 import { GoHome } from 'react-icons/go';
 import { Link } from 'react-router-dom';
+import { useAccount } from 'wagmi';
+import { useGetUserBusiness } from '../../hooks/ReferralHooks';
 
 // @ts-ignore
 const MotionIconButton = motion(IconButton);
@@ -27,6 +30,9 @@ function NavUserMenu({
   userAddress: string;
   onClick?: () => void;
 }) {
+  const { address } = useAccount();
+  const userBusiness = useGetUserBusiness(address);
+  console.log(userBusiness);
   const menuObject = [
     {
       icon: GoHome,
@@ -49,8 +55,8 @@ function NavUserMenu({
     //   link: `/user/staking`,
     // },
     {
-      icon: FcGoodDecision,
-      name: 'Register',
+      icon: userBusiness?.selfBusiness > 0 ? FcExternal : FcGoodDecision,
+      name: userBusiness?.selfBusiness > 0 ? 'Upgrade' : 'Register',
       link: `/registration`,
     },
   ];

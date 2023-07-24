@@ -47,7 +47,7 @@ export const HeaderHeadingComponent = () => {
           variant="solid"
           colorScheme="twitter"
         >
-          LAUNCH APP
+          ENTER THE APP
         </Button>
       </Link>
     </VStack>
