@@ -19,8 +19,8 @@ export const NetworkJoining = () => {
   const data = {
     labels: [
       '$15 | Referral Rewards',
-      '$5 | Liquidity Generation',
-      '$4 | Dev & Core Team',
+      '$5 | Dev & Core Team',
+      '$4 | Liquidity Generation',
       '$1 | Weekly Rewards',
     ],
     datasets: [
