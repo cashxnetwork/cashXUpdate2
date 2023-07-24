@@ -69,7 +69,7 @@ export function NavMenuFullLinks({ style }: { style?: StackProps }) {
             fontSize="xl"
             hasArrow
           >
-            <Link to={menuObject?.link}>
+            <Link to={menuObject?.link} >
               <Stack
                 direction={['column', 'column', 'column', 'row']}
                 align="center"

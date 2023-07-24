@@ -19,7 +19,7 @@ export const Nav = () => {
       align="center"
       justify="center"
       borderBottomRadius="3xl"
-      bgColor={useColorModeValue('gray.50', 'gray.900')}
+      // bgColor={useColorModeValue('gray.50', 'gray.900')}
       position="fixed"
       top={0}
       zIndex={1111}
@@ -35,9 +35,9 @@ export const Nav = () => {
         </Show> */}
         <Logo></Logo>
         <Spacer />
-        <Hide below="lg">
+        {/* <Hide below="lg">
           <NavMenuFullLinks />
-        </Hide>
+        </Hide> */}
         <ConnectWalletButton showJazzicon={true}></ConnectWalletButton>
         <MenuButtonComponent />
       </HStack>

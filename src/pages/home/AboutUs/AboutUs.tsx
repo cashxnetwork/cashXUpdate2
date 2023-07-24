@@ -4,7 +4,9 @@ import { PageWrapper } from '../../../util/PageWrapper';
 
 export const AboutUs = () => {
   return (
-    <PageWrapper>
+    <PageWrapper style={{
+      id: "about-us"
+    }}>
       <HeadingComponent
         heading="Why join CashX"
         gradientHeading="NETWORK"
