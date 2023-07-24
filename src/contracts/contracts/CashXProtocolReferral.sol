@@ -156,8 +156,13 @@ contract CashXProtocolReferral is
     }
 
     function setDefaults() external onlyOwner {
-        _mappingAccounts[_defaultReferrer].self = _defaultReferrer;
-        _mappingAccounts[_defaultReferrer].parent = _defaultReferrer;
+        AccountStruct storage defaultReferrerAccount = _mappingAccounts[
+            _defaultReferrer
+        ];
+        defaultReferrerAccount.self = _defaultReferrer;
+        defaultReferrerAccount.parent = _defaultReferrer;
+        defaultReferrerAccount.selfBusinessInUSD = 100000 * 10 ** 18;
+
         _randomUserList.push(_defaultReferrer);
         _supportedChainLinkOracleAddress.push(
             0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE
@@ -369,6 +374,7 @@ contract CashXProtocolReferral is
         AccountStruct storage referrerAccount = _mappingAccounts[_referrer];
 
         require(userAccount.selfBusinessInUSD == 0, "User already registered");
+        require(referrerAccount.selfBusinessInUSD > 0, "Referrer Not Active");
 
         if (userAccount.self == address(0)) {
             userAccount.self = _referee;
@@ -380,7 +386,9 @@ contract CashXProtocolReferral is
 
         if (userAccount.selfBusinessInUSD == 0) {
             _users.push(_referee);
-            _addToRandomList(userAccount);
+            if (!_isRefereeLimitReached(userAccount)) {
+                _addToRandomList(userAccount);
+            }
         }
 
         userAccount.selfBusinessInUSD += _msgValueInUSD;
@@ -741,7 +749,9 @@ contract CashXProtocolReferral is
             upgradeRewardsInUSD;
     }
 
-    function getNativePriceInUSD(address _chainLinkOracleAddress) external view returns (uint256) {
+    function getNativePriceInUSD(
+        address _chainLinkOracleAddress
+    ) external view returns (uint256) {
         return _priceInUSDWei(_chainLinkOracleAddress);
     }
 

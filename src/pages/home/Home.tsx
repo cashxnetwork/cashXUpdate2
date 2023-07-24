@@ -14,13 +14,7 @@ import { Features } from './Features/Features';
 
 export const Home = () => {
   return (
-    <VStack
-      w="full"
-      minH={'100vh'}
-      pt={20}
-      overflow="hidden"
-      bgColor={useColorModeValue('gray.50', 'black')}
-    >
+    <VStack w="full" minH={'100vh'} pt={20} overflow="hidden">
       <Header />
       <RegistrationStats />
       <WeeklyReward />
