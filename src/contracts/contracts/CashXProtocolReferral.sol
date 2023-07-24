@@ -50,6 +50,7 @@ struct AccountStruct {
     TeamStruct[] team;
     uint256 selfBusinessInUSD;
     uint256 upgradedValueInUSD;
+    // UpgradeStruct upgradeId;
     uint8 upgradeId;
     uint256 directBusinessInUSD;
     uint256 teamBusinessInUSD;
@@ -481,34 +482,36 @@ contract CashXProtocolReferral is
         address _userAddress
     ) private {
         AccountStruct storage userAccount = _mappingAccounts[_userAddress];
-        uint8 userUpgradeId = userAccount.upgradeId;
-        UpgradeStruct memory ugradeIdAccount = _mappingUpgrade[userUpgradeId];
-        uint8 upgradePlansCount = _getUpgradePlansCount();
+        UpgradeStruct memory ugradeIdAccount = _mappingUpgrade[
+            userAccount.upgradeId
+        ];
 
         require(
-            _msgValueInUSD >= ugradeIdAccount.valueToUpgradeInUSD,
+            ugradeIdAccount.valueToUpgradeInUSD > 0,
+            "You have upgraded all levels."
+        );
+
+        require(
+            _msgValueInUSD > (ugradeIdAccount.valueToUpgradeInUSD * 95) / 100 ||
+                _msgValueInUSD <
+                (ugradeIdAccount.valueToUpgradeInUSD * 105) / 100,
             "Value should be equal to upgrade value"
         );
 
-        require(
-            userUpgradeId < upgradePlansCount,
-            "User consumed all upgrade plans"
-        );
-
         userAccount.upgradedValueInUSD += _msgValueInUSD;
+        userAccount.upgradeId = ugradeIdAccount.id;
+
+        uint8 userUpgradeId = userAccount.upgradeId;
 
         for (uint i; i <= userUpgradeId; ++i) {
-            if (userAccount.referrer == address(0)) {
-                break;
-            }
-
             AccountStruct storage referrerAccount = _mappingAccounts[
                 userAccount.referrer
             ];
 
-            if (i == userUpgradeId) {
+            if (i == userUpgradeId - 1) {
                 if (
-                    referrerAccount.upgradeId > userUpgradeId &&
+                    (referrerAccount.upgradeId > userUpgradeId ||
+                        referrerAccount.upgradeId == userUpgradeId) &&
                     referrerAccount.self != address(0)
                 ) {
                     referrerAccount.upgradeRewardsInUSD += _msgValueInUSD;
@@ -537,8 +540,6 @@ contract CashXProtocolReferral is
 
             userAccount = referrerAccount;
         }
-
-        userAccount.upgradeId++;
     }
 
     function upgradeAccountNative(

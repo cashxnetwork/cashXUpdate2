@@ -76,8 +76,6 @@ function UpgradeUI({
     value: parseEther(`${valueInDecimals}`),
   });
 
-  console.log(status);
-
   const errors = {
     isUserHaveSufficientTokenBalance:
       Number(userNativeBalance?.data?.formatted ?? 0) >= valueInDecimals
