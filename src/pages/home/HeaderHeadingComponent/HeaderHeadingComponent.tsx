@@ -14,10 +14,10 @@ export const HeaderHeadingComponent = () => {
   const secondaryHeading =
     'A fully #decentralised protocol that distributes rewards for joining the CashX network';
   return (
-    <VStack spacing={5} maxW="4xl">
+    <VStack spacing={5} maxW="3xl">
       <VStack
         spacing={0}
-        fontSize={['5xl', '6xl', '7xl']}
+        fontSize={['4xl', '5xl', '6xl']}
         fontWeight={800}
         fontFamily="heading"
         lineHeight={1}
@@ -30,8 +30,8 @@ export const HeaderHeadingComponent = () => {
         textAlign="center"
         px={5}
         lineHeight={1.2}
-        maxW="3xl"
-        opacity={0.75}
+        maxW="2xl"
+        fontWeight={500}
       >
         {secondaryHeading}
       </Heading>
