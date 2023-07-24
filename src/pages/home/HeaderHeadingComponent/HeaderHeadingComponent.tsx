@@ -17,13 +17,16 @@ export const HeaderHeadingComponent = () => {
     <VStack spacing={5} maxW="3xl">
       <VStack
         spacing={0}
-        fontSize={['4xl', '5xl', '6xl']}
+        fontSize={['6xl', '7xl', '8xl']}
         fontWeight={800}
         fontFamily="heading"
         lineHeight={1}
-        opacity={useColorModeValue(0.75, 1)}
       >
-        <Text textAlign="center">{mainHeading}</Text>
+        {/* <Text textAlign="center">{mainHeading}</Text> */}
+        <Text>Powerful</Text>
+        <Text>CRYPTO</Text>
+        <Text>REWARD</Text>
+        <Text>NETWORK</Text>
       </VStack>
       <Heading
         size="lg"
