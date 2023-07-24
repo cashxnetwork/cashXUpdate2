@@ -1,35 +1,21 @@
 'use client';
-import { HStack, Heading, Icon, VStack, Wrap } from '@chakra-ui/react';
-import { AiOutlineFire } from 'react-icons/ai';
-import { CiTimer } from 'react-icons/ci';
-import { HiUserGroup } from 'react-icons/hi';
-import { SlGlobeAlt } from 'react-icons/sl';
+import { HStack, Heading, VStack } from '@chakra-ui/react';
+import { useNetwork } from 'wagmi';
 import { Counter } from '../../../components/Counter';
+import { supportedNetworkInfo } from '../../../constants/SupportedNetworkInfo';
 import {
-  useGetRegistrationsStats,
   useGetWeeklyRewardToBeDistributed,
+  useNativePrice
 } from '../../../hooks/ReferralHooks';
-import { CenterComponent, HeadingComponent } from '../../../util/Ui';
 import { PageWrapper } from '../../../util/PageWrapper';
+import { HeadingComponent } from '../../../util/Ui';
 
 function WeeklyReward() {
   const weeklyRewardsToBeDistributed = useGetWeeklyRewardToBeDistributed();
-  const registrationStats = useGetRegistrationsStats();
+  const {chain} = useNetwork()
+  const useCurrentNetwork = supportedNetworkInfo[chain?.id!];
+  const nativePrice = useNativePrice(useCurrentNetwork?.priceOracleAddress!);
 
-  const registrationValues = [
-    {
-      name: 'Total Registration Value',
-      icon: AiOutlineFire,
-    },
-    {
-      name: 'Referral Reward Distributed',
-      icon: HiUserGroup,
-    },
-    {
-      name: 'Weekly Reward Distributed',
-      icon: CiTimer,
-    },
-  ];
   return (
     <PageWrapper>
       <HeadingComponent
@@ -40,10 +26,10 @@ function WeeklyReward() {
         <HStack>
           <Heading>
             {Number(
-              Number(weeklyRewardsToBeDistributed?.[0]) / 10 ** 18
+              (Number(weeklyRewardsToBeDistributed?.[0]) / 10 ** 18) * (Number(nativePrice ?? 0) / 10 ** 18)
             )?.toFixed(2)}
           </Heading>
-          <Heading color="orange.500">BNB</Heading>
+          <Heading color="orange.500">USDT</Heading>
         </HStack>
       </VStack>
       <VStack>
