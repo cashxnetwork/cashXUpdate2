@@ -43,7 +43,7 @@ function WeeklyReward() {
               Number(weeklyRewardsToBeDistributed?.[0]) / 10 ** 18
             )?.toFixed(2)}
           </Heading>
-          <Heading color="orange.500">USDT</Heading>
+          <Heading color="orange.500">BNB</Heading>
         </HStack>
       </VStack>
       <VStack>
