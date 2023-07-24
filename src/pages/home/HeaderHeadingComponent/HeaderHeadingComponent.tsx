@@ -17,7 +17,7 @@ export const HeaderHeadingComponent = () => {
     <VStack spacing={5} maxW="3xl">
       <VStack
         spacing={0}
-        fontSize={['6xl', '7xl', '8xl']}
+        fontSize={['5xl', '6xl', '7xl']}
         fontWeight={800}
         fontFamily="heading"
         lineHeight={1}
