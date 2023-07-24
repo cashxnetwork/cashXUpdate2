@@ -11,6 +11,7 @@ import { AboutUs } from './AboutUs/AboutUs';
 import { Tokenomics } from './Tokenomics/Tokenomics';
 import { Roadmap } from './Roadmap/Roadmap';
 import { Features } from './Features/Features';
+import { NetworkJoining } from './NetworkJoining/NetworkJoining';
 
 export const Home = () => {
   return (
@@ -22,6 +23,7 @@ export const Home = () => {
       <PlanDiscriptionComponent />
       <AboutUs />
       <Features />
+      <NetworkJoining/>
       <Tokenomics />
       <Roadmap />
       {/* <TokenDistribution /> */}

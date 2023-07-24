@@ -1,6 +1,7 @@
 import {
   Box,
   Center,
+  Heading,
   VStack,
   useBreakpointValue,
   useColorModeValue,
@@ -13,48 +14,30 @@ import { PageWrapper } from '../../../util/PageWrapper';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-export const Tokenomics = () => {
-  const chartBorderColor = useColorModeValue('white', '#1A202C');
+export const NetworkJoining = () => {
+  const chartBorderColor = useColorModeValue('gray.50', 'black');
   const data = {
     labels: [
-      '30% | Fair Launch',
-      '20% | Liquidity',
-      '25% | Community Building',
-      '10% | CeX',
-      '10% | Staking',
-      '5% | Marketing',
+      '$15 | Referral Rewards',
+      '$5 | Liquidity Generation',
+      '$4 | Dev & Core Team',
+      '$1 | Weekly Rewards',
     ],
     datasets: [
       {
-        data: [30, 20, 25, 10, 10, 5],
-        backgroundColor: [
-          'rgba(255, 99, 132)',
-          'rgba(54, 162, 235)',
-          'rgba(255, 206, 86)',
-          'rgba(75, 192, 192)',
-          'rgba(153, 102, 255)',
-          'rgba(255, 159, 64)',
-        ],
-        borderColor: [
-          chartBorderColor,
-          chartBorderColor,
-          chartBorderColor,
-          chartBorderColor,
-          chartBorderColor,
-          chartBorderColor,
-        ],
+        data: [60, 20, 16, 4],
+        backgroundColor: ['cyan', 'pink', 'yellow', 'purple'],
+        borderColor: chartBorderColor,
         borderWidth: 10,
         borderRadius: 10,
-        // circumference: 180,
-        // rotation: 270,
       },
     ],
   };
   return (
     <PageWrapper>
       <HeadingComponent
-        heading="Community centric"
-        gradientHeading="TOKENOMICS"
+        heading="Benefits of joining"
+        gradientHeading="NETWORK"
       ></HeadingComponent>
       <VStack boxSize={[400, 500, 600]}>
         <Doughnut
@@ -83,6 +66,17 @@ export const Tokenomics = () => {
             maintainAspectRatio: true,
           }}
         />
+      </VStack>
+      <VStack>
+        <Heading>Network Joining Fee</Heading>
+        <Heading
+          fontSize="5xl"
+          textAlign="center"
+          bgGradient="linear(to-r, green.200, orange.500)"
+          bgClip="text"
+        >
+          $25 worth of BNB
+        </Heading>
       </VStack>
     </PageWrapper>
   );
