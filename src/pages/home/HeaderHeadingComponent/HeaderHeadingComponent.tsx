@@ -23,7 +23,7 @@ export const HeaderHeadingComponent = () => {
         lineHeight={1}
       >
         {/* <Text textAlign="center">{mainHeading}</Text> */}
-        <Text>Powerful</Text>
+        <Text>POWERFUL</Text>
         <Text>CRYPTO</Text>
         <Text>REWARD</Text>
         <Text>NETWORK</Text>

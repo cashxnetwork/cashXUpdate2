@@ -4,9 +4,11 @@ import { PageWrapper } from '../../../util/PageWrapper';
 
 export const AboutUs = () => {
   return (
-    <PageWrapper style={{
-      id: "about-us"
-    }}>
+    <PageWrapper
+      style={{
+        id: 'about-us',
+      }}
+    >
       <HeadingComponent
         heading="Why join CashX"
         gradientHeading="NETWORK"
@@ -22,19 +24,14 @@ export const AboutUs = () => {
         into their wallets by sharing and spreading Cashx Network.
       </Heading>
       <Heading size={['md', 'lg']} maxW="5xl" fontWeight={300}>
-        <Text as="span" fontWeight={900}>
-          CashX
-        </Text>{' '}
-        team has no control over how much you can earn. All the transactions are
-        instant and automatic. Early entry into the system is very important as
-        more senior level you reach, higher the upgrade income you receive.
+        CashX team has no control over how much you can earn. All the
+        transactions are instant and automatic. Early entry into the system is
+        very important as more senior level you reach, higher the upgrade income
+        you receive.
       </Heading>
       <Heading size={['md', 'lg']} maxW="5xl" fontWeight={300}>
-        Some portion of joining fee goes to{' '}
-        <Text as="span" fontWeight={900}>
-          CashX
-        </Text>{' '}
-        liquidity which increases the value to the token gradually.
+        Some portion of joining fee goes to CashX liquidity which increases the
+        value to the token gradually.
       </Heading>
     </PageWrapper>
   );
