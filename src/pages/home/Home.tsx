@@ -1,5 +1,5 @@
 'use client';
-import { VStack } from '@chakra-ui/react';
+import { VStack, useColorModeValue } from '@chakra-ui/react';
 import { Header } from './Header';
 import { PlanDiscriptionComponent } from './PlanDiscriptionComponent/PlanDiscriptionComponent';
 import { PowerOfBlockchainComponent } from './PowerOfBlockchainComponent/PowerOfBlockchainComponent';
@@ -14,14 +14,20 @@ import { Features } from './Features/Features';
 
 export const Home = () => {
   return (
-    <VStack w="full" minH={'100vh'} pt={20}>
+    <VStack
+      w="full"
+      minH={'100vh'}
+      pt={20}
+      overflow="hidden"
+      bgColor={useColorModeValue('gray.50', 'black')}
+    >
       <Header />
       <RegistrationStats />
       <WeeklyReward />
       <SupportedChainComponent />
       <PlanDiscriptionComponent />
       <AboutUs />
-      <Features/>
+      <Features />
       <Tokenomics />
       <Roadmap />
       {/* <TokenDistribution /> */}

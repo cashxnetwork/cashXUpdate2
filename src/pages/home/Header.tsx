@@ -24,10 +24,10 @@ export const Header = () => {
       onMouseMove={handleMouseMove}
       overflow="hidden"
       direction="column"
-      bgGradient={useColorModeValue(
-        'linear(to-b, white, blue.100, transparent)',
-        'linear(to-t, transparent, blue.900, transparent)'
-      )}
+      // bgGradient={useColorModeValue(
+      //   'linear(to-b, white, gray.100, transparent)',
+      //   'linear(to-t, transparent, gray.900, transparent)'
+      // )}
     >
       <VStack w="full" spacing={70}>
         <Particles quantity={200}></Particles>
