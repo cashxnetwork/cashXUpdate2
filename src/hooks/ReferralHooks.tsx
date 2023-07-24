@@ -24,6 +24,7 @@ export const useContractCall = ({
     abi: ReferralV1ContractObject?.abi,
     functionName: functionName,
     args: args ?? [],
+    watch: true
   });
 
   if (isError) {
