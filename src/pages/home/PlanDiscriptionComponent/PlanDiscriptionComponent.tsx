@@ -36,11 +36,11 @@ const BoxComponent = ({
     >
       <VStack w="full" spacing={5}>
         <Icon as={icon} boxSize={10}></Icon>
-        <Tag colorScheme="green" fontWeight={900}>
+        <Tag colorScheme="blue" fontWeight={900}>
           {heading}
         </Tag>
         <Heading
-          color="orange.500"
+          color="twitter.500"
           size="3xl"
           fontWeight={900}
           fontFamily="heading"

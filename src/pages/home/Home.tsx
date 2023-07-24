@@ -10,6 +10,7 @@ import { RegistrationStats } from './RegistrationStats/RegistrationStats';
 import { AboutUs } from './AboutUs/AboutUs';
 import { Tokenomics } from './Tokenomics/Tokenomics';
 import { Roadmap } from './Roadmap/Roadmap';
+import { Features } from './Features/Features';
 
 export const Home = () => {
   return (
@@ -20,6 +21,7 @@ export const Home = () => {
       <SupportedChainComponent />
       <PlanDiscriptionComponent />
       <AboutUs />
+      <Features/>
       <Tokenomics />
       <Roadmap />
       {/* <TokenDistribution /> */}
