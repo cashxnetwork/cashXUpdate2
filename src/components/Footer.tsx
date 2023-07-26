@@ -94,7 +94,7 @@ export default function Footer() {
           </HStack>
         </VStack> */}
       </Wrap>
-      {/* <Text size="sm">DApp Build by MARTIANS</Text> */}
+      <Text size="sm">DApp Build by MARTIANS</Text>
     </VStack>
   );
 }
