@@ -125,8 +125,6 @@ function UpgradeUI({
     }
   };
 
-  useEffect(() => {}, [isSuccess, toast, onClose, reset]);
-
   return (
     <VStack spacing={10}>
       <CenterComponent

@@ -7,12 +7,11 @@ import {
 import { Web3Modal } from '@web3modal/react';
 import { WagmiConfig, configureChains, createConfig } from 'wagmi';
 import { bsc } from 'wagmi/chains';
-import { MyVeeMainnet } from '../lib/chains';
 
 require('dotenv').config();
 
-const chains = [bsc, MyVeeMainnet];
-const projectId = '45d704544c109267d7939641749cca7d';
+const chains = [bsc];
+const projectId = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID;
 
 if (!projectId) {
   throw new Error('WalletConnect project id is not defined');
