@@ -11,7 +11,8 @@ import { bsc } from 'wagmi/chains';
 require('dotenv').config();
 
 const chains = [bsc];
-const projectId = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID;
+// const projectId = process.env.REACT_APP_WALLET_CONNECT_PROJECT_ID;
+const projectId = "45d704544c109267d7939641749cca7d";
 
 if (!projectId) {
   throw new Error('WalletConnect project id is not defined');

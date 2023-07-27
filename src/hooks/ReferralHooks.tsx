@@ -17,7 +17,8 @@ export const useContractCall = ({
   chainId?: number;
 }) => {
   const { chain } = useNetwork();
-  const currentNetwork = supportedNetworkInfo[chainId ?? chain?.id ?? bsc.id];
+  const currentNetwork = supportedNetworkInfo[bsc.id];
+
 
   const { data, isError, isLoading, error } = useContractRead({
     address: currentNetwork?.referralContractAddress,
