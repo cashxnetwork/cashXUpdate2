@@ -27,7 +27,10 @@ import { parseEther } from 'viem';
 import { useAccount, useBalance, useContractWrite, useNetwork } from 'wagmi';
 import { BNBLogoSVG } from '../../assets';
 import { AddressZero } from '../../constants/ContractAddress';
-import { CurrentNetworkInfo, supportedNetworkInfo } from '../../constants/SupportedNetworkInfo';
+import {
+  CurrentNetworkInfo,
+  supportedNetworkInfo,
+} from '../../constants/SupportedNetworkInfo';
 import {
   UpgradePlanInfoValueType,
   useGetUserTeam,
@@ -40,11 +43,11 @@ import ModalTransactionSuccess from '../Modals/ModalTransactionSuccess';
 function UpgradeUI({
   upgradePlan,
   valueInDecimals,
-  currentNetwork
+  currentNetwork,
 }: {
-  upgradePlan: UpgradePlanInfoValueType;
+  upgradePlan?: UpgradePlanInfoValueType;
   valueInDecimals: number;
-  currentNetwork: CurrentNetworkInfo
+  currentNetwork: CurrentNetworkInfo;
 }) {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -135,11 +138,14 @@ function UpgradeUI({
       >
         <VStack minW={250} maxW={300} w="full" spacing={5}>
           <Heading textAlign="center" color="twitter.500">
-            Level #{upgradePlan?.id + 1}
+            Level #{upgradePlan?.id ? upgradePlan?.id + 1 : 0}
           </Heading>
           <HStack>
             <Heading textAlign="center" color="twitter.500" fontSize="7xl">
-              ${Number(upgradePlan?.valueToUpgradeInUSD) / 10 ** 18}
+              $
+              {upgradePlan?.valueToUpgradeInUSD
+                ? Number(upgradePlan?.valueToUpgradeInUSD) / 10 ** 18
+                : 0}
             </Heading>
           </HStack>
           <Heading size="sm">You have to pay</Heading>
