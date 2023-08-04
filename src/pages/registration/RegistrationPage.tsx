@@ -47,12 +47,14 @@ export default function RegistrationPage() {
           ></RegistrationUI>
         ) : (
           <UpgradeUI
-            upgradePlan={upgradePlans?.upgradePlans[userLevelToUpgrade]}
+            upgradePlan={upgradePlans?.upgradePlans[userLevelToUpgrade] ?? 0}
             valueInDecimals={
-              Number(
-                upgradePlans?.upgradePlans[userLevelToUpgrade]
-                  .valueToUpgradeInUSD ?? 0
-              ) / Number(nativePrice)
+              upgradePlans?.upgradePlans[userLevelToUpgrade]
+                ? Number(
+                    upgradePlans?.upgradePlans[userLevelToUpgrade]
+                      .valueToUpgradeInUSD ?? 0
+                  ) / Number(nativePrice)
+                : 0
             }
             currentNetwork={currentNetwork}
           ></UpgradeUI>
