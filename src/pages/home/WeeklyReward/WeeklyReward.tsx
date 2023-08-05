@@ -12,8 +12,7 @@ import { HeadingComponent } from '../../../util/Ui';
 
 function WeeklyReward() {
   const weeklyRewardsToBeDistributed = useGetWeeklyRewardToBeDistributed();
-  const {chain} = useNetwork()
-  const useCurrentNetwork = supportedNetworkInfo[chain?.id!];
+  const useCurrentNetwork = supportedNetworkInfo[56];
   const nativePrice = useNativePrice(useCurrentNetwork?.priceOracleAddress!);
 
   return (
